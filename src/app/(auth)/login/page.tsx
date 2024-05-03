@@ -19,14 +19,14 @@ const Login = () => {
                         <form className="grid gap-10">
                             <label htmlFor="email" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
                                 Your Email
-                                <input id="email" placeholder="Enter Your Email" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="text" required />
+                                <input id="email" placeholder="Enter Your Email" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="email" required />
                             </label>
                             <label htmlFor="password" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
                                 Your Password
                                 <input id="password" placeholder="Enter Your Password" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="password" required />
                             </label>
                             <div className="flex text-end justify-end">
-                                <p className="flex text-[12px] text-[#526484] font-medium font-sans hover:underline ">Forgot password ?</p>
+                                <a href="/forget-password" className="flex text-[12px] text-[#526484] font-medium font-sans hover:underline ">Forgot password ?</a>
                             </div>
                             {
                                 loading ? <Spinner /> :
