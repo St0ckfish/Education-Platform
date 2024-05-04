@@ -1,15 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const NavBar = () => {
-  const pathname = window.location.pathname;
+  const [pathname, setPathname] = useState('');
+  const [isLoginPage, setIsLoginPage] = useState(true);
 
-  let isLoginPage = true; 
-  if (pathname === '/login' || pathname === '/forget-password' || pathname === '/reset-password') { 
-    isLoginPage = false; 
-  }
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
+
+  useEffect(() => {
+    if (pathname === '/login' || pathname === '/forget-password' || pathname === '/reset-password') {
+      setIsLoginPage(false);
+    } else {
+      setIsLoginPage(true);
+    }
+  }, [pathname]);
+
+  
   const [isOpen, setIsOpen] = useState(true);
     const OpenSideBar = () => {
         setIsOpen(!isOpen)
