@@ -26,7 +26,7 @@ const NavBar = () => {
     }
 
     const useWindowDimensions = () => {
-      const [windowSize, setWindowSize] = useState({ width: undefined, height: undefined });
+      const [windowSize, setWindowSize] = useState({ width: window.innerHeight, height: window.innerHeight });
   
       useEffect(() => {
         const handleResize = () => {
