@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Spinner from "@/components/spinner";
 
-const Login = () => {
+const ForgetPassword = () => {
     const loading = true;
     return (
         <>
@@ -17,9 +17,9 @@ const Login = () => {
                     </div>
                     <div className="grid justify-center items-center">
                         <form className="grid gap-10">
-                            <label htmlFor="email" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
+                            <label htmlFor="number" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
                                 Phone Number
-                                <input id="email" placeholder="Enter your phone number" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="number" required />
+                                <input id="number" placeholder="Enter your phone number" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="number" required />
                             </label>
                             
                             {
@@ -36,4 +36,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default ForgetPassword;
