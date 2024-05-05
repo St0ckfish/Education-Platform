@@ -10,7 +10,7 @@ const OTP = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
-    const handleInput = (index:any, e:any) => {
+    const handleInput = (index, e) => {
         const value = e.target.value;
         const newOtp = [...otp];
         newOtp[index] = value;
