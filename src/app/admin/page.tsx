@@ -3,11 +3,10 @@
 import Spinner from '@/components/spinner';
 import { useState } from 'react';
 import Link from "next/link";
-const Schools = () => {
-    const [lol, setLol] = useState(true);
-    return (
+const Admins = () => {
+    return ( 
         <>
-            <div className="relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+            <div className="lg:ml-[270px] mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
                     <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                         <div className="mb-3">
                             <label htmlFor="icon" className="sr-only">Search</label>
@@ -19,7 +18,7 @@ const Schools = () => {
                             </div>
                         </div>
                         <div className="flex justify-center">
-                            <Link href="/add-new-school" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new school</Link>
+                            <Link href="/add-new-admin" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new Admin</Link>
                         </div>
                     </div>
                 <div className="overflow-auto relative shadow-md sm:rounded-lg">
@@ -52,9 +51,7 @@ const Schools = () => {
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Actions
                                 </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Admin
-                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -80,22 +77,18 @@ const Schools = () => {
                                     25/05/2024
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    09/06/2024
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
                                     Deactivate
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <Link href="/admin" className="font-medium text-blue-600 hover:underline">View</Link>
+                                    <Link href="/edit-admin" className="font-medium text-blue-600 hover:underline">Edit</Link>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </>
     );
 }
-
-export default Schools;
+ 
+export default Admins;

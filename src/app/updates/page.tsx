@@ -1,13 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 "use client"
-import Spinner from '@/components/spinner';
-import { useState } from 'react';
 import Link from "next/link";
-const Schools = () => {
-    const [lol, setLol] = useState(true);
-    return (
+const Updates = () => {
+    return ( 
         <>
-            <div className="relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+            <div className="lg:ml-[270px] mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
                     <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                         <div className="mb-3">
                             <label htmlFor="icon" className="sr-only">Search</label>
@@ -17,9 +13,6 @@ const Schools = () => {
                                 </div>
                                 <input type="text" id="icon" name="icon" className="py-2  outline-none border-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Search" />
                             </div>
-                        </div>
-                        <div className="flex justify-center">
-                            <Link href="/add-new-school" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new school</Link>
                         </div>
                     </div>
                 <div className="overflow-auto relative shadow-md sm:rounded-lg">
@@ -40,21 +33,7 @@ const Schools = () => {
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     About
                                 </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Version
-                                </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Initial date
-                                </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Expiration date
-                                </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Actions
-                                </th>
-                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Admin
-                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -73,29 +52,14 @@ const Schools = () => {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     This is text
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    Demo
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    25/05/2024
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    09/06/2024
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    Deactivate
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Link href="/admin" className="font-medium text-blue-600 hover:underline">View</Link>
-                                </td>
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </>
     );
 }
-
-export default Schools;
+ 
+export default Updates;
