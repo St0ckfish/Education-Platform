@@ -69,29 +69,21 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="grid bg-white rounded-lg p-4 gap-6 max-[630px]:w-[630px]">
-                        <h1 className="font-bold text-[20px] font-sans text-[#041631]">Feedback</h1>
-                        <div className="grid grid-cols-5 items-center">
+                        <h1 className="font-bold text-[20px] font-sans text-[#041631]">Expired</h1>
+                        <p className="text-[#526484] font-sans text-[16px] whitespace-nowrap">About to expire</p>
+                        <div className="grid grid-cols-4 items-center">
                             <p className="text-[#041631] font-sans text-[18px] whitespace-nowrap font-semibold">School</p>
-                            <p className="text-[#041631] font-sans text-[18px] whitespace-nowrap font-semibold">Feedback</p>
-                            <span className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-[#1ee0ac] mr-1"></div>
-                                <p className="text-[#041631] font-sans text-[18px] font-semibold">Solved</p>
-                            </span>
-                            <span className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-[#f4bd0e] mr-1"></div>
-                                <p className="text-[#041631] font-sans text-[18px] font-semibold">Unsolved</p>
-                            </span>
-                            <span className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-[#09c2de] mr-1"></div>
-                                <p className="text-[#041631] font-sans text-[18px] font-semibold">Discussion</p>
-                            </span>
+                            <p className="text-[#041631] font-sans text-[18px] whitespace-nowrap font-semibold">Expiration Date</p>
+                            <p className="text-[#041631] font-sans text-[18px] font-semibold">Days</p>
+                            <p className="text-[#041631] font-sans text-[18px] font-semibold">Status</p>
                         </div>
-                        <div className="grid grid-cols-5 gap-9 max-[630px]:w-[630px]">
+                        <div className="grid grid-cols-4 max-[630px]:w-[630px]">
                             <p className="text-[#526484] font-sans text-[16px]">Nahda</p>
-                            <p className="text-[#526484] font-sans text-[16px] ml-8">10</p>
+                            <p className="text-[#526484] font-sans text-[16px] ml-8">09/06/2024</p>
                             <p className="text-[#526484] font-sans text-[16px] ml-5">6</p>
-                            <p className="text-[#526484] font-sans text-[16px]">3</p>
-                            <p className="text-[#526484] font-sans text-[16px]">1</p>
+                            <span className=" text-center text-[#ffffff] font-sans text-[16px] px-2 rounded-2xl bg-[#f4bd0e] w-[60px]">
+                                <p className="">Dimo</p>
+                            </span>
                         </div>
                     </div>
                 </div>
