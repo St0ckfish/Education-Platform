@@ -16,12 +16,16 @@ const OTP = () => {
         newOtp[index] = value;
         setOtp(newOtp);
 
-        if (value && index < inputRefs.length - 1) {
+        // Check if the value is empty and index is greater than 0
+        if (!value && index > 0) {
+            // If the current input is empty, focus on the previous input
+            inputRefs[index - 1].current.focus();
+        } else if (value && index < inputRefs.length - 1) {
+            // If the current input has a value and it's not the last input, focus on the next input
             inputRefs[index + 1].current.focus();
         }
     };
     console.log(otp);
-    
 
     return (
         <>
@@ -52,8 +56,9 @@ const OTP = () => {
                             </div>
                             {
                                 loading ? <Spinner /> :
-                                    <div className="flex justify-center text-center">
-                                        <button type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[140px] ease-in duration-300">Login</button>
+                                    <div className="grid gap-3 justify-center text-center">
+                                        <button type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[140px] ease-in duration-300">Verify</button>
+                                        <button type="submit" className="px-4 py-2 rounded-xl border-2 border-[#3E5AF0] hover:shadow-xl text-[#3E5AF0] font-bold text-[18px] w-[140px] ease-in duration-300">Send Again</button>
                                     </div>
                             }
                         </form>
