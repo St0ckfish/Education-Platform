@@ -1,5 +1,11 @@
 "use client"
+
+import { RootState } from "../GlobalRedux/store";
+import { useSelector, useDispatch } from "react-redux";
+
 const Dashboard = () => {
+
+    const dispatch = useDispatch();
     return ( 
         <>
             <div className="grid gap-8 mt-5 pr-8 max-[1024px]:pl-8">
@@ -15,6 +21,7 @@ const Dashboard = () => {
                             <svg className="h-5 w-5 text-emerald-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round">  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />  <polyline points="17 6 23 6 23 12" /></svg>
                             <p className="text-emerald-500">2</p>
                             <p className="text-[#526484] font-sans text-[16px] whitespace-nowrap"> vs. last month</p>
+                            
                         </span>
                     </div>
                     <div className="grid p-4 bg-white rounded-lg">
