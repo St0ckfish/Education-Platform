@@ -13,7 +13,7 @@ const [password, setPassword] = useState('');
 
 
 
-    const handleSubmit = (e:any) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(login({ email, password }));
     };
