@@ -19,7 +19,7 @@ const Schools = () => {
     
       const { data, error, isLoading } = useGetSchoolsQuery(token, {skip: !token});
 
-      console.log(data);
+    //   console.log(data);
 
 
     return (
