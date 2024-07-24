@@ -1,1 +1,1 @@
-export const baseUrl = "https://eduai.vitaparapharma.com";
+export const baseUrl = "https://eduai.vitaparapharma.com/api/v1";

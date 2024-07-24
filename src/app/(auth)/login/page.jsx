@@ -1,22 +1,31 @@
 "use client"
 /* eslint-disable @next/next/no-img-element */
 import Spinner from "@/components/spinner";
-import { useRef, useEffect,useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "./loginSlice";
+import { useState } from "react";
+import { useLoginMutation } from "@/app/api/apiSlice";
+import { useRouter } from "next/navigation";
+
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-    const dispatch = useDispatch();
-    const userLoading = useSelector((state) => state.userLoading);
+    const [password, setPassword] = useState('');
+    const [loginAuth, { isError , error , isLoading: userLoading , data , isSuccess }] = useLoginMutation()
 
-
+    const router = useRouter()
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(login({ email, password }));
+        loginAuth({"username":email , password})
     };
+
+    if(isSuccess){
+        console.log(data);
+        const token = data.data
+        localStorage.setItem("token" , token)
+        router.push("/")
+    }
+
 
     return (
         <>
@@ -43,7 +52,7 @@ const [password, setPassword] = useState('');
                                 <a href="/forget-password" className="flex text-[12px] text-[#526484] font-medium font-sans hover:underline ">Forgot password ?</a>
                             </div>
                             {
-                               userLoading? <Spinner/>:
+                                userLoading ? <Spinner /> :
                                     <div className="flex justify-center text-center">
                                         <button type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[140px] ease-in duration-300">Login</button>
                                     </div>
