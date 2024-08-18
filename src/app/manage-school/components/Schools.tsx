@@ -1,10 +1,27 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import Spinner from '@/components/spinner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from "next/link";
+import { useGetSchoolsQuery } from '@/app/api/apiSlice';
 const Schools = () => {
     const [lol, setLol] = useState(true);
+
+    const [token, setToken] = useState<string | null>(null);
+
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+          const storedToken = localStorage.getItem('token');
+          setToken(storedToken);
+        }
+      }, []);
+    
+      const { data, error, isLoading } = useGetSchoolsQuery(token, {skip: !token});
+
+    //   console.log(data);
+
+
     return (
         <>
             <div className="relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
@@ -20,7 +37,7 @@ const Schools = () => {
                     </div>
                     <div className="flex justify-center">
                         <Link href="/add-new-school" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new school</Link>
-                    </div>
+                    </div> 
                 </div>
                 <div className="overflow-auto relative shadow-md sm:rounded-lg">
                     <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-500 ">
