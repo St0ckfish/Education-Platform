@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLoginMutation } from "@/app/api/apiSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const [userName, setUserName] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
     useEffect(() => {
         if (isSuccess) {
             const token = data.data;
-            localStorage.setItem("token", token);
+            Cookies.set("token", token , { expires: 7 });
             toast.success(data?.message, {
                 position: "top-right",
                 autoClose: 5000,

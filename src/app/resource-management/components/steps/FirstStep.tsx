@@ -3,6 +3,7 @@ import React from 'react'
 import { Label, Select, Textarea, TextInput } from "flowbite-react";
 import style from "./style.module.css"
 import { useAddCourseMutation, useGetCountryQuery, useGetEduSystemQuery } from '../../api/createCourseSlice';
+import Cookies from "js-cookie"
 
 interface FirstStepProps {
   handleNext: () => void;
@@ -10,7 +11,7 @@ interface FirstStepProps {
 
 const FirstStep: React.FC<FirstStepProps> = ({ handleNext  }) => {
 
-  const token = localStorage.getItem("token")
+  const token = Cookies.get('token');
 
   const [addCourse] = useAddCourseMutation();
 
