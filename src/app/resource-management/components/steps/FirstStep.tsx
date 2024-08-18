@@ -17,7 +17,6 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNext  }) => {
 
   const {data : dataCountry  , isSuccess : successCountry} = useGetCountryQuery(token)
   const {data : dataEdu , isSuccess: successEduSystem  } = useGetEduSystemQuery(token)
-  
 
   const handleSend = async () => {
     try{
