@@ -1,31 +1,56 @@
 "use client"
 /* eslint-disable @next/next/no-img-element */
 import Spinner from "@/components/spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoginMutation } from "@/app/api/apiSlice";
 import { useRouter } from "next/navigation";
-
-
+import { toast } from "react-toastify";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [loginAuth, { isError , error , isLoading: userLoading , data , isSuccess }] = useLoginMutation()
+    const [loginAuth, { isError, error, isLoading: userLoading, data, isSuccess }] = useLoginMutation()
 
     const router = useRouter()
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        loginAuth({"username":email , password})
+        loginAuth({ "username": userName, password })
     };
 
-    if(isSuccess){
-        console.log(data);
-        const token = data.data
-        localStorage.setItem("token" , token)
-        router.push("/")
-    }
+    useEffect(() => {
+        if (isSuccess) {
+            const token = data.data;
+            localStorage.setItem("token", token);
+            toast.success(data?.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            router.push("/");
 
+        }
+    }, [isSuccess, data, router]);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(error?.data?.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }, [isError, error]);
 
     return (
         <>
@@ -40,9 +65,9 @@ const Login = () => {
                     </div>
                     <div className="grid justify-center items-center">
                         <form onSubmit={handleSubmit} className="grid gap-10">
-                            <label htmlFor="email" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
-                                Your Email
-                                <input id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Your Email" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="email" required />
+                            <label htmlFor="user" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
+                                Your username
+                                <input id="user" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Enter Your User Name" className="w-[450px] py-3 px-4 rounded-xl border border-zinc-300 outline-none max-[471px]:w-[350px]" type="text" required />
                             </label>
                             <label htmlFor="password" className="grid text-[#041631] text-start text-[18px] font-sans font-semibold">
                                 Your Password

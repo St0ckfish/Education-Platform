@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "./axios"
 
 export const apiSlice = createApi({
-    reducerPath: "api",
+    reducerPath: "login",
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl
     }),
@@ -14,19 +14,8 @@ export const apiSlice = createApi({
                 body: ReqBody
             })
         }),
-        
-        getSchools: builder.query({
-            query: (token) => ({
-                // i'm waiting for the real endpoint
-                url: "management/feedback/all",
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            })
-        })
     })
 })
 
 
-export const {useLoginMutation , useGetSchoolsQuery} = apiSlice
+export const {useLoginMutation , useGetSchoolsQuery } = apiSlice

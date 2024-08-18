@@ -1,14 +1,18 @@
-"use client"
+"use client";
 
 import { configureStore } from "@reduxjs/toolkit";
-import {apiSlice} from "../api/apiSlice"
+import { apiSlice } from "../api/apiSlice";
+import { courseSlice } from "../resource-management/api/createCourseSlice";
+import {feedbackSlice} from "../feedback/api/feedbackSlice"
 
 export const store = configureStore({
-    reducer:{
-        [apiSlice.reducerPath]:apiSlice.reducer
+    reducer: {
+        [apiSlice.reducerPath]: apiSlice.reducer,
+        [courseSlice.reducerPath]: courseSlice.reducer,
+        [feedbackSlice.reducerPath]: feedbackSlice.reducer
     },
-    middleware:(getDefualtMiddleware)=>getDefualtMiddleware().concat(apiSlice.middleware)
-    
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(apiSlice.middleware).concat(courseSlice.middleware).concat(feedbackSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

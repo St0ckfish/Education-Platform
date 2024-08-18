@@ -256,8 +256,8 @@ const NavBar = () => {
 
                       <li className="relative group">
 
-                        <Link  className={`flex ${!small ? 'w-full' : ''} open items-center gap-x-3.5 py-2 mt-4 px-2.5 font-bold text-md font-sans text-[#526484] group-hover:text-[#3e5af0] hover:bg-gray-100 rounded-lg`} href="/manage-school">
-                        <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="3" y1="21" x2="21" y2="21" />  <line x1="3" y1="10" x2="21" y2="10" />  <polyline points="5 6 12 3 19 6" />  <line x1="4" y1="10" x2="4" y2="21" />  <line x1="20" y1="10" x2="20" y2="21" />  <line x1="8" y1="14" x2="8" y2="17" />  <line x1="12" y1="14" x2="12" y2="17" />  <line x1="16" y1="14" x2="16" y2="17" /></svg>
+                        <Link className={`flex ${!small ? 'w-full' : ''} open items-center gap-x-3.5 py-2 mt-4 px-2.5 font-bold text-md font-sans text-[#526484] group-hover:text-[#3e5af0] hover:bg-gray-100 rounded-lg`} href="/manage-school">
+                          <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <line x1="3" y1="21" x2="21" y2="21" />  <line x1="3" y1="10" x2="21" y2="10" />  <polyline points="5 6 12 3 19 6" />  <line x1="4" y1="10" x2="4" y2="21" />  <line x1="20" y1="10" x2="20" y2="21" />  <line x1="8" y1="14" x2="8" y2="17" />  <line x1="12" y1="14" x2="12" y2="17" />  <line x1="16" y1="14" x2="16" y2="17" /></svg>
                           {
                             !small && (
                               <p>Manage School</p>
@@ -267,8 +267,8 @@ const NavBar = () => {
 
                       </li>
                       <li className="relative group">
-                        <Link  className={`flex ${!small ? 'w-full' : ''} items-center gap-x-3.5 py-2 px-2.5 mt-4 font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/backups">
-                        <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M7 18a4.6 4.4 0 0 1 0 -9h0a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1" />  <polyline points="9 15 12 12 15 15" />  <line x1="12" y1="12" x2="12" y2="21" /></svg>
+                        <Link className={`flex ${!small ? 'w-full' : ''} items-center gap-x-3.5 py-2 px-2.5 mt-4 font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/backups">
+                          <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <path d="M7 18a4.6 4.4 0 0 1 0 -9h0a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1" />  <polyline points="9 15 12 12 15 15" />  <line x1="12" y1="12" x2="12" y2="21" /></svg>
 
                           {
                             !small && (
@@ -283,8 +283,8 @@ const NavBar = () => {
                       </li>
 
                       <li className="relative group">
-                        <Link  className={`flex ${!small ? 'w-full' : ''} items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/updates" >
-                        <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <polyline points="12 4 4 8 12 12 20 8 12 4" />  <polyline points="4 12 12 16 20 12" />  <polyline points="4 16 12 20 20 16" /></svg>
+                        <Link className={`flex ${!small ? 'w-full' : ''} items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/updates" >
+                          <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <polyline points="12 4 4 8 12 12 20 8 12 4" />  <polyline points="4 12 12 16 20 12" />  <polyline points="4 16 12 20 20 16" /></svg>
 
                           {
                             !small && (
@@ -295,8 +295,8 @@ const NavBar = () => {
                         </Link>
                       </li>
                       <li className="relative group">
-                        <Link  className={`flex ${!small ? 'w-full' : ''}  items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`}  href="/feedback">
-                        <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]"  fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+                        <Link className={`flex ${!small ? 'w-full' : ''}  items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/feedback">
+                          <svg className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
 
                           {
                             !small && (
@@ -306,7 +306,30 @@ const NavBar = () => {
                           }
 
                         </Link>
-                        
+
+                      </li>
+                      <li className="relative group">
+                        <Link className={`flex ${!small ? 'w-full' : ''}  items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/resource-management">
+
+                          <svg
+                            className="h-6 w-6 text-[#526484] group-hover:text-[#3e5af0] transition-colors duration-200"
+                            viewBox="0 0 16 21"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M8.528 0.118046C8.68767 0.0326087 8.86754 -0.00786694 9.04842 0.000939111C9.22929 0.00974516 9.40439 0.0675023 9.555 0.168046L15.109 3.87105C15.383 4.05363 15.6077 4.30104 15.7631 4.59132C15.9186 4.8816 15.9999 5.20577 16 5.53505V16C16 16.1811 15.9509 16.3587 15.8579 16.5141C15.7648 16.6694 15.6314 16.7965 15.4718 16.8819C15.3121 16.9673 15.1323 17.0078 14.9515 16.999C14.7707 16.9902 14.5956 16.9325 14.445 16.832L12 15.202V18C12 18.1811 11.9509 18.3587 11.8579 18.5141C11.7648 18.6694 11.6314 18.7965 11.4718 18.8819C11.3121 18.9673 11.1323 19.0078 10.9515 18.999C10.7707 18.9902 10.5956 18.9325 10.445 18.832L8 17.202V20C8.00003 20.1811 7.95091 20.3587 7.85787 20.5141C7.76484 20.6694 7.6314 20.7965 7.47177 20.8819C7.31214 20.9673 7.13231 21.0078 6.95148 20.999C6.77065 20.9902 6.5956 20.9325 6.445 20.832L0.891 17.13C0.616842 16.9474 0.392055 16.6998 0.236615 16.4093C0.0811753 16.1189 -0.000104084 15.7945 1.00032e-07 15.465V5.00005C-2.69949e-05 4.819 0.0490951 4.64135 0.142126 4.48604C0.235156 4.33072 0.368605 4.20358 0.528235 4.11817C0.687865 4.03276 0.867687 3.99229 1.04852 4.00107C1.22935 4.00986 1.4044 4.06757 1.555 4.16805L4 5.79805V3.00005C3.99997 2.819 4.04909 2.64135 4.14213 2.48604C4.23516 2.33072 4.3686 2.20358 4.52823 2.11817C4.68786 2.03276 4.86769 1.99229 5.04852 2.00107C5.22935 2.00986 5.4044 2.06757 5.555 2.16805L8 3.79805V1.00005C7.99993 0.819005 8.049 0.641341 8.14199 0.486007C8.23498 0.330673 8.36839 0.203497 8.528 0.118046ZM10 5.13105L11.11 5.87105C11.3838 6.05374 11.6083 6.30121 11.7636 6.59148C11.9188 6.88175 12 7.20586 12 7.53505V12.798L14 14.132V5.53505L10 2.87005V5.13105ZM6 7.13104L7.11 7.87105C7.38383 8.05374 7.60834 8.30121 7.76359 8.59148C7.91884 8.88175 8.00005 9.20586 8 9.53505V14.798L10 16.131V7.53505L6 4.87005V7.13104ZM2 6.87005V15.466L6 18.132V9.53605L2 6.87005Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          {
+                            !small && (
+                              <p className="text-nowrap">Resource Management</p>
+                            )
+                          }
+                        </Link>
                       </li>
                     </ul>
                   </nav>
