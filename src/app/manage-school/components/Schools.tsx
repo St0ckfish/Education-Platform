@@ -5,21 +5,20 @@ import { useEffect, useState } from 'react';
 import Link from "next/link";
 import { useGetSchoolsQuery } from '@/app/api/apiSlice';
 const Schools = () => {
-    const [lol, setLol] = useState(true);
+    // const [lol, setLol] = useState(true);
 
-    const [token, setToken] = useState<string | null>(null);
+    // const [token, setToken] = useState<string | null>(null);
 
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-          const storedToken = localStorage.getItem('token');
-          setToken(storedToken);
-        }
-      }, []);
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //       const storedToken = localStorage.getItem('token');
+    //       setToken(storedToken);
+    //     }
+    //   }, []);
     
-      const { data, error, isLoading } = useGetSchoolsQuery(token, {skip: !token});
+    //   const { data, error, isLoading } = useGetSchoolsQuery(token, {skip: !token});
 
-    //   console.log(data);
+
 
 
     return (
