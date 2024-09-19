@@ -1,8 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useReducer } from "react";
+import usaLogo from "../../public/images/usa.png"
+import arabicFlag from "../../public/images/arabicFlag.png"
+import frenchLogo from "../../public/images/Flag-France.webp"
+import { Dropdown } from "flowbite-react";
+import Cookies from "js-cookie"
+import { StaticImageData } from 'next/image';
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const [pathname, setPathname] = useState('');
@@ -10,41 +18,49 @@ const NavBar = () => {
   const [small, setSmall] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState(false);
+  const languageFromCookies = Cookies.get('lang') || "";
+  const [lang, setLang] = useState(languageFromCookies && languageFromCookies !== "" ? languageFromCookies : "english")
+  const [langFlag, setLangFlag] = useState<StaticImageData | undefined>(undefined);
+
+  const router = useRouter()
+
+
+  useEffect(() => {
+    setLang(languageFromCookies)
+  }, [])
+
+  useEffect(() => {
+    if (lang === "english") {
+      setLangFlag(usaLogo)
+    } else if (lang === "arabic") {
+      setLangFlag(arabicFlag)
+    } else {
+      setLangFlag(frenchLogo)
+    }
+    Cookies.set("lang", lang)
+    router.refresh()
+  }, [lang , router])
+
+
   const toggleProfile = () => {
     setProfile(!profile)
   }
   const [isOpen2, setIsOpen2] = useState(false);
-  const toggleNavbar2 = () => {
-    setIsOpen2(!isOpen2)
-  }
+
   const [isOpen3, setIsOpen3] = useState(false);
-  const toggleNavbar3 = () => {
-    setIsOpen3(!isOpen3)
-  }
+
   const [isOpen4, setIsOpen4] = useState(false);
-  const toggleNavbar4 = () => {
-    setIsOpen4(!isOpen4)
-  }
+
   const [isOpen5, setIsOpen5] = useState(false);
-  const toggleNavbar5 = () => {
-    setIsOpen5(!isOpen5)
-  }
+
   const [isOpen6, setIsOpen6] = useState(false);
-  const toggleNavbar6 = () => {
-    setIsOpen6(!isOpen6)
-  }
+
   const [isOpen7, setIsOpen7] = useState(false);
-  const toggleNavbar7 = () => {
-    setIsOpen7(!isOpen7)
-  }
+
   const [isOpen8, setIsOpen8] = useState(false);
-  const toggleNavbar8 = () => {
-    setIsOpen8(!isOpen8)
-  }
+
   const [isOpen9, setIsOpen9] = useState(false);
-  const toggleNavbar9 = () => {
-    setIsOpen9(!isOpen9)
-  }
+
   const toggleNavbarSmall = () => {
     setSmall(!small)
     if (!small == true) {
@@ -74,6 +90,7 @@ const NavBar = () => {
       setIsLoginPage(true);
     }
   }, [pathname]);
+
 
   const OpenSideBar = () => {
     setIsOpen(!isOpen)
@@ -117,7 +134,7 @@ const NavBar = () => {
           <div>
 
 
-            <header className="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 sm:py-4 lg:ps-64">
+            <header className="sticky card top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-[48] w-full bg-white border-b dark:border-b-[#171C23] text-sm py-2.5 sm:py-4 lg:ps-64">
               <nav className="flex basis-full items-center w-full mx-auto px-4 sm:px-6" aria-label="Global">
                 <div className="me-5 lg:me-0 lg:hidden">
                   <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="../templates/admin/index.html" aria-label="Preline">
@@ -138,10 +155,28 @@ const NavBar = () => {
                       <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
                         <svg className="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                       </div>
-                      <input type="text" id="icon" name="icon" className="py-2 outline-none border-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Search" />
+                      <input type="text" id="icon" name="icon" className="py-2 dark:bg-[#0D0D0D] dark:border-gray-800  outline-none border-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Search" />
                     </div>
                   </div>
                   <div className="flex flex-row items-center justify-end gap-2">
+
+                    <Dropdown
+
+                      label={
+                        langFlag && (
+                          <Image src={langFlag} width={24} height={24} alt="langIcon" />
+                        )
+                      }
+                      size="sm"
+                      className="p-1 langDropDown shadow-none flex items-center"
+                      inline={true}
+                      arrowIcon={false}
+                    >
+                      <Dropdown.Item onClick={() => setLang("english")}><Image src={usaLogo} width={20} height={20} alt="langIcon" /><span className="ms-2 font-semibold">English</span></Dropdown.Item>
+                      <Dropdown.Item onClick={() => setLang("arabic")}><Image src={arabicFlag} width={20} height={20} alt="langIcon" /><span className="ms-2 font-semibold">Arabic</span></Dropdown.Item>
+                      <Dropdown.Item onClick={() => setLang("french")}><Image src={frenchLogo} width={20} height={20} alt="langIcon" /><span className="ms-2 font-semibold">French</span></Dropdown.Item>
+                    </Dropdown>
+
                     <button type="button" className="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none">
                       <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
                     </button>
@@ -193,7 +228,7 @@ const NavBar = () => {
                   </li>
                 </ol>
 
-                <button onClick={OpenSideBar} type="button" className="py-2 px-3 flex justify-center items-center gap-x-1.5 text-xs rounded-lg border border-gray-200 text-gray-500 hover:text-gray-600" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Sidebar">
+                <button onClick={OpenSideBar} type="button" className="py-2 px-3 flex justify-center items-center gap-x-1.5 text-xs rounded-lg   text-gray-500 hover:text-gray-600" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Sidebar">
                   <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8L21 12L17 16M3 12H13M3 6H13M3 18H13" /></svg>
                   <span className="sr-only">Sidebar</span>
                 </button>
@@ -203,7 +238,7 @@ const NavBar = () => {
               (
                 isOpen &&
 
-                <div id="application-sidebar" className={`hs-overlay [--auto-close:lg]  hs-overlay-open:translate-x-0 transition-all duration-300 transform ${small ? 'w-[90px]' : 'w-[260px]'} lg:drop-shadow-none drop-shadow-2xl ${!isOpen ? 'w-0 ' : ''} fixed ease-in duration-300 inset-y-0 start-0 z-[60] bg-white border-e border-gray-200 lg:block  lg:translate-x-0 lg:end-auto lg:bottom-0 `}>
+                <div id="application-sidebar" className={`hs-overlay [--auto-close:lg]  hs-overlay-open:translate-x-0 transition-all duration-300 transform ${small ? 'w-[90px]' : 'w-[260px]'} lg:drop-shadow-none drop-shadow-2xl ${!isOpen ? 'w-0 ' : ''} fixed ease-in duration-300 inset-y-0 start-0 z-[60] bg-white border-e dark:border-[#171C23] lg:block card  lg:translate-x-0 lg:end-auto lg:bottom-0 `}>
 
                   <div className="px-8 pt-4 ">
                     {
@@ -228,7 +263,7 @@ const NavBar = () => {
                     }
                   </div>
 
-                  <nav className={`hs-accordion-group p-6 w-full flex flex-col flex-wrap ${!isOpen ? 'hidden ' : ''} `} data-hs-accordion-always-open>
+                  <nav className={`hs-accordion-group py-6 px-2 w-full flex flex-col flex-wrap ${!isOpen ? 'hidden ' : ''} `} data-hs-accordion-always-open>
                     <ul className="space-y-1.5 ">
                       <div className={`flex ${small ? 'w-[40px]' : ''} justify-center`}>
                         {
@@ -261,6 +296,22 @@ const NavBar = () => {
                           {
                             !small && (
                               <p>Manage School</p>
+                            )
+                          }
+                        </Link>
+
+                      </li>
+                      <li className="relative group">
+
+                        <Link className={`flex ${!small ? 'w-full' : ''} open items-center gap-x-3.5 py-2 mt-4 px-2.5 font-bold text-md font-sans text-[#526484] group-hover:text-[#3e5af0] hover:bg-gray-100 rounded-lg`} href="/education-system">
+                          <svg stroke="currentColor" className="h-6 w-6 font-bold font-sans text-[#526484] group-hover:text-[#3e5af0]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <g clipPath="url(#clip0_8345_44606)">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M11.063 2.46913C11.309 2.27238 11.6108 2.15809 11.9254 2.14247C12.2401 2.12685 12.5517 2.2107 12.816 2.38213L12.937 2.46913L17.249 5.91913C17.4594 6.08728 17.6336 6.29618 17.7613 6.53332C17.889 6.77045 17.9675 7.03093 17.992 7.29913L18 7.48013V10.0001H20C20.5046 9.99997 20.9906 10.1905 21.3605 10.5336C21.7305 10.8767 21.9572 11.347 21.995 11.8501L22 12.0001V19.9001C22.0001 20.1712 21.9002 20.4328 21.7193 20.6346C21.5385 20.8365 21.2894 20.9646 21.02 20.9941L20.9 21.0001H3.1C2.82894 21.0003 2.56738 20.9003 2.36548 20.7195C2.16358 20.5386 2.03557 20.2896 2.006 20.0201L2 19.9001V12.0001C1.99984 11.4956 2.19041 11.0096 2.5335 10.6396C2.87659 10.2696 3.34684 10.043 3.85 10.0051L4 10.0001H6V7.48013C5.99998 7.21081 6.05436 6.94427 6.15987 6.69648C6.26537 6.44869 6.41984 6.22476 6.614 6.03813L6.751 5.91813L11.063 2.46913ZM12 4.28013L8 7.48013V19.0001H16V7.48013L12 4.28013ZM20 12.0001H18V19.0001H20V12.0001ZM6 12.0001H4V19.0001H6V12.0001ZM12 8.00013C12.394 8.00013 12.7841 8.07772 13.1481 8.22849C13.512 8.37925 13.8427 8.60023 14.1213 8.87881C14.3999 9.15738 14.6209 9.4881 14.7716 9.85208C14.9224 10.2161 15 10.6062 15 11.0001C15 11.3941 14.9224 11.7842 14.7716 12.1482C14.6209 12.5122 14.3999 12.8429 14.1213 13.1214C13.8427 13.4 13.512 13.621 13.1481 13.7718C12.7841 13.9225 12.394 14.0001 12 14.0001C11.2044 14.0001 10.4413 13.6841 9.87868 13.1214C9.31607 12.5588 9 11.7958 9 11.0001C9 10.2045 9.31607 9.44142 9.87868 8.87881C10.4413 8.3162 11.2044 8.00013 12 8.00013ZM12 10.0001C11.7348 10.0001 11.4804 10.1055 11.2929 10.293C11.1054 10.4806 11 10.7349 11 11.0001C11 11.2653 11.1054 11.5197 11.2929 11.7072C11.4804 11.8948 11.7348 12.0001 12 12.0001C12.2652 12.0001 12.5196 11.8948 12.7071 11.7072C12.8946 11.5197 13 11.2653 13 11.0001C13 10.7349 12.8946 10.4806 12.7071 10.293C12.5196 10.1055 12.2652 10.0001 12 10.0001Z" fill="#09244B" />
+                            </g>
+                          </svg>
+                          {
+                            !small && (
+                              <p>Education System</p>
                             )
                           }
                         </Link>
@@ -327,6 +378,26 @@ const NavBar = () => {
                           {
                             !small && (
                               <p className="text-nowrap">Resource Management</p>
+                            )
+                          }
+                        </Link>
+                      </li>
+                      <li className="relative group">
+                        <Link className={`flex ${!small ? 'w-full' : ''}  items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/curriculum-management">
+
+                          <svg className="text-[#526484] group-hover:text-[#3e5af0]" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clipPath="url(#clip0_2819_1715)">
+                              <path d="M19 2C19.5304 2 20.0391 2.21071 20.4142 2.58579C20.7893 2.96086 21 3.46957 21 4V16C21 16.5304 20.7893 17.0391 20.4142 17.4142C20.0391 17.7893 19.5304 18 19 18H17V20C17 20.5304 16.7893 21.0391 16.4142 21.4142C16.0391 21.7893 15.5304 22 15 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V8C3 7.46957 3.21071 6.96086 3.58579 6.58579C3.96086 6.21071 4.46957 6 5 6H7V4C7 3.46957 7.21071 2.96086 7.58579 2.58579C7.96086 2.21071 8.46957 2 9 2H19ZM10 15H8C7.74512 15.0003 7.49997 15.0979 7.31463 15.2728C7.1293 15.4478 7.01777 15.687 7.00283 15.9414C6.98789 16.1958 7.07067 16.4464 7.23426 16.6418C7.39786 16.8373 7.6299 16.9629 7.883 16.993L8 17H10C10.2549 16.9997 10.5 16.9021 10.6854 16.7272C10.8707 16.5522 10.9822 16.313 10.9972 16.0586C11.0121 15.8042 10.9293 15.5536 10.7657 15.3582C10.6021 15.1627 10.3701 15.0371 10.117 15.007L10 15ZM19 4H9V6H15C15.5304 6 16.0391 6.21071 16.4142 6.58579C16.7893 6.96086 17 7.46957 17 8V16H19V4ZM12 11H8C7.73478 11 7.48043 11.1054 7.29289 11.2929C7.10536 11.4804 7 11.7348 7 12C7 12.2652 7.10536 12.5196 7.29289 12.7071C7.48043 12.8946 7.73478 13 8 13H12C12.2652 13 12.5196 12.8946 12.7071 12.7071C12.8946 12.5196 13 12.2652 13 12C13 11.7348 12.8946 11.4804 12.7071 11.2929C12.5196 11.1054 12.2652 11 12 11Z" fill="currentColor" />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_2819_1715">
+                                <rect width="24" height="24" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          {
+                            !small && (
+                              <p className="text-nowrap">Curriculum Management</p>
                             )
                           }
                         </Link>
