@@ -2,16 +2,15 @@
 /* eslint-disable @next/next/no-img-element */
 import Spinner from "@/components/spinner";
 import { useEffect, useState } from "react";
-import { useLoginMutation } from "@/app/api/apiSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Cookies from 'js-cookie';
+import { useLoginMutation } from "./api/loginSlice";
 
 const Login = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [loginAuth, { isError, error, isLoading: userLoading, data, isSuccess }] = useLoginMutation()
-
     const router = useRouter()
 
     const handleSubmit = (e) => {
@@ -22,34 +21,39 @@ const Login = () => {
     useEffect(() => {
         if (isSuccess) {
             const token = data.data;
-            Cookies.set("token", token , { expires: 7 });
-            toast.success(data?.message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            router.push("/");
+            Cookies.set("token", token, { expires: 7 });
+            window.location = "/"
 
         }
     }, [isSuccess, data, router]);
 
+
     useEffect(() => {
         if (isError) {
-            toast.error(error?.data?.message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            if (error?.data?.message) {
+                toast.error(error.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            } else {
+                toast.error("something went wrong please try again later", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+
         }
     }, [isError, error]);
 

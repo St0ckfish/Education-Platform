@@ -6,6 +6,7 @@ import NavBar from "./../components/navBar";
 import { Providers } from "./GlobalRedux/provider";
 import Notification from "../components/Notifications"
 import 'react-toastify/dist/ReactToastify.css'
+import ThemeMode from "../components/ThemeMode"
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,20 +23,21 @@ interface RootLayoutProps {
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
 
   return (
-    <html lang="en">
+    <html suppressHydrationWarning={true} lang="en">
       <head>
         <title>Education Platform</title>
         <meta name="description" content="Education Platform" />
         <link rel="icon" type="image/x-icon" href="/images/Login.png" />
       </head>
-      <body>
+      <body >
 
         <Providers>
-          <NavBar />
-          <Notification/>
-          {children}
+          <ThemeMode >
+            <NavBar />
+            <Notification />
+            {children}
+          </ThemeMode>
         </Providers>
-
       </body>
     </html>
   );

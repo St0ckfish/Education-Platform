@@ -1,11 +1,33 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 /* eslint-disable @next/next/no-img-element */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Spinner from "@/components/spinner";
+import Cookies from 'js-cookie';
+import { useSelectEmailMutation } from './api/selectEmailSlice';
 
 const OTP = () => {
-    const loading = false;
+
+    const otpCookiesEmail = Cookies.get("emailOpt")
+    const otpCookiesUser = Cookies.get("userOpt")
+    const [selectEmail, { data, error, isLoading, isSuccess }] = useSelectEmailMutation()
+
+    useEffect(() => {
+        const sendEmail = async () => {
+            selectEmail({ userid: otpCookiesUser, email: otpCookiesEmail }).unwrap();
+        }
+        sendEmail()
+    }, [])
+
+    useEffect(() => {
+        if (isSuccess) {
+            Cookies.remove("emailOpt")
+            Cookies.remove("userOpt")
+        }
+
+    }, [isSuccess])
+
+
 
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
@@ -55,7 +77,7 @@ const OTP = () => {
                                 ))}
                             </div>
                             {
-                                loading ? <Spinner /> :
+                                isLoading ? <Spinner /> :
                                     <div className="grid gap-3 justify-center text-center">
                                         <button type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[140px] ease-in duration-300">Verify</button>
                                         <button type="submit" className="px-4 py-2 rounded-xl border-2 border-[#3E5AF0] hover:shadow-xl text-[#3E5AF0] font-bold text-[18px] w-[140px] ease-in duration-300">Send Again</button>
