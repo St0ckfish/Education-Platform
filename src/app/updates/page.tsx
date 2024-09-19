@@ -3,11 +3,13 @@
 const Updates = () => {
 
 
-   
 
-    return ( 
+
+    return (
         <>
             <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+                <h1 className="font-bold text-[28px] mb-3 font-sans text-[#041631] dark:text-white">Updates</h1>
+
                 <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                     <div className="my-3">
                         <label htmlFor="icon" className="sr-only">Search</label>
@@ -23,7 +25,7 @@ const Updates = () => {
                     <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-500 ">
                         <thead className="text-xs text-gray-700 uppercase bg-[#daeafb] dark:bg-[#06203C] dark:text-white">
                             <tr>
-                           
+
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Name School
                                 </th>

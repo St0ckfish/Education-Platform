@@ -1,15 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import Spinner from '@/components/spinner';
 import { useState } from 'react';
 import Link from "next/link";
 import { useParams } from 'next/navigation';
+import { useGetAllAdminsQuery } from '../api/adminApis';
+import Cookies from "js-cookie"
+
 const Admins = () => {
 
 
+    const token = Cookies.get('token') || "";
     const params = useParams()
 
-    console.log(params);
+    const {data , originalArgs} = useGetAllAdminsQuery({token , id: params.id})
+
+
+    console.log(data);
 
     const [search, setSearch] = useState("")
 

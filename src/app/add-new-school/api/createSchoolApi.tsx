@@ -55,7 +55,7 @@ export const createSchoolSlice = createApi({
         }),
         getEducations: builder.query({
             query: (token: string) => ({
-                url: "management/school/education-systems",
+                url: "management/school/education-systems?size=100",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -64,7 +64,7 @@ export const createSchoolSlice = createApi({
         }),
         getRegion: builder.query({
             query: (token: string) => ({
-                url: "management/region/all",
+                url: "management/region/all?size=100",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`

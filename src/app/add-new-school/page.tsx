@@ -174,8 +174,11 @@ const AddNewSchool = () => {
 
     return (
         <>
-            <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-16">
+            <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-10">
+
                 <form>
+                    <h1 className="font-bold text-[28px] mb-4 font-sans text-[#041631] dark:text-white">Add New School</h1>
+
                     <div className="grid p-10 bg-white card rounded-xl items-center justify-center xl:w-[1000px] lg:w-[750px]  gap-5 md:w-[600px] sm:w-[500px]">
                         <div className="flex items-center justify-start gap-2">
                             <svg className="h-6 w-6 font-bold text-[#526484] group-hover:text-[#3e5af0]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <line x1="3" y1="21" x2="21" y2="21" />  <line x1="3" y1="10" x2="21" y2="10" />  <polyline points="5 6 12 3 19 6" />  <line x1="4" y1="10" x2="4" y2="21" />  <line x1="20" y1="10" x2="20" y2="21" />  <line x1="8" y1="14" x2="8" y2="17" />  <line x1="12" y1="14" x2="12" y2="17" />  <line x1="16" y1="14" x2="16" y2="17" /></svg>
@@ -200,12 +203,12 @@ const AddNewSchool = () => {
                             </label>
                             <div>
                                 <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="curriculum">curriculum <span className='text-[#367AFF] text-xl'>*</span></label>
-                                <Select  value={curriculum} onChange={(e) => setCurriculum(e.target.value)} className={`${style.selectForm} `} id='curriculum'>
+                                <Select value={curriculum} onChange={(e) => setCurriculum(e.target.value)} className={`${style.selectForm} `} id='curriculum'>
                                     {successCurriculum && (
                                         <>
                                             <option className='hidden'>Select curriculum</option>
                                             {Object.values(dataCurriculum.data).map((value: any) => (
-                                                <option  key={value} value={value}>
+                                                <option key={value} value={value}>
                                                     {value}
                                                 </option>
                                             ))}

@@ -18,6 +18,7 @@ const ManageSchool = () => {
     return (
         <>
             <div className="lg:ml-[270px] mr-[5px]">
+                
                 {
                     empty || isError ?
                     <EmptySchools/>

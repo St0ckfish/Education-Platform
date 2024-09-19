@@ -21,8 +21,8 @@ export const schoolsApis = createApi({
             providesTags: ["schools"]
         }),
         getSchoolById: builder.query({
-            query: ({ token, page, search }: { token: string, page: number, search: string }) => ({
-                url: `management/school/all?page=${page}&size=10${search !== "" ? `&search=${search}` : ""}`,
+            query: ({ token, id }: { token: string, id: any }) => ({
+                url: `management/school/${id}`,
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -31,18 +31,19 @@ export const schoolsApis = createApi({
             }),
             providesTags: ["schools"]
         }),
-        deleteSchool: builder.mutation({
-            query: ({ token, id }: { token: string, id: number }) => ({
-                url: `management/course/${id}`,
-                method: "DELETE",
+        updateSchool: builder.mutation({
+            query: ({ token, id , body }: { token: string, id: any  , body: any}) => ({
+                url: `management/school/${id}`,
+                method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`
-                }
+                },
+                body: body
             }),
             invalidatesTags: ["schools"]
-
-        })
+        }),
+       
     })
 })
 
-export const { useGetAllSchoolsQuery, useGetSchoolByIdQuery, useDeleteSchoolMutation } = schoolsApis
+export const { useGetAllSchoolsQuery, useGetSchoolByIdQuery , useUpdateSchoolMutation } = schoolsApis

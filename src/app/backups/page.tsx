@@ -7,10 +7,10 @@ import { useState } from "react";
 const BackUp = () => {
 
     const token = Cookies.get('token') || "";
-    const [currentPage ,setCurrentPage] = useState(0)
-    const [search , setSearch] = useState("")
+    const [currentPage, setCurrentPage] = useState(0)
+    const [search, setSearch] = useState("")
 
-    const { data, isLoading } = useGetAllBackupsQuery({ token , page:currentPage , search })
+    const { data, isLoading } = useGetAllBackupsQuery({ token, page: currentPage, search })
 
 
     const handlePageClick = (selectedPage: any) => {
@@ -20,6 +20,8 @@ const BackUp = () => {
     return (
         <>
             <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+                <h1 className="font-bold text-[28px] mb-3 font-sans text-[#041631] dark:text-white">Backups</h1>
+
                 <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                     <div className="my-3">
                         <label htmlFor="icon" className="sr-only">Search</label>
@@ -35,7 +37,6 @@ const BackUp = () => {
                     <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-500 ">
                         <thead className="text-xs text-gray-700 uppercase bg-[#daeafb] dark:bg-[#06203C] dark:text-white">
                             <tr>
-                                
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Name
                                 </th>
@@ -53,7 +54,7 @@ const BackUp = () => {
                         <tbody>
                             {data?.data?.content?.map((item: any) => (
                                 <tr key={item.id} className="bg-white border-b card hover:bg-gray-50">
-                                  
+
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
                                         {item.name}
                                     </th>

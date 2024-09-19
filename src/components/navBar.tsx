@@ -227,7 +227,7 @@ const NavBar = () => {
 
                       {
                         profile && (
-                          <div className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 fixed  right-[40px] top-[80px] min-w-60 bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-with-header">
+                          <div className="hs-dropdown-menu transition-[opacity,margin] hs-dropdown-open:opacity-100 fixed  right-[40px] top-[80px] min-w-60 bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-with-header">
                             <div className="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg">
                               <p className="text-sm text-gray-500">Signed in as</p>
                               <p className="text-sm font-medium text-gray-800">mostapha@site.com</p>
@@ -299,7 +299,7 @@ const NavBar = () => {
                     }
                   </div>
 
-                  <nav className={`hs-accordion-group py-6 px-2 w-full flex flex-col flex-wrap ${!isOpen ? 'hidden ' : ''} `} data-hs-accordion-always-open>
+                  <nav className={`hs-accordion-group  py-6 px-2 w-full flex flex-col flex-wrap ${!isOpen ? 'hidden ' : ''} `} data-hs-accordion-always-open>
                     <ul className="space-y-1.5 ">
                       <div className={`flex ${small ? 'w-[40px]' : ''} justify-center`}>
                         {
@@ -399,7 +399,7 @@ const NavBar = () => {
                         <Link className={`flex ${!small ? 'w-full' : ''}  items-center gap-x-3.5 py-2 mt-4 px-2.5  font-bold text-md font-sans text-[#526484] group rounded-lg hover:bg-gray-100 hover:text-[#3e5af0]`} href="/resource-management">
 
                           <svg
-                            className="h-6 w-6 text-[#526484] group-hover:text-[#3e5af0] transition-colors duration-200"
+                            className="h-6 w-6 text-[#526484] group-hover:text-[#3e5af0] transition-colors duration-300"
                             viewBox="0 0 16 21"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
