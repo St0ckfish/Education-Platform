@@ -32,7 +32,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       <body >
 
         <Providers>
-          <ThemeMode>
+          <ThemeMode >
             <NavBar />
             <Notification />
             {children}

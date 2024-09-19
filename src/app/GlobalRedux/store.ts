@@ -12,9 +12,11 @@ import { createSchoolSlice } from "../add-new-school/api/createSchoolApi";
 import { dashboardSlice } from "../Dashboard/api/dashboardApi";
 import { systemsApis } from "../education-system/api/manageSystems";
 import { addNewAdminApi } from "../manage-school/admin/api/addNewAdminApi";
+import ThemeSlice from "./ThemeSlice";
 
 export const store = configureStore({
     reducer: {
+        theme: ThemeSlice,
         [loginSlice.reducerPath]: loginSlice.reducer,
         [courseSlice.reducerPath]: courseSlice.reducer,
         [feedbackSlice.reducerPath]: feedbackSlice.reducer,

@@ -43,8 +43,8 @@ const EditAdmin = () => {
     const { data: adminDetails, isSuccess: adminDetailsSuccess } = useGetAdminQuery({ token, id: params.id })
     const [updateAdmin, { data , isSuccess }] = useUpdateAdminMutation()
 
-    console.log(adminDetails);
-    console.log(data);
+    // console.log(adminDetails);
+    // console.log(data);
 
     useEffect(() => {
         if (adminDetailsSuccess && adminDetails) {

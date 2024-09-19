@@ -7,10 +7,12 @@ import { useEffect, useState, useReducer } from "react";
 import usaLogo from "../../public/images/usa.png"
 import arabicFlag from "../../public/images/arabicFlag.png"
 import frenchLogo from "../../public/images/Flag-France.webp"
-import { Dropdown } from "flowbite-react";
+import { Dropdown, ToggleSwitch } from "flowbite-react";
 import Cookies from "js-cookie"
 import { StaticImageData } from 'next/image';
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setThemeRedux } from "@/app/GlobalRedux/ThemeSlice";
 
 const NavBar = () => {
   const [pathname, setPathname] = useState('');
@@ -39,7 +41,7 @@ const NavBar = () => {
     }
     Cookies.set("lang", lang)
     router.refresh()
-  }, [lang , router])
+  }, [lang, router])
 
 
   const toggleProfile = () => {
@@ -122,9 +124,40 @@ const NavBar = () => {
 
   useEffect(() => {
     if (width !== undefined && width >= 1023) {
-      setIsOpen(true); // Always set to true for large screens
+      setIsOpen(true);
     }
   }, [width]);
+
+  const [dark, setDark] = useState(false);
+
+  const handleDark = () => {
+    if (dark) {
+      setDark(false)
+      Cookies.set("mode", "light")
+      dispatch(setThemeRedux(false))
+    } else {
+      setDark(true)
+      Cookies.set("mode", "dark")
+      dispatch(setThemeRedux(true))
+    }
+    router.refresh()
+  }
+  const reduxTheme = useSelector((state: any) => state.theme.theme);
+
+  const mode = Cookies.get("mode")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if(mode === "light"){
+      setDark(false)
+      dispatch(setThemeRedux(false))
+    }else{
+      setDark(true)
+      dispatch(setThemeRedux(true))
+    }
+  },[])
+
+
   return (
     <>
 
@@ -159,6 +192,9 @@ const NavBar = () => {
                     </div>
                   </div>
                   <div className="flex flex-row items-center justify-end gap-2">
+
+                    <ToggleSwitch className="me-2" checked={dark} onChange={handleDark} />
+
 
                     <Dropdown
 

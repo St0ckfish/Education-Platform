@@ -12,10 +12,10 @@ body {
   display: grid;
 }
 
-[data-theme="dark"] body {
+[class="dark"] body {
   background-color: #141414;
 }
-[data-theme="dark"] body .card {
+[class="dark"] body .card {
   background-color: #0D0D0D;
   color: white ;
 }
