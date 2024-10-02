@@ -1,11 +1,9 @@
-"use client"
-import { ThemeProvider } from 'next-themes'
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+"use client";
+import { ThemeProvider } from 'next-themes';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-function ThemeMode({ children }: { children: any }) {
-
+function ThemeMode({ children }: { children: React.ReactNode }) {
     const reduxTheme = useSelector((state: any) => state.theme.theme);
 
     useEffect(() => {
@@ -14,19 +12,15 @@ function ThemeMode({ children }: { children: any }) {
             document.documentElement.style.colorScheme = 'dark';
         } else {
             document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light'; 
+            document.documentElement.style.colorScheme = 'light';
         }
     }, [reduxTheme]);
 
-    if (!reduxTheme) {
-        return <>{children}</>
-    }
-
     return (
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme={reduxTheme ? "dark" : "light"}>
             {children}
         </ThemeProvider>
-    )
+    );
 }
 
-export default ThemeMode
+export default ThemeMode;

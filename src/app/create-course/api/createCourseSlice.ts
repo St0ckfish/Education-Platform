@@ -10,7 +10,7 @@ export const courseSlice = createApi({
     endpoints: (builder) => ({
         getCountry: builder.query({
             query: (token: string) => ({
-                url: "management/country/all?page=0&size=10",
+                url: "management/country/all?page=0&size=100",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -19,7 +19,7 @@ export const courseSlice = createApi({
         }),
         getEduSystem: builder.query({
             query: (token: string) => ({
-                url: "management/education-system/all?size=10&page=0",
+                url: "management/education-system/all?size=100&page=0",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`

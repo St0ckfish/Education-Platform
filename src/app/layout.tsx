@@ -29,7 +29,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <meta name="description" content="Education Platform" />
         <link rel="icon" type="image/x-icon" href="/images/Login.png" />
       </head>
-      <body >
+      <body className="duration-300 transition-all" >
 
         <Providers>
           <ThemeMode >

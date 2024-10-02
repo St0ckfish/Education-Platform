@@ -1,10 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import Spinner from '@/components/spinner';
 import Link from 'next/link';
-import { useState } from 'react';
 const EmptySchools = () => {
-    const [lol,setLol] = useState(true);
     return ( 
         <>
             <div className='grid justify-center items-center text-center gap-5'>
@@ -12,7 +9,7 @@ const EmptySchools = () => {
                     <img className='w-[350px]' src="/images/Empty.png" alt="#" />
                 </div>
                 <div>
-                    <h1 className='font-bold text-[20px] font-sans text-[#041631]'>There is no newly added school</h1>
+                    <h1 className='font-bold text-[20px] font-sans text-[#041631] dark:text-white'>There is no newly added school</h1>
                     <p className="text-[#526484] font-sans text-[15px] font-semibold">You can add a new school by clicking on this button</p>
                 </div>
                 <div className='mt-3'>

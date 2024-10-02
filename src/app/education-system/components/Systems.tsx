@@ -24,7 +24,6 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
 
     const token = Cookies.get('token') || "";
 
-
     const [openModal, setOpenModal] = useState(false);
     const [selectedEduId, setSelectedEduId] = useState<number | null>(null);
 
@@ -61,6 +60,8 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                     </div>
                 ) : (
                     <div className="relative md:px-2 mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+                        <h1 className="font-bold text-[28px] mb-3 font-sans text-[#041631] dark:text-white">Education System</h1>
+
                         <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                             <div className="my-3">
                                 <label htmlFor="icon" className="sr-only">Search</label>
@@ -96,7 +97,7 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                                 <tbody>
                                     {data?.data?.content.map((item: any, index: number) => (
                                         <tr key={index} className="bg-white card border-b  hover:bg-gray-50">
-                                           
+
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
                                                 {item.name}
                                             </th>
@@ -132,7 +133,7 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                             nextLabel=" >"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
-                            pageCount={data?.data?.totalPagesCount}
+                            pageCount={data?.data?.totalPages}
                             previousLabel="< "
                             renderOnZeroPageCount={null}
                             containerClassName="pagination"

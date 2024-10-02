@@ -11,8 +11,12 @@ import { schoolsApis } from "../manage-school/api/manageSchool";
 import { createSchoolSlice } from "../add-new-school/api/createSchoolApi";
 import { dashboardSlice } from "../Dashboard/api/dashboardApi";
 import { systemsApis } from "../education-system/api/manageSystems";
-import { addNewAdminApi } from "../manage-school/admin/api/addNewAdminApi";
+import { adminAPi } from "../manage-school/admin/api/adminApis";
 import ThemeSlice from "./ThemeSlice";
+import { editAdminApi } from "../manage-school/admin/edit-admin/[id]/api/EditAdminApi";
+import { SchoolPlanApi } from "../manage-school/plan-school/api/PlanSchool";
+import { SchoolPlansApi } from "../school-plans/api/SchoolPlans";
+import { curriculumApis } from "../curriculum-management/api/curriculumApi";
 
 export const store = configureStore({
     reducer: {
@@ -28,7 +32,11 @@ export const store = configureStore({
         [createSchoolSlice.reducerPath]: createSchoolSlice.reducer,
         [dashboardSlice.reducerPath]: dashboardSlice.reducer,
         [systemsApis.reducerPath]:systemsApis.reducer,
-        [addNewAdminApi.reducerPath]: addNewAdminApi.reducer
+        [adminAPi.reducerPath]: adminAPi.reducer,
+        [editAdminApi.reducerPath]: editAdminApi.reducer,
+        [SchoolPlanApi.reducerPath]: SchoolPlanApi.reducer,
+        [SchoolPlansApi.reducerPath]: SchoolPlansApi.reducer,
+        [curriculumApis.reducerPath]: curriculumApis.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().
@@ -43,7 +51,11 @@ export const store = configureStore({
             concat(createSchoolSlice.middleware).
             concat(dashboardSlice.middleware).
             concat(systemsApis.middleware).
-            concat(addNewAdminApi.middleware)
+            concat(adminAPi.middleware).
+            concat(editAdminApi.middleware).
+            concat(SchoolPlanApi.middleware).
+            concat(SchoolPlansApi.middleware).
+            concat(curriculumApis.middleware)
     ,
 });
 

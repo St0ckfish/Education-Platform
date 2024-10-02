@@ -8,7 +8,8 @@ import { useParams, useRouter } from "next/navigation";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "react-toastify";
 import Spinner from "@/components/spinner";
-import { useGetAdminQuery, useGetEmployeeTypeQuery, useGetGanderQuery, useGetNationalityQuery, useGetQualificationQuery, useGetRegionsQuery, useGetReligionQuery, useUpdateAdminMutation } from "../../api/addNewAdminApi";
+import { useGetEmployeeTypeQuery, useGetGanderQuery, useGetNationalityQuery, useGetQualificationQuery, useGetRegionsQuery, useGetReligionQuery } from "../../api/adminApis";
+import { useEmployeeStatusQuery, useGetAdminQuery, useUpdateAdminMutation } from "./api/EditAdminApi";
 
 const EditAdmin = () => {
 
@@ -33,6 +34,7 @@ const EditAdmin = () => {
     const [name_ar, setName_ar] = useState("");
     const [name_fr, setName_fr] = useState("");
     const [about, setAbout] = useState("");
+    const [employeeStatus, setEmployeeStatus] = useState("");
 
     const { data: ganderData, isSuccess: successGander } = useGetGanderQuery(token)
     const { data: religionData, isSuccess: successReligion } = useGetReligionQuery(token)
@@ -41,10 +43,12 @@ const EditAdmin = () => {
     const { data: qualificationData, isSuccess: successQualification } = useGetQualificationQuery(token)
     const { data: regionData, isSuccess: successRegion } = useGetRegionsQuery(token)
     const { data: adminDetails, isSuccess: adminDetailsSuccess } = useGetAdminQuery({ token, id: params.id })
-    const [updateAdmin, { data , isSuccess }] = useUpdateAdminMutation()
+    const { data: dataEmployeeStatus, isSuccess: successEmployeeStatus } = useEmployeeStatusQuery(token)
+    const [updateAdmin, { data, isSuccess, isLoading , isError , error  , originalArgs}] = useUpdateAdminMutation()
 
     // console.log(adminDetails);
-    // console.log(data);
+
+    console.log(originalArgs);
 
     useEffect(() => {
         if (adminDetailsSuccess && adminDetails) {
@@ -84,6 +88,7 @@ const EditAdmin = () => {
             name_ar,
             name_fr,
             about,
+            // employeeStatus,
             schoolId: params.id
         }
         if (
@@ -100,8 +105,9 @@ const EditAdmin = () => {
             && number
             && name_en
             && name_ar
-            && name_fr &&
-            about
+            && name_fr
+            && about
+            // && employeeStatus
         ) {
             updateAdmin({ token, id: params.id, body: obj }).unwrap()
         }
@@ -117,10 +123,57 @@ const EditAdmin = () => {
                 theme: "light",
             });
         }
-
     }
 
-    console.log(employeeType);
+
+    useEffect(() => {
+        if (isError) {
+            if (error && 'data' in error && (error as FetchBaseQueryError).data) {
+                const errorData = (error as FetchBaseQueryError).data as any;
+                if (errorData?.message) {
+                    toast.error(errorData.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
+            } else {
+                toast.error("Something went wrong, please try again later", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        }
+    }, [isError, error]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Admin Updated successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            router.push(`/manage-school/admin/${params.id}`)
+        }
+    }, [isSuccess, router, params.id])
+
+
     return (
         <>
             {adminDetailsSuccess && (
@@ -208,6 +261,19 @@ const EditAdmin = () => {
                                     </Select>
                                 </div>
                                 <div className='xl:mt-3'>
+                                    <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="EmployeeStatus">employee Status <span className='text-[#367AFF] text-xl'>*</span></label>
+                                    <Select value={employeeStatus} onChange={(e) => setEmployeeStatus(e.target.value)} className={`${style.selectForm}`} id='EmployeeStatus' required>
+                                        {successEmployeeStatus && (
+                                            <>
+                                                <option className='hidden'>Select Employee Status</option>
+                                                {Object.keys(dataEmployeeStatus.data).map((key: any) => (
+                                                    <option key={key} value={key}>{dataEmployeeStatus.data[key]}</option>
+                                                ))}
+                                            </>
+                                        )}
+                                    </Select>
+                                </div>
+                                <div className='xl:mt-3'>
                                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="qualification">qualification <span className='text-[#367AFF] text-xl'>*</span></label>
                                     <Select value={qualification} onChange={(e) => setQualification(e.target.value)} className={`${style.selectForm}`} id='qualification'>
                                         {successQualification && (
@@ -282,11 +348,11 @@ const EditAdmin = () => {
                                     <Textarea className="min-h-40" value={about} onChange={(e) => setAbout(e.target.value)} id="about" placeholder="about" required />
                                 </div>
                             </div>
-                            {isSuccess ? (
+                            {isLoading ? (
                                 <Spinner />
                             ) : (
                                 <div className="flex justify-center text-center">
-                                    <button onClick={(e) => handleSend(e)} type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white  text-[18px] w-[140px] ease-in duration-300">Add  Admin</button>
+                                    <button onClick={(e) => handleSend(e)} type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white  text-[18px] w-[160px] ease-in duration-300">Update Admin</button>
                                 </div>
                             )
                             }

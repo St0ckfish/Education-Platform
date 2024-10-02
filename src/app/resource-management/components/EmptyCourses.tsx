@@ -10,7 +10,7 @@ const EmptyCourses = () => {
                     <img className='w-[350px]' src="/images/Empty.png" alt="#" />
                 </div>
                 <div>
-                    <h1 className='font-bold text-[20px] font-sans text-[#041631]'>There is no newly added courses</h1>
+                    <h1 className='font-bold text-[20px] font-sans text-[#041631] dark:text-white'>There is no newly added courses</h1>
                     <p className="text-[#526484] font-sans text-[15px] font-semibold">You can add a new courses by clicking on this button</p>
                 </div>
                 <div className='mt-3'>

@@ -18,6 +18,8 @@ body {
 [class="dark"] body .card {
   background-color: #0D0D0D;
   color: white ;
+  transition: 300ms;
+  
 }
 
 .pagination {

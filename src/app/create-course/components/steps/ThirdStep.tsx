@@ -3,7 +3,9 @@ import { FileInput, Label, TextInput } from "flowbite-react";
 import { useAddLessonMutation } from '../../api/createCourseSlice';
 import Cookies from "js-cookie"
 import { useGetLeassonQuery } from '@/app/resource-management/api/getCoursesSlice';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 interface ThirdStepProps {
     handleNext: () => void;
@@ -12,13 +14,10 @@ interface ThirdStepProps {
 }
 
 const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handlePrev }) => {
-
+    const router = useRouter()
 
     const token = Cookies.get('token') || "";
-
     const params = useParams()
-
-
     const [visibleIndex, setVisibleIndex] = useState(0);
     const [lessonNameEn, setLessonNameEn] = useState("")
     const [lessonNameAr, setLessonNameAr] = useState("")
@@ -28,10 +27,9 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
     const [lessonGoalsFr, setLessonGoalsFr] = useState("")
 
 
-    const { data: dataLeasson, } = useGetLeassonQuery({ token, id: params.id })
+    const { data: dataLeasson, error: err } = useGetLeassonQuery({ token, id: params.id })
 
-    // console.log(dataLeasson);
-
+ 
     const [tutorials, setTutorials] = useState<File[]>([] as File[]);
 
     const [allTopics, setAllTopics] = useState([
@@ -39,9 +37,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
     ]);
 
 
-    const [addLesson, { data, originalArgs  , error}] = useAddLessonMutation()
-    console.log(data);
-    console.log(error);
+    const [addLesson, { data, error, isError, isSuccess }] = useAddLessonMutation()
+
 
     const handleSend = async () => {
         const reqObject = {
@@ -124,6 +121,55 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
             setAllTopics(dataLeasson?.data?.topics)
         }
     }, [dataLeasson])
+
+
+
+    useEffect(() => {
+        if (isError) {
+            if (error && 'data' in error && (error as FetchBaseQueryError).data) {
+                const errorData = (error as FetchBaseQueryError).data as any;
+                if (errorData?.message) {
+                    toast.error(errorData.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
+            } else {
+                toast.error("Something went wrong, please try again later", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        }
+    }, [isError, error]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Course created successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            router.push("/resource-management")
+        }
+    }, [isSuccess, router])
 
 
     return (

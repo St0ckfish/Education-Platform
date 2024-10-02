@@ -26,7 +26,7 @@ function Page() {
 
     const token = Cookies.get('token') || "";
 
-    const [addCourse, { data}] = useAddCourseMutation();
+    const [addCourse, { data , originalArgs , error}] = useAddCourseMutation();
 
     const handleNext = () => {
         setActiveStep((cur) => cur + 1)
@@ -52,8 +52,11 @@ function Page() {
             "description_fr": description_fr,
             "prerequisiteIds": prerequisites
         }
+        console.log(objectReq);
         addCourse({ token, data: objectReq }).unwrap()
     }
+
+  
 
     const steps = [
         {

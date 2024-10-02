@@ -2,11 +2,12 @@ import { baseUrl } from "@/app/api/axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
-export const addNewAdminApi = createApi({
-    reducerPath: "addNewAdminApi",
+export const adminAPi = createApi({
+    reducerPath: "adminAPi",
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl
     }),
+    tagTypes: ["admin"],
     endpoints: (builder) => ({
         getGander: builder.query({
             query: (token: string) => ({
@@ -70,28 +71,19 @@ export const addNewAdminApi = createApi({
                     "Authorization": `Bearer ${token}`
                 },
                 body: body
-            })
+            }),
+            invalidatesTags: ["admin"]
         }),
-        getAdmin: builder.query({
+        getAllAdmins: builder.query({
             query: ({ token, id }) => ({
-                url: `management/school-admin/update/${id}`,
+                url: `management/school-admin/all?schoolId=${id}`,
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-            })
+            }),
+             providesTags: ["admin"]
         }),
-        updateAdmin: builder.mutation({
-            query: ({ token, id, body }) => ({
-                url: `management/school-admin/${id}`,
-                method: "PUT",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                },
-                token, body
-            })
-        }),
-
     })
 })
 
@@ -104,7 +96,6 @@ export const {
     useGetQualificationQuery,
     useGetRegionsQuery,
     useAddAdminMutation,
-    useGetAdminQuery,
-    useUpdateAdminMutation
+    useGetAllAdminsQuery
 
-} = addNewAdminApi
+} = adminAPi
