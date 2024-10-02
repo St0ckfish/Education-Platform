@@ -13,9 +13,7 @@ function Page() {
     const [activeStep, setActiveStep] = useState(0);
     const params = useParams()
     const token = Cookies.get('token') || "";
-
-    const {data } = useGetCourseByIdQuery({token , id:params.id})
-
+    const {data} = useGetCourseByIdQuery({token , id:params.id})
     const [code, setCode] = useState("")
     const [countryId, setCountryId] = useState("")
     const [level, setLevel] = useState("")
@@ -29,10 +27,12 @@ function Page() {
     const [description_ar, setDescription_ar] = useState("")
     const [description_fr, setDescription_fr] = useState("")
     const [prerequisites, setPrerequisites] = useState<string[]>([""]);
+    console.log(data);
 
     useEffect(() => {
         if(data){
             setLevel(data.data.level)
+            setCode(data.data.code)
             setCountryId(data?.data.countryId)
             setRegistrationType(data.data.registrationType)
             setLanguage(data.data.language)
@@ -47,15 +47,14 @@ function Page() {
     },[data])
 
     const [addCourse, { data : dataAdded}] = useAddCourseMutation();
-
+    console.log(dataAdded);
     const handleNext = () => {
         setActiveStep((cur) => cur + 1)
-
     }
+
     const handlePrev = () => {
         setActiveStep((cur) => cur - 1)
     }
-
     const handleSend = async () => {
         const objectReq = {
             "code": code,
@@ -130,11 +129,9 @@ function Page() {
         }
     ];
 
-
-
     return (
         <div className="lg:ml-[280px] mr-[5px] relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
-            <h1 className="font-bold text-[28px] font-sans text-[#041631]">Create Course</h1>
+            <h1 className="font-bold text-[28px] font-sans text-[#041631] dark:text-white">Update Course</h1>
             <div className='grid md:grid-cols-3 gap-8 mt-16'>
                 <div className='md:col-span-2'>
                     <div className=' h-full '>

@@ -1,13 +1,12 @@
 import { baseUrl } from "@/app/api/axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
 export const backupsApis = createApi({
     reducerPath: "backupsApi",
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl
     }),
-    tagTypes: ['backups'],
+    tagTypes: ['Backups'],
     endpoints: (builder) => ({
         getAllBackups: builder.query({
             query: ({ token, page, search }: { token: string, page: number, search: string }) => ({
@@ -16,22 +15,50 @@ export const backupsApis = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-
             }),
-            providesTags: ["backups"]
+            providesTags: ['Backups'],
+        }),
+        getBackup: builder.query({
+            query: ({ token, id }: { token: string, id: any }) => ({
+                url: `management/backup/${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+            }),
+            providesTags: ['Backups'],
+        }),
+        addBackup: builder.mutation({
+            query: ({ token, name }: { token: string, name: string }) => ({
+                url: `management/backup?${name}`,
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+            }),
+            invalidatesTags: ['Backups'],
         }),
         deleteBackup: builder.mutation({
             query: ({ token, id }: { token: string, id: number }) => ({
-                url: `management/course/${id}`,
+                url: `management/backup/${id}`,
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             }),
-            invalidatesTags: ["backups"]
-
-        })
-    })
+            invalidatesTags: ['Backups'],
+        }),
+        restoreBackup: builder.mutation({
+            query: ({ token, id }: { token: string, id: any }) => ({
+                url: `management/backup/${id}/restore`,
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }),
+            invalidatesTags: ['Backups'],
+        }),
+    }),
 })
 
-export const { useGetAllBackupsQuery, useDeleteBackupMutation } = backupsApis
+export const { useGetAllBackupsQuery, useGetBackupQuery, useAddBackupMutation, useDeleteBackupMutation , useRestoreBackupMutation } = backupsApis

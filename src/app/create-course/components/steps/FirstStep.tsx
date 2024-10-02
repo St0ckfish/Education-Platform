@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Label, Select, Textarea, TextInput } from "flowbite-react";
 import style from "./style.module.css"
 import { useGetCountryQuery, useGetEduSystemQuery, useGetLanguageQuery, useGetRegistrationTypeQuery, useGetStudyLevelQuery } from '../../api/createCourseSlice';
@@ -68,9 +68,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
   const { data: dataLang, isSuccess: successLanguage } = useGetLanguageQuery(token)
   const { data: dataRegistrationType, isSuccess: successRegistrationType } = useGetRegistrationTypeQuery(token)
   const { data: dataStudyLevel, isSuccess: successStudyLevel } = useGetStudyLevelQuery(token)
-
   const lang = Cookies.get("lang") || "english"
-
   return (
     <form className='bg-white card p-3 shadow-md shadow-[#00000040] rounded-md' onSubmit={(e) => {
       e.preventDefault()
@@ -110,9 +108,9 @@ const FirstStep: React.FC<FirstStepProps> = ({
             {successLanguage && (
               <>
                 <option className='hidden'>Select Language</option>
-                {Object.values(dataLang.data).map((value: any) => (
-                  <option key={value} value={value}>
-                    {value}
+                {Object.keys(dataLang.data).map((key: any) => (
+                  <option key={key} value={key}>
+                    {dataLang.data[key]}
                   </option>
                 ))}
               </>
@@ -125,9 +123,9 @@ const FirstStep: React.FC<FirstStepProps> = ({
             {successRegistrationType && (
               <>
                 <option className='hidden'>Select registration type</option>
-                {Object.values(dataRegistrationType.data).map((value: any) => (
-                  <option key={value} value={value}>
-                    {value}
+                {Object.keys(dataRegistrationType.data).map((key: any) => (
+                  <option key={key} value={key}>
+                    {dataRegistrationType.data[key]}
                   </option>
                 ))}
               </>
@@ -151,7 +149,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="code">Code <span className='text-[#367AFF] text-xl'>*</span></label>
-          <TextInput value={code} onChange={(e) => setCode(e.target.value)} id="code" type="number" placeholder="Enter code" required />
+          <TextInput value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" placeholder="Enter code" required />
         </div>
       </div>
       <h3 className='font-semibold my-5 md:text-xl	text-[#526484]'>Category</h3>

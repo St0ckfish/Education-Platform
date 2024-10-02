@@ -14,7 +14,9 @@ import { systemsApis } from "../education-system/api/manageSystems";
 import { adminAPi } from "../manage-school/admin/api/adminApis";
 import ThemeSlice from "./ThemeSlice";
 import { editAdminApi } from "../manage-school/admin/edit-admin/[id]/api/EditAdminApi";
-import { addNewAdminApi } from "../manage-school/admin/add-new-admin/[id]/api/AddNewAdminApi";
+import { SchoolPlanApi } from "../manage-school/plan-school/api/PlanSchool";
+import { SchoolPlansApi } from "../school-plans/api/SchoolPlans";
+import { curriculumApis } from "../curriculum-management/api/curriculumApi";
 
 export const store = configureStore({
     reducer: {
@@ -32,7 +34,9 @@ export const store = configureStore({
         [systemsApis.reducerPath]:systemsApis.reducer,
         [adminAPi.reducerPath]: adminAPi.reducer,
         [editAdminApi.reducerPath]: editAdminApi.reducer,
-        [addNewAdminApi.reducerPath] : addNewAdminApi.reducer
+        [SchoolPlanApi.reducerPath]: SchoolPlanApi.reducer,
+        [SchoolPlansApi.reducerPath]: SchoolPlansApi.reducer,
+        [curriculumApis.reducerPath]: curriculumApis.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().
@@ -49,7 +53,9 @@ export const store = configureStore({
             concat(systemsApis.middleware).
             concat(adminAPi.middleware).
             concat(editAdminApi.middleware).
-            concat(addNewAdminApi.middleware)
+            concat(SchoolPlanApi.middleware).
+            concat(SchoolPlansApi.middleware).
+            concat(curriculumApis.middleware)
     ,
 });
 

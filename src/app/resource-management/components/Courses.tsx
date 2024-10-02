@@ -51,6 +51,7 @@ const Courses: React.FC<CoursesProps> = ({ search, setSearch, isLoading, data, s
             setOpenModal(false)
         }
     }
+
     return (
         <>
             {isLoading ? (

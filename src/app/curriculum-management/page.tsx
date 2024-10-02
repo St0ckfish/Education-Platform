@@ -14,19 +14,19 @@ const CurriculumManagement = () => {
     {
       href: "/curriculum-management/curriculum-planning",
       imgSrc: "/images/planning.png",
-      title: "Planning",
+      title: "Curriculum Planning",
       description: "Plan the structure and content of courses offered.",
     },
     {
       href: "/curriculum-management/curriculum-mapping",
       imgSrc: "/images/mapping.png",
-      title: "Mapping",
+      title: "Curriculum Mapping",
       description: "Map the curriculum to standards and learning objectives.",
     },
     {
       href: "/curriculum-management/syllabus-management",
       imgSrc: "/images/management.png",
-      title: "Syllabus",
+      title: "Syllabus Management",
       description:
         "Manage detailed outlines of course content and requirements.",
     },
@@ -34,7 +34,7 @@ const CurriculumManagement = () => {
   return (
     <>
       <div
-        className={`flex items-center gap-1 ${booleanValue ? "lg:ml-[100px]" : "lg:ml-[290px]"} ml-7 mt-12 flex-wrap`}
+        className={`flex  items-center gap-1 ${booleanValue ? "lg:ml-[100px]" : "lg:ml-[290px]"} ml-7 mt-12 flex-wrap`}
       >
         <Link
           className="text-[18px] font-semibold text-[#526484] hover:text-blue-400 hover:underline"

@@ -1,8 +1,21 @@
+"use client"
+
+import { useGetCurriculumPlanningQuery } from "../api/curriculumApi";
+import Cookies from "js-cookie"
+
 const CurriculumPlanning = () => {
+  const token = Cookies.get('token') || "";
+
+  const {data , error} = useGetCurriculumPlanningQuery(token)
+
+  console.log(error);
+  console.log(data);
+
+
   return (
     <>
       <div className="mt-12 lg:ml-[290px]">
-        <div className="flex w-full justify-between px-8 text-center max-[502px]:grid max-[502px]:justify-center">
+        <div className="flex w-full justify-between px-5 text-center max-[502px]:grid max-[502px]:justify-center">
           <div className="mb-3">
             <label htmlFor="icon" className="sr-only">
               Search
@@ -29,7 +42,7 @@ const CurriculumPlanning = () => {
                 type="text"
                 id="icon"
                 name="icon"
-                className="block w-full rounded-lg border-2 border-gray-200 px-4 py-2 ps-11 text-sm outline-none focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
+                className="block w-full rounded-lg border-2 dark:bg-[#0D0D0D] dark:border-gray-800  border-gray-200 px-4 py-2 ps-11 text-sm outline-none focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
                 placeholder="Search"
               />
             </div>
@@ -41,84 +54,74 @@ const CurriculumPlanning = () => {
           </div>
         </div>
         <div className="flex h-full w-full items-center justify-center overflow-hidden p-5">
-          <div className="grid h-full w-full rounded-xl bg-white">
-            <div className="flex h-[60px] w-full items-center justify-evenly rounded-t-xl bg-[#DCEBFB] p-2 pl-8">
+          <div className="grid h-full w-full rounded-xl bg-white card">
+            <div className="flex h-[60px] w-full items-center justify-evenly rounded-t-xl bg-[#DCEBFB] dark:bg-[#06203C] p-2 pl-8">
               <div className="w-full text-start">
-                <p className="font-semibold">Course Title:</p>
+                <p className="font-semibold">Subject Title::</p>
               </div>
               <div className="w-full text-center">
-                <p className="font-semibold">Course Number:</p>
+                <p className="font-semibold">Subject Number:</p>
               </div>
             </div>
             <div className="pl-8">
-              <p className="font-semibold">Course Description:</p>
+              <p className="font-semibold">Subject Description:</p>
             </div>
             <div className="overflow-auto">
               <div className="relative overflow-auto">
-                <table className="w-full overflow-x-auto text-left text-sm text-gray-500 rtl:text-right">
+                <table className="w-full overflow-x-auto text-left bg-white card  text-sm text-gray-500 rtl:text-right">
                   <thead>
-                    <tr className="bg-white font-semibold text-black hover:bg-gray-50">
+                    <tr className=" font-semibold text-black ">
                       <th
                         scope="row"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4 font-medium text-gray-900"
+                        className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4 font-medium text-gray-900"
                       ></th>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4">
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 dark:text-white px-6 py-4">
                         Educational Delivery Methodologies
                       </td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4">
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 dark:text-white px-6 py-4">
                         Evidence Of Mastery
                       </td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4">
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 dark:text-white px-6 py-4">
                         Comments
                       </td>
                     </tr>
                   </thead>
 
-                  <tbody className="bg-[#ebeef2] text-xs uppercase text-gray-700">
+                  <tbody className="bg-[#ebeef2] card text-xs uppercase text-gray-700">
                     <tr>
                       <th
                         scope="col"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-3"
+                        className="whitespace-nowrap border-2 dark:border-gray-800 border-[#dcebfb] px-6 py-3"
                       >
                         Standard :
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-3"
+                        className="whitespace-nowrap border-2 dark:border-gray-800 border-[#dcebfb] px-6 py-3"
                       ></th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-3"
+                        className="whitespace-nowrap border-2 dark:border-gray-800 border-[#dcebfb] px-6 py-3"
                       ></th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-3"
+                        className="whitespace-nowrap border-2 dark:border-gray-800 border-[#dcebfb] px-6 py-3"
                       ></th>
                     </tr>
                   </tbody>
                   <tbody>
-                    <tr className="bg-white hover:bg-gray-50">
+                    <tr className="bg-white card hover:bg-gray-50">
                       <th
                         scope="row"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4 font-medium text-gray-900"
+                        className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4 font-medium text-gray-900 dark:text-white"
                       >
                         Cluster 1 :
                       </th>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4"></td>
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4"></td>
+                      <td className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4"></td>
                     </tr>
-                    <tr className="bg-white hover:bg-gray-50">
-                      <th
-                        scope="row"
-                        className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4 font-medium text-gray-900"
-                      >
-                        Cluster 2 :
-                      </th>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
-                      <td className="whitespace-nowrap border-2 border-[#dcebfb] px-6 py-4"></td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </div>

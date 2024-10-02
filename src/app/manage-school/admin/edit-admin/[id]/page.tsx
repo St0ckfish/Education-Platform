@@ -44,9 +44,11 @@ const EditAdmin = () => {
     const { data: regionData, isSuccess: successRegion } = useGetRegionsQuery(token)
     const { data: adminDetails, isSuccess: adminDetailsSuccess } = useGetAdminQuery({ token, id: params.id })
     const { data: dataEmployeeStatus, isSuccess: successEmployeeStatus } = useEmployeeStatusQuery(token)
-    const [updateAdmin, { data, isSuccess, isLoading , isError , error }] = useUpdateAdminMutation()
+    const [updateAdmin, { data, isSuccess, isLoading , isError , error  , originalArgs}] = useUpdateAdminMutation()
 
     // console.log(adminDetails);
+
+    console.log(originalArgs);
 
     useEffect(() => {
         if (adminDetailsSuccess && adminDetails) {
@@ -86,7 +88,7 @@ const EditAdmin = () => {
             name_ar,
             name_fr,
             about,
-            employeeStatus,
+            // employeeStatus,
             schoolId: params.id
         }
         if (
@@ -105,7 +107,7 @@ const EditAdmin = () => {
             && name_ar
             && name_fr
             && about
-            && employeeStatus
+            // && employeeStatus
         ) {
             updateAdmin({ token, id: params.id, body: obj }).unwrap()
         }

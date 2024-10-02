@@ -216,19 +216,19 @@ const EditSchool = () => {
                             <div className="grid grid-cols-2 gap-4 max-[1278px]:grid-cols-1">
                                 <label htmlFor="name" className="grid text-[18px] font-sans font-semibold">
                                     Name School
-                                    <input value={name} onChange={(e) => setName(e.target.value)} id="name" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                    <input value={name} onChange={(e) => setName(e.target.value)} id="name" type="text" className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
                                 </label>
                                 <label htmlFor="code" className="grid text-[18px] font-sans font-semibold">
                                     Code
-                                    <input value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                    <input value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
                                 </label>
                                 <label htmlFor="about" className="grid text-[18px] font-sans font-semibold">
                                     About
-                                    <input value={about} onChange={(e) => setAbout(e.target.value)} id="about" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                    <input value={about} onChange={(e) => setAbout(e.target.value)} id="about" type="text" className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
                                 </label>
                                 <label htmlFor="theme" className="grid text-[18px] font-sans font-semibold">
                                     theme
-                                    <input value={theme} onChange={(e) => setTheme(e.target.value)} id="theme" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                    <input value={theme} onChange={(e) => setTheme(e.target.value)} id="theme" type="text" className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
                                 </label>
                                 <div>
                                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="curriculum">curriculum <span className='text-[#367AFF] text-xl'>*</span></label>

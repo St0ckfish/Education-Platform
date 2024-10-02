@@ -7,6 +7,7 @@ export const adminAPi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl
     }),
+    tagTypes: ["admin"],
     endpoints: (builder) => ({
         getGander: builder.query({
             query: (token: string) => ({
@@ -62,6 +63,17 @@ export const adminAPi = createApi({
                 }
             })
         }),
+        addAdmin: builder.mutation({
+            query: ({ token, body }) => ({
+                url: "management/school-admin",
+                method: "Post",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: body
+            }),
+            invalidatesTags: ["admin"]
+        }),
         getAllAdmins: builder.query({
             query: ({ token, id }) => ({
                 url: `management/school-admin/all?schoolId=${id}`,
@@ -69,7 +81,8 @@ export const adminAPi = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-            })
+            }),
+             providesTags: ["admin"]
         }),
     })
 })
@@ -82,6 +95,7 @@ export const {
     useGetEmployeeTypeQuery,
     useGetQualificationQuery,
     useGetRegionsQuery,
+    useAddAdminMutation,
     useGetAllAdminsQuery
 
 } = adminAPi

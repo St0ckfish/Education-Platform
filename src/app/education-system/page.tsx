@@ -14,6 +14,7 @@ const ManageSchool = () => {
     const { data , isError , isLoading } = useGetAllEducationSystemQuery({ token, page:currentPage, search })
 
     const empty = data?.data?.emptyPage 
+    
 
     return (
         <>

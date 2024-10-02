@@ -33,7 +33,7 @@ export const editAdminApi = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-                token, body
+                body
             })
         }),
     })

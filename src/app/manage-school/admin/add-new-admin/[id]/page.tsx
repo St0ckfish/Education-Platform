@@ -2,14 +2,13 @@
 
 import { Label, Select, Textarea, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useGetEmployeeTypeQuery, useGetGanderQuery, useGetNationalityQuery, useGetQualificationQuery, useGetRegionsQuery, useGetReligionQuery } from "../../api/adminApis";
+import { useAddAdminMutation, useGetEmployeeTypeQuery, useGetGanderQuery, useGetNationalityQuery, useGetQualificationQuery, useGetRegionsQuery, useGetReligionQuery } from "../../api/adminApis";
 import Cookies from "js-cookie"
 import style from "./style.module.css"
 import { useParams, useRouter } from "next/navigation";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "react-toastify";
 import Spinner from "@/components/spinner";
-import { useAddAdminMutation } from "./api/AddNewAdminApi";
 
 const AddNewAdmin = () => {
     const token = Cookies.get('token') || "";
@@ -43,7 +42,6 @@ const AddNewAdmin = () => {
     const { data: regionData, isSuccess: successRegion } = useGetRegionsQuery(token)
 
     const [addAdmin, { data, isError, error, isSuccess, isLoading }] = useAddAdminMutation()
-
 
     const handleSend = async (e: any) => {
         e.preventDefault()

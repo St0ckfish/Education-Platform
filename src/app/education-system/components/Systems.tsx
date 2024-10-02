@@ -24,7 +24,6 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
 
     const token = Cookies.get('token') || "";
 
-
     const [openModal, setOpenModal] = useState(false);
     const [selectedEduId, setSelectedEduId] = useState<number | null>(null);
 
@@ -134,7 +133,7 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                             nextLabel=" >"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
-                            pageCount={data?.data?.totalPagesCount}
+                            pageCount={data?.data?.totalPages}
                             previousLabel="< "
                             renderOnZeroPageCount={null}
                             containerClassName="pagination"
