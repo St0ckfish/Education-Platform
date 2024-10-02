@@ -20,9 +20,6 @@ export const curriculumApis = createApi({
             }),
             providesTags: ['curriculum']
         })
-
-
-
     })
 })
 
