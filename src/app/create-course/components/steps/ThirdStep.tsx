@@ -61,7 +61,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
         });
 
         addLesson({ token, data: formData })
-        // handleNext()
     }
 
     const addNewTopic = () => {

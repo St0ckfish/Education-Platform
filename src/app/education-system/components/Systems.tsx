@@ -22,6 +22,7 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
         setCurrentPage(selectedPage.selected);
     };
 
+
     const token = Cookies.get('token') || "";
 
     const [openModal, setOpenModal] = useState(false);
@@ -73,7 +74,7 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                                 </div>
                             </div>
                             <div className="flex justify-center">
-                                <Link href="/create-education" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[200px] ease-in font-semibold duration-300">+ Add new education</Link>
+                                <Link href="/create-education" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] ease-in font-semibold duration-300">+ Add new education</Link>
                             </div>
                         </div>
                         <div className="overflow-auto relative shadow-md sm:rounded-lg">
@@ -128,17 +129,19 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                             </table>
                         </div>
 
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel=" >"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={5}
-                            pageCount={data?.data?.totalPages}
-                            previousLabel="< "
-                            renderOnZeroPageCount={null}
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        {data?.data?.totalElements > 10 && (
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel=" >"
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={5}
+                                pageCount={data?.data?.totalPages}
+                                previousLabel="< "
+                                renderOnZeroPageCount={null}
+                                containerClassName="pagination"
+                                activeClassName="active"
+                            />
+                        )}
                     </div>
                 )
             }

@@ -120,9 +120,6 @@ const Admins = () => {
                                     </td>
                                 </tr>
                             ))}
-
-
-
                         </tbody>
                     </table>
                 </div>

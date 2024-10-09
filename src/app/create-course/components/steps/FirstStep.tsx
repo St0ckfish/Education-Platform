@@ -4,6 +4,7 @@ import { Label, Select, Textarea, TextInput } from "flowbite-react";
 import style from "./style.module.css"
 import { useGetCountryQuery, useGetEduSystemQuery, useGetLanguageQuery, useGetRegistrationTypeQuery, useGetStudyLevelQuery } from '../../api/createCourseSlice';
 import Cookies from "js-cookie"
+import { toast } from 'react-toastify';
 
 interface FirstStepProps {
   handleNext: () => void;
@@ -72,12 +73,25 @@ const FirstStep: React.FC<FirstStepProps> = ({
   return (
     <form className='bg-white card p-3 shadow-md shadow-[#00000040] rounded-md' onSubmit={(e) => {
       e.preventDefault()
-      handleNext()
+      if (countryId && eduSystemId && language && registrationType && level) {
+        handleNext()
+      } else {
+        toast.warning("please fill the inputs data", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }}>
       <div className='grid md:grid-cols-2 gap-10 '>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="country">country <span className='text-[#367AFF] text-xl'>*</span></label>
-          <Select value={countryId} onChange={(e) => setCountryId(e.target.value)} className={`${style.selectForm}`} id='country'>
+          <Select required value={countryId} onChange={(e) => setCountryId(e.target.value)} className={`${style.selectForm}`} id='country'>
             {successCountry && (
               <>
                 <option className='hidden'>Select country</option>
@@ -91,7 +105,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="eduSystem">eduSystem <span className='text-[#367AFF] text-xl'>*</span></label>
-          <Select value={eduSystemId} onChange={(e) => setEduSystemId(e.target.value)} className={`${style.selectForm}`} id='eduSystem'>
+          <Select required value={eduSystemId} onChange={(e) => setEduSystemId(e.target.value)} className={`${style.selectForm}`} id='eduSystem'>
             {successEduSystem && (
               <>
                 <option className='hidden'>Select EduSystem</option>
@@ -104,7 +118,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="language">language <span className='text-[#367AFF] text-xl'>*</span></label>
-          <Select value={language} onChange={(e) => setLanguage(e.target.value)} className={`${style.selectForm}`} id='language'>
+          <Select required value={language} onChange={(e) => setLanguage(e.target.value)} className={`${style.selectForm}`} id='language'>
             {successLanguage && (
               <>
                 <option className='hidden'>Select Language</option>
@@ -119,7 +133,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="registrationType">registration type <span className='text-[#367AFF] text-xl'>*</span></label>
-          <Select value={registrationType} onChange={(e) => setRegistrationType(e.target.value)} className={`${style.selectForm}`} id='registrationType'>
+          <Select required value={registrationType} onChange={(e) => setRegistrationType(e.target.value)} className={`${style.selectForm}`} id='registrationType'>
             {successRegistrationType && (
               <>
                 <option className='hidden'>Select registration type</option>
@@ -134,7 +148,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="grade">Grade Level <span className='text-[#367AFF] text-xl'>*</span></label>
-          <Select value={level} onChange={(e) => setLevel(e.target.value)} className={`${style.selectForm}`} id='grade'>
+          <Select required value={level} onChange={(e) => setLevel(e.target.value)} className={`${style.selectForm}`} id='grade'>
             {successStudyLevel && (
               <>
                 <option className='hidden'>Select Grade Level</option>

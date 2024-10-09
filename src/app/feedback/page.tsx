@@ -16,10 +16,7 @@ const FeedBack = () => {
     const [openModal, setOpenModal] = useState(false);
     const [openModalDelete, setOpenModalDelete] = useState(false);
     const [selectedId, setSelectedId] = useState<number | null>(null);
-
-
     const { data, isSuccess } = useGetAllFeedbackQuery({ token, page, search })
-
     const { data: feedback, isSuccess: successFeedback } = useGetFeedbackQuery({ token, id: selectedId }, { skip: selectedId === null })
 
     const handlePageClick = (selectedPage: any) => {
@@ -123,17 +120,22 @@ const FeedBack = () => {
                     </div>
                 )}
 
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel=" >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    pageCount={data?.data?.totalPagesCount}
-                    previousLabel="< "
-                    renderOnZeroPageCount={null}
-                    containerClassName="pagination"
-                    activeClassName="active"
-                />
+
+                {data?.data?.totalElementsCount > 10 && (
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel=" >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={data?.data?.totalPagesCount}
+                        previousLabel="< "
+                        renderOnZeroPageCount={null}
+                        containerClassName="pagination"
+                        activeClassName="active"
+                    />
+                )}
+
+            
                 {successFeedback && (
                     <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
                         <Modal.Header />

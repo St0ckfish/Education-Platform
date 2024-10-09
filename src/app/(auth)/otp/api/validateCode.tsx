@@ -8,13 +8,13 @@ export const selectEmailSlice = createApi({
         baseUrl: baseUrl
     }),
     endpoints: (builder) => ({
-        selectEmail: builder.mutation({
+        validateCode: builder.mutation({
             query: (arg : any) => ({
-                url : `auth/password/select-email?user-id=${arg.userid}&email=${arg.email}`,
+                url : `auth/password/validate-code?email=${arg.email}&code=${arg.code}`,
                 method: "POST",
             })
         })
     })
 })
 
-export const {useSelectEmailMutation} = selectEmailSlice
+export const {useValidateCodeMutation} = selectEmailSlice

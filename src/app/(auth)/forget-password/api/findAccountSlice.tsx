@@ -9,12 +9,18 @@ export const findAccountSlice = createApi({
     }),
     endpoints: (builder) => ({
         findAccount: builder.mutation({
-            query: (body ) => ({
-                url : `auth/password/find-account?username=${body}`,
+            query: (body) => ({
+                url: `auth/password/find-account?username=${body}`,
+                method: "POST",
+            })
+        }),
+        selectEmail: builder.mutation({
+            query: (arg: any) => ({
+                url: `auth/password/select-email?user-id=${arg.userid}&email=${arg.email}`,
                 method: "POST",
             })
         })
     })
 })
 
-export const {useFindAccountMutation} = findAccountSlice
+export const { useFindAccountMutation , useSelectEmailMutation } = findAccountSlice

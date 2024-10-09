@@ -21,16 +21,12 @@ const PlanSchool = () => {
     const { data: dataSchoolPlans, isSuccess, isLoading } = useGetAllSchoolPlansQuery({ token, page: currentPage })
     const [updateStatusOfSchoolPlan, { data }] = useUpdateStatusOfSchoolPlanMutation()
 
-    console.log(data);
-
     const handlePageClick = (selectedPage: any) => {
         setCurrentPage(selectedPage.selected);
     };
 
     const handleUpdateStatus = async ({ schoolPlanId, status }: { schoolPlanId: any, status: any }) => {
-
         updateStatusOfSchoolPlan({ token, schoolPlanId, status: status ? "false" : "true" }).unwrap()
-
     }
 
     const [search, setSearch] = useState("")
@@ -43,8 +39,6 @@ const PlanSchool = () => {
             </div>
 
         ) : (
-
-
             isSuccess && dataSchoolPlans?.data.content.length > 0 ? (<>
                 <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
                     <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
@@ -58,7 +52,7 @@ const PlanSchool = () => {
                             </div>
                         </div>
                         <div className="flex justify-center">
-                            {/* <Link href={`add-new-admin/${params.id}`} className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new Admin</Link> */}
+                            <Link href={`/create-school-plans`} className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 text-white text-[16px] ease-in font-medium duration-300">+ Create School Plan</Link>
                         </div>
                     </div>
                     <div className="overflow-auto relative shadow-md sm:rounded-lg">
@@ -80,7 +74,6 @@ const PlanSchool = () => {
                                     <th scope="col" className="px-6 py-3 text-center whitespace-nowrap">
                                         Status
                                     </th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,7 +89,9 @@ const PlanSchool = () => {
                                             {item.daysCount}
                                         </td>
                                         <td className="px-12 py-4 text-center whitespace-nowrap">
-                                            {item.permissions.length}
+                                            <Link className='hover:underline text-blue-500 underline-offset-4 font-bold' href={`school-plans/${item.id}`}>
+                                                {item.permissions.length}
+                                            </Link>
                                         </td>
                                         <td className="px-6 py-4 flex justify-center whitespace-nowrap">
                                             <ToggleSwitch
@@ -113,17 +108,19 @@ const PlanSchool = () => {
                             </tbody>
                         </table>
                     </div>
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel=" >"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={dataSchoolPlans?.data?.totalPagesCount}
-                        previousLabel="< "
-                        renderOnZeroPageCount={null}
-                        containerClassName="pagination"
-                        activeClassName="active"
-                    />
+                    {dataSchoolPlans?.data?.totalElementsCount > 10 && (
+                        <ReactPaginate
+                            breakLabel="..."
+                            nextLabel=" >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={dataSchoolPlans?.data?.totalPagesCount}
+                            previousLabel="< "
+                            renderOnZeroPageCount={null}
+                            containerClassName="pagination"
+                            activeClassName="active"
+                        />
+                    )}
                 </div>
             </>
 
