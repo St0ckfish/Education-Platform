@@ -14,7 +14,7 @@ function EmptySchoolPlans() {
                 <p className="text-[#526484] font-sans text-[15px] font-semibold">You can add a new school plans by clicking on this button</p>
             </div>
             <div className='mt-3'>
-                <Link href={`/manage-school`} className="px-4 py-2.5 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[200px] ease-in duration-300">Add new School Plan</Link>
+                <Link href={`/create-school-plans`} className="px-4 py-2.5 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white font-bold text-[18px] w-[200px] ease-in duration-300">Add new School Plan</Link>
             </div>
         </div>
     )

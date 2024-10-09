@@ -17,9 +17,6 @@ const Schools: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
     const handlePageClick = (selectedPage: any) => {
         setCurrentPage(selectedPage.selected);
     };
-
-    // console.log(data);
-
     return (
         <>
             {
@@ -123,17 +120,19 @@ const Schools: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                             </table>
                         </div>
 
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel=" >"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={5}
-                            pageCount={data?.data?.totalPagesCount}
-                            previousLabel="< "
-                            renderOnZeroPageCount={null}
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        {data?.data?.totalElementsCount > 10 && (
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel=" >"
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={5}
+                                pageCount={data?.data?.totalPagesCount}
+                                previousLabel="< "
+                                renderOnZeroPageCount={null}
+                                containerClassName="pagination"
+                                activeClassName="active"
+                            />
+                        )}
                     </div>
                 )
             }

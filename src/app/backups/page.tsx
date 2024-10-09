@@ -20,13 +20,13 @@ const BackUp = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [selectedIdRestore, setSelectedIdRestore] = useState<number | null>(null);
 
-    const { data: backups , isSuccess } = useGetAllBackupsQuery({ token, page: currentPage, search })
+    const { data: backups, isSuccess } = useGetAllBackupsQuery({ token, page: currentPage, search })
     const [deleteBackup] = useDeleteBackupMutation()
     const [restoreBackup] = useRestoreBackupMutation()
     const { data: backup, isSuccess: successBackup } = useGetBackupQuery({ token, id: selectedId }, { skip: selectedId === null })
 
-    const handlePageClick = (selectedPage: any) => {
-        setCurrentPage(selectedPage.selected);
+    const handlePageClick = ({ selected }: { selected: number }) => {
+        setCurrentPage(selected);
     };
 
 
@@ -107,8 +107,6 @@ const BackUp = () => {
     };
 
 
-
-
     return (
 
         isSuccess && backups.data?.content.length > 0 ? (
@@ -127,7 +125,7 @@ const BackUp = () => {
                             </div>
                         </div>
                         <div className="flex justify-center">
-                            <Link href="backups/add-new-backup" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] w-[180px] ease-in font-semibold duration-300">+ Add new backup</Link>
+                            <Link href="backups/add-new-backup" className="px-4 py-2 whitespace-nowrap rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl mb-5 mr-3 text-white text-[18px] ease-in font-semibold duration-300">+ Add new backup</Link>
                         </div>
                     </div>
                     <div className="overflow-auto relative shadow-md sm:rounded-lg">
@@ -141,13 +139,16 @@ const BackUp = () => {
                                         Mode
                                     </th>
                                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                        size
+                                        Size
                                     </th>
                                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                        extension
+                                        Extension
                                     </th>
                                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                        actions
+                                        Created date
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
@@ -166,6 +167,9 @@ const BackUp = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {item.extension}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {new Date(item?.createdDate).toISOString().split('T')[0]}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap flex">
                                             <button onClick={() => HandleView(item.id)} className="font-medium me-2 text-blue-600 hover:underline " >
@@ -203,17 +207,22 @@ const BackUp = () => {
                         </table>
                     </div>
 
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel=" >"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={backups?.data?.totalPagesCount}
-                        previousLabel="< "
-                        renderOnZeroPageCount={null}
-                        containerClassName="pagination"
-                        activeClassName="active"
-                    />
+                    {backups?.data?.totalElementsCount > 10 && (
+                        <ReactPaginate
+                            forcePage={currentPage}
+                            breakLabel="..."
+                            nextLabel=" >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={backups?.data?.totalPagesCount}
+                            previousLabel="< "
+                            renderOnZeroPageCount={null}
+                            containerClassName="pagination"
+                            activeClassName="active"
+                        />
+                    )}
+
+
                 </div>
 
                 {successBackup && (

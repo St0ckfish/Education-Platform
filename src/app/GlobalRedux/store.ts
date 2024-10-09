@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { courseSlice } from "../create-course/api/createCourseSlice";
 import { feedbackSlice } from "../feedback/api/feedbackSlice"
 import { findAccountSlice } from "../(auth)/forget-password/api/findAccountSlice";
-import { selectEmailSlice } from "../(auth)/otp/api/selectEmailSlice";
+import { selectEmailSlice } from "../(auth)/otp/api/validateCode";
 import { loginSlice } from "../(auth)/login/api/loginSlice";
 import { AllCoursesSlice } from "../resource-management/api/getCoursesSlice";
 import { backupsApis } from "../backups/api/backupsApis";
@@ -14,9 +14,11 @@ import { systemsApis } from "../education-system/api/manageSystems";
 import { adminAPi } from "../manage-school/admin/api/adminApis";
 import ThemeSlice from "./ThemeSlice";
 import { editAdminApi } from "../manage-school/admin/edit-admin/[id]/api/EditAdminApi";
-import { SchoolPlanApi } from "../manage-school/plan-school/api/PlanSchool";
 import { SchoolPlansApi } from "../school-plans/api/SchoolPlans";
 import { curriculumApis } from "../curriculum-management/api/curriculumApi";
+import { ResetPassword } from "../(auth)/reset-password/api/resetPassword";
+import { createSchoolPlanApi } from "../create-school-plans/api/createSchoolPlansApi";
+import { profileApis } from "@/components/api/profileApi";
 
 export const store = configureStore({
     reducer: {
@@ -34,9 +36,11 @@ export const store = configureStore({
         [systemsApis.reducerPath]:systemsApis.reducer,
         [adminAPi.reducerPath]: adminAPi.reducer,
         [editAdminApi.reducerPath]: editAdminApi.reducer,
-        [SchoolPlanApi.reducerPath]: SchoolPlanApi.reducer,
         [SchoolPlansApi.reducerPath]: SchoolPlansApi.reducer,
-        [curriculumApis.reducerPath]: curriculumApis.reducer
+        [curriculumApis.reducerPath]: curriculumApis.reducer,
+        [ResetPassword.reducerPath]: ResetPassword.reducer,
+        [createSchoolPlanApi.reducerPath]: createSchoolPlanApi.reducer,
+        [profileApis.reducerPath]: profileApis.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().
@@ -53,9 +57,11 @@ export const store = configureStore({
             concat(systemsApis.middleware).
             concat(adminAPi.middleware).
             concat(editAdminApi.middleware).
-            concat(SchoolPlanApi.middleware).
             concat(SchoolPlansApi.middleware).
-            concat(curriculumApis.middleware)
+            concat(curriculumApis.middleware).
+            concat(ResetPassword.middleware).
+            concat(createSchoolPlanApi.middleware).
+            concat(profileApis.middleware)
     ,
 });
 

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import FirstStep from "./components/steps/FirstStep"
 import SecoundStep from "./components/steps/SecoundStep"
 import ThirdStep from './components/steps/ThirdStep';
-import FourthStep from './components/steps/FourthStep';
 import { useAddCourseMutation } from './api/createCourseSlice';
 import Cookies from "js-cookie"
 
@@ -52,7 +51,6 @@ function Page() {
             "description_fr": description_fr,
             "prerequisiteIds": prerequisites
         }
-        console.log(objectReq);
         addCourse({ token, data: objectReq }).unwrap()
     }
 
@@ -105,11 +103,6 @@ function Page() {
             step: 3,
             about: "Course Content",
             ele: <ThirdStep dataAddCourse={data} handleNext={handleNext} handlePrev={handlePrev} />
-        },
-        {
-            step: 4,
-            about: "Course Preview",
-            ele: <FourthStep handleNext={handleNext} handlePrev={handlePrev} />
         }
     ];
 
@@ -130,7 +123,6 @@ function Page() {
                                     ? 'bg-[#3E5AF0] text-white'
                                     : 'bg-[#F9F9F9] text-black'
                                     }`}
-                                    onClick={() => setActiveStep(index)}
                                 >
                                     {item.step}
                                 </div>

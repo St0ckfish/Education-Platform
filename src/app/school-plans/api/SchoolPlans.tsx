@@ -19,8 +19,18 @@ export const SchoolPlansApi = createApi({
             }),
             providesTags: ["schoolPlans"]
         }),
+        getSchoolPlan: builder.query({
+            query: ({ token, id }) => ({
+                url: `management/school/plan/${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }),
+            providesTags: ["schoolPlans"]
+        }),
         updateStatusOfSchoolPlan: builder.mutation({
-            query: ({ token, schoolPlanId , status }) => ({
+            query: ({ token, schoolPlanId, status }) => ({
                 url: `management/school/plan/${schoolPlanId}/activate?active=${status}`,
                 method: "PUT",
                 headers: {
@@ -33,5 +43,5 @@ export const SchoolPlansApi = createApi({
 })
 
 
-export const {useGetAllSchoolPlansQuery , useUpdateStatusOfSchoolPlanMutation} = SchoolPlansApi
+export const { useGetAllSchoolPlansQuery, useGetSchoolPlanQuery, useUpdateStatusOfSchoolPlanMutation } = SchoolPlansApi
 
