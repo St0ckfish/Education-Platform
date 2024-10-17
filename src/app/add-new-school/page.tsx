@@ -40,8 +40,10 @@ const AddNewSchool = () => {
     const { isSuccess: successType, data: dataType } = useGetTypeQuery(token)
     const { isSuccess: successLanguages, data: dataLanguages } = useGetLanguagesQuery(token)
     const { isSuccess: successLevels, data: dataLevels } = useGetEducationLevelQuery(token)
+    console.log('dataLevels: ', dataLevels);
     const { isSuccess: successEducations, data: dataEducations } = useGetEducationsQuery(token)
     const { isSuccess: successRegions, data: dataRegions } = useGetRegionQuery(token)
+    console.log('dataRegions: ', dataRegions);
     const [addSchool, { error, isError, isSuccess }] = useAddSchoolMutation()
     const [openLanguages, setOpenLanguages] = useState(false);
     const [openLevels, setOpenLevels] = useState(false);
@@ -97,34 +99,45 @@ const AddNewSchool = () => {
 
 
     const handleSend = async (e: any) => {
-        e.preventDefault()
+        e.preventDefault();
+    
+        if (!name || !about || !code || !theme || !curriculum || !type || !languages.length || !levels.length || !educations.length || !regionId) {
+            toast.error('Please fill out all required fields.');
+            return;
+        }
+    
         const data = {
-            name: name,
-            about: about,
-            code: code,
-            theme: theme,
-            curriculum: curriculum,
-            type: type,
-            languages: languages,
-            levels: levels,
+            name,
+            about,
+            code,
+            theme,
+            curriculum,
+            type,
+            languages,
+            levels,
             educationSystemsIds: educations,
             semesterDate: {
-                fallSemesterStartDate: fallSemesterStartDate,
-                fallSemesterEndDate: fallSemesterEndDate,
-                springSemesterStartDate: springSemesterStartDate,
-                springSemesterEndDate: springSemesterEndDate,
-                summerSemesterStartDate: summerSemesterStartDate,
-                summerSemesterEndDate: summerSemesterEndDate
+                fallSemesterStartDate,
+                fallSemesterEndDate,
+                springSemesterStartDate,
+                springSemesterEndDate,
+                summerSemesterStartDate,
+                summerSemesterEndDate,
             },
-            established: established,
-            numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
-            workDayStartTime: workDayStartTime,
-            workDayEndTime: workDayEndTime,
-            regionId: regionId
+            established,
+            numberOfLegalAbsenceDays,
+            workDayStartTime,
+            workDayEndTime,
+            regionId,
+        };
+    
+        try {
+            await addSchool({ token, data }).unwrap();
+            toast.success('School added successfully!');
+        } catch (error) {
+            toast.error('Failed to add school. Please try again.');
         }
-        addSchool({ token, data }).unwrap()
-    }
-
+    };
     useEffect(() => {
         if (isError) {
             if (error && 'data' in error && (error as FetchBaseQueryError).data) {

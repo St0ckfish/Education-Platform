@@ -19,10 +19,10 @@ import { curriculumApis } from "../curriculum-management/api/curriculumApi";
 import { ResetPassword } from "../(auth)/reset-password/api/resetPassword";
 import { createSchoolPlanApi } from "../create-school-plans/api/createSchoolPlansApi";
 import { profileApis } from "@/components/api/profileApi";
-import { schoolPermissionApi } from "../features/api/schoolPermissionsApi";
+import { createSchoolPermissionsSlice } from "../features/api/schoolPermissionsApi";
 
 export const store = configureStore({
-    reducer: {
+    reducer: { // RootReducer
         theme: ThemeSlice,
         [loginSlice.reducerPath]: loginSlice.reducer,
         [courseSlice.reducerPath]: courseSlice.reducer,
@@ -42,8 +42,7 @@ export const store = configureStore({
         [ResetPassword.reducerPath]: ResetPassword.reducer,
         [createSchoolPlanApi.reducerPath]: createSchoolPlanApi.reducer,
         [profileApis.reducerPath]: profileApis.reducer,
-        [schoolPermissionApi.reducerPath]: schoolPermissionApi.reducer
-
+        [createSchoolPermissionsSlice.reducerPath]: createSchoolPermissionsSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().
@@ -65,8 +64,7 @@ export const store = configureStore({
             concat(ResetPassword.middleware).
             concat(createSchoolPlanApi.middleware).
             concat(profileApis.middleware).
-            concat(schoolPermissionApi.middleware)
-
+            concat(createSchoolPermissionsSlice.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
