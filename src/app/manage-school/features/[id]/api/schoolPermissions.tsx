@@ -1,5 +1,5 @@
+import { baseUrl } from "@/api/axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "../../api/axios"
 
 
 export const createSchoolPermissionsSlice = createApi({
@@ -17,9 +17,18 @@ export const createSchoolPermissionsSlice = createApi({
                 }
             })
         }),
-       
+        getSchoolPlans: builder.query({
+            query: ({ token, id }: { token: string, id: any}) => ({
+                url: `management/school/plan/${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }),
+            // providesTags: ["schoolPlans"]
+        }),
     })
 })
 
 
-export const { useGetSchoolPermissionsQuery } = createSchoolPermissionsSlice
+export const { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } = createSchoolPermissionsSlice

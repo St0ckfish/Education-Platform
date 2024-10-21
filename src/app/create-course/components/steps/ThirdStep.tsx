@@ -18,6 +18,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
 
     const token = Cookies.get('token') || "";
     const params = useParams()
+    console.log('params: ', params)
+
     const [visibleIndex, setVisibleIndex] = useState(0);
     const [lessonNameEn, setLessonNameEn] = useState("")
     const [lessonNameAr, setLessonNameAr] = useState("")
@@ -26,8 +28,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
     const [lessonGoalsAr, setLessonGoalsAr] = useState("")
     const [lessonGoalsFr, setLessonGoalsFr] = useState("")
 
-
-    const { data: dataLeasson, error: err } = useGetLeassonQuery({ token, id: params.id })
+    // TODO: make the id dynamic
+    const { data: dataLeasson, error: err } = useGetLeassonQuery({ token, id: 1 })
 
  
     const [tutorials, setTutorials] = useState<File[]>([] as File[]);
@@ -36,9 +38,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
         { name_en: "", name_ar: "", name_fr: "", videoUrls: [""] }
     ]);
 
-
     const [addLesson, { data, error, isError, isSuccess }] = useAddLessonMutation()
-
 
     const handleSend = async () => {
         const reqObject = {

@@ -19,7 +19,7 @@ import { curriculumApis } from "../curriculum-management/api/curriculumApi";
 import { ResetPassword } from "../(auth)/reset-password/api/resetPassword";
 import { createSchoolPlanApi } from "../create-school-plans/api/createSchoolPlansApi";
 import { profileApis } from "@/components/api/profileApi";
-import { createSchoolPermissionsSlice } from "../features/api/schoolPermissionsApi";
+import { createSchoolPermissionsSlice } from "../manage-school/features/[id]/api/schoolPermissions";
 
 export const store = configureStore({
     reducer: { // RootReducer

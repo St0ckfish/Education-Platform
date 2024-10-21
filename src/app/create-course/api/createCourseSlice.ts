@@ -62,6 +62,16 @@ export const courseSlice = createApi({
                 }
             })
         }),
+        // getSemester: builder.query({
+        //     query: (token: string) => ({
+        //         url: "public/enumeration/semester-name",
+        //         method: "GET",
+        //         headers: {
+        //             "Authorization": `Bearer ${token}`
+        //         }
+        //     })
+        // }),
+        
         addCourse: builder.mutation({
             query: ({ token, data }: { token: string, data: object }) => ({
                 url: 'management/course',
@@ -88,3 +98,5 @@ export const courseSlice = createApi({
 
 
 export const { useGetCountryQuery, useGetLanguageQuery , useGetRegistrationTypeQuery , useGetEducationLevelQuery , useGetEduSystemQuery , useAddCourseMutation , useAddLessonMutation , useGetStudyLevelQuery} = courseSlice
+
+

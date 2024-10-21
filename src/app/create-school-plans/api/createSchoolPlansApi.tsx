@@ -24,10 +24,10 @@ export const createSchoolPlanApi = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-                body
             })
         })
     })
 })
+
 
 export const { useGetPermissionsQuery , useAddSchoolPlanMutation } = createSchoolPlanApi

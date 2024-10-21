@@ -29,16 +29,31 @@ export const SchoolPlansApi = createApi({
             }),
             providesTags: ["schoolPlans"]
         }),
+        // updateStatusOfSchoolPlan: builder.mutation({
+        //     query: ({ token, schoolPlanId, status }) => ({
+        //         url: `management/school/plan/${schoolPlanId}/activate?active=${status}`,
+        //         method: "PUT",
+        //         headers: {
+        //             "Authorization": `Bearer ${token}`
+        //         }
+        //     }),
+            
+        //     invalidatesTags: ["schoolPlans"]
+        // }),
         updateStatusOfSchoolPlan: builder.mutation({
-            query: ({ token, schoolPlanId, status }) => ({
-                url: `management/school/plan/${schoolPlanId}/activate?active=${status}`,
-                method: "PUT",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+            query: ({ token, schoolPlanId, status, data }) => ({
+              url: `management/school/plan/${schoolPlanId}/activate?active=${status}`,
+              method: "PUT",
+              headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: data,
             }),
-            invalidatesTags: ["schoolPlans"]
-        }),
+            invalidatesTags: ["schoolPlans"],
+          }),
+          
+        
     })
 })
 

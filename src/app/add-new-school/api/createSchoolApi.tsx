@@ -46,7 +46,7 @@ export const createSchoolSlice = createApi({
         }),
         getLevels: builder.query({
             query: (token: string) => ({
-                url: "public/enumeration/study-level",
+                url: "public/enumeration/study-stage",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`

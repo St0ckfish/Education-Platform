@@ -1,154 +1,68 @@
 'use client';
+import { useUpdateStatusOfSchoolPlanMutation } from '@/app/school-plans/api/SchoolPlans';
 import { useState } from 'react';
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 
-// Component to display an expandable list
-const ExpandableList = ({ title, items, onUpdateTotal }: { title: string; items: Record<number, { label: string; price: number; children?: Record<number, { label: string; price: number }> }>; onUpdateTotal: (price: number) => void }) => {
-  // State to track if the list is expanded
+const ExpandableList = ({ title, items, onUpdateCheckedItems }: { title: string; items: any[]; onUpdateCheckedItems: (selectedItems: any[], isAdding: boolean) => void }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  // State to track the main checkbox status
-  const [isChecked, setIsChecked] = useState(false);
-  // State to track the checked status of individual items
+  // y
+  
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>(
-    Object.keys(items).reduce((acc, key) => {
-      acc[Number(key)] = false; // Initialize each item as unchecked
+    items.reduce((acc, _item, index) => {
+      acc[index] = false;
       return acc;
     }, {} as Record<number, boolean>)
   );
 
-  // Toggle the expansion of the list
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Handle changes to the main checkbox
-  const handleMainCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation(); // Prevent event from bubbling up
-    const newCheckedStatus = !isChecked; // Invert the current checked status
-    setIsChecked(newCheckedStatus); // Update main checkbox state
-
-    // Update checked status of all items based on main checkbox
-    const updatedItems = Object.keys(items).reduce((acc, key) => {
-      acc[Number(key)] = newCheckedStatus; // Set all to new checked status
-      return acc;
-    }, {} as Record<number, boolean>);
-    
-    setCheckedItems(updatedItems); // Update checkedItems state
-    onUpdateTotal(calculateTotalPrice(updatedItems)); // Update total price based on checked items
-  };
-
-  // Handle changes to individual child checkboxes
   const handleChildCheckboxChange = (key: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation(); // Prevent event from bubbling up
-    const newCheckedState = !checkedItems[key]; // Invert the checked state for the specific item
+    event.stopPropagation();
+    const newCheckedState = !checkedItems[key];
+    const updatedState = {
+      ...checkedItems,
+      [key]: newCheckedState,
+    };
 
-    // Update the checked status for the specific item
-    setCheckedItems((prevState) => {
-      const updatedState = {
-        ...prevState,
-        [key]: newCheckedState, // Update the state for the item
-      };
-      // Update the total price based on the updated checked state
-      onUpdateTotal(calculateTotalPrice(updatedState));
-      return updatedState;
-    });
+    setCheckedItems(updatedState);
+    const selectedItems = getSelectedItems(updatedState);
+
+    // Update based on whether the item is checked or unchecked
+    onUpdateCheckedItems([items[key]], newCheckedState);
   };
 
-  // Function to calculate the total price of checked items
-  const calculateTotalPrice = (checkedState: Record<number, boolean>) => {
-    return Object.entries(items).reduce((total, [key, { price, children }]) => {
-      // If the item is checked, add its price to the total
-      if (checkedState[Number(key)]) {
-        total += price;
-      }
-      // Add prices from child items if they exist
-      if (children) {
-        total += Object.entries(children).reduce((childTotal, [childKey, { price: childPrice }]) => {
-          return childTotal + (checkedState[Number(childKey)] ? childPrice : 0);
-        }, 0);
-      }
-      return total; // Return the accumulated total
-    }, 0);
+  // Function to get the selected items based on checked status
+  const getSelectedItems = (checkedState: Record<number, boolean>) => {
+    return items.filter((_item, index) => checkedState[index]);
   };
 
-  // Function to calculate the total price of all items without checking
-  const calculateTotalPriceWithoutCheck = () => {
-    return Object.entries(items).reduce((total, [, { price, children }]) => {
-      total += price; // Add the price of the item
-      // Add prices from child items if they exist
-      if (children) {
-        total += Object.entries(children).reduce((childTotal, [, { price: childPrice }]) => {
-          return childTotal + childPrice; // Add the price of each child
-        }, 0);
-      }
-      return total; // Return the accumulated total
-    }, 0);
-  };
-
-  // Calculate the total price for checked items and for all items
-  const totalPrice = calculateTotalPrice(checkedItems);
-  const totalPriceWithoutCheck = calculateTotalPriceWithoutCheck();
+  const totalChecked = getSelectedItems(checkedItems).length;
 
   return (
     <div className="my-4">
-      <div className="flex items-center cursor-pointer">
-        {/* Main checkbox for the list */}
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleMainCheckboxChange}
-          className="mr-2"
-        />
+      <div className="flex items-center cursor-pointer ml-5">
         <div className="flex items-center" onClick={toggleExpand} style={{ userSelect: 'none' }}>
-          {/* Icon for expanding or collapsing the list */}
           {isExpanded ? <FiChevronDown size={25} className="mr-2" /> : <FiChevronRight size={25} className="mr-2" />}
-          {/* Title of the expandable list with total price */}
-          <span className="text-lg font-semibold" style={{ userSelect: 'none' }}>{title} - ${totalPriceWithoutCheck}</span>
+          <span className="text-lg font-semibold" style={{ userSelect: 'none' }}>{title}</span>
         </div>
       </div>
 
       {isExpanded && (
         <ul className="ml-6 mt-2">
-          {Object.entries(items).map(([key, { label, price, children }]) => (
-            <li key={key} className="text-sm flex flex-col mb-2">
-              <div className="flex items-center">
-                {/* Checkbox for each item */}
-                <input
-                  type="checkbox"
-                  id={`checkbox-${key}`}
-                  checked={checkedItems[Number(key)]}
-                  onChange={(event) => handleChildCheckboxChange(Number(key), event)}
-                  className="mr-2"
-                />
-                <label htmlFor={`checkbox-${key}`} style={{ userSelect: 'none' }} className="flex justify-between w-full">
-                  {/* Display item label and price */}
-                  {label}
-                  <span className='ml-5'>${price}</span>
-                </label>
-              </div>
-      
-              {/* Render child items if they exist */}
-              {children && Object.keys(children).length > 0 && (
-                <ul className="ml-4 mt-1">
-                  {Object.entries(children).map(([childKey, { label: childLabel, price: childPrice }]) => (
-                    <li key={childKey} className="text-sm flex items-center mb-2">
-                      {/* Checkbox for each child item */}
-                      <input
-                        type="checkbox"
-                        id={`child-checkbox-${childKey}`}
-                        checked={checkedItems[Number(childKey)]}
-                        onChange={(event) => handleChildCheckboxChange(Number(childKey), event)}
-                        className="mr-2"
-                      />
-                      <label htmlFor={`child-checkbox-${childKey}`} style={{ userSelect: 'none' }} className="flex justify-between w-full">
-                        {/* Display child item label and price */}
-                        {childLabel}
-                        <span>${childPrice}</span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              )}
+          {items.map((item, index) => (
+            <li key={index} className="text-sm flex items-center mb-2">
+              <input
+                type="checkbox"
+                id={`checkbox-${index}`}
+                checked={checkedItems[index]}
+                onChange={(event) => handleChildCheckboxChange(index, event)}
+                className="mr-2"
+              />
+              <label htmlFor={`checkbox-${index}`} style={{ userSelect: 'none' }} className="flex justify-between w-full">
+                {item.name} - ${item.cost}
+              </label>
             </li>
           ))}
         </ul>
@@ -157,25 +71,108 @@ const ExpandableList = ({ title, items, onUpdateTotal }: { title: string; items:
   );
 };
 
-// Main component to display all sections
-const FeaturesList = ({ features }: { features: any[] }) => {
-  const [total, setTotal] = useState(0); // State to track the total price
+// Main component to display all feature categories and their permissions
+const FeaturesList = ({ features , token}: { features: any[], token: string }) => {
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  // handleSender(10, token, )
 
-  // Function to update the total price based on selected items
-  const updateTotal = (price: number) => {
-    setTotal(price); // Update the total price
+  // const handleSender = useUpdateStatusOfSchoolPlanMutation(10, token, true, body);
+  // استدعاء الـ mutation
+  // const handleUpdateStatus = async () => {
+  //     const schoolPlanId = 10;
+  //     const status = true; 
+  //     c
+  
+  //     try {
+  //         const result = await updateStatusOfSchoolPlan({
+  //             token,
+  //             schoolPlanId,
+  //             status,
+  //             body
+  //         });
+  //         console.log(result); // معالجة النتيجة
+  //     } catch (error) {
+  //         console.error("Error updating status:", error);
+  //     }
+  // };
+  
+  const updateCheckedItems = (newSelectedItems: any[], isAdding: boolean) => {
+    setSelectedItems((prevItems) => {
+      if (isAdding) {
+        // Add new selected items and keep the previously selected items
+        return [...prevItems, ...newSelectedItems.filter((item) => !prevItems.includes(item))];
+      } else {
+        // When the category is unchecked, remove all items from the selection
+        return prevItems.filter((item) => !newSelectedItems.includes(item));
+      }
+    });
+  };
+
+  // Function to calculate the total cost of selected items
+  const calculateTotalCost = () => {
+    return selectedItems.reduce((total, item) => total + item.cost, 0);
+  };
+
+
+
+
+
+
+  const [updateStatusOfSchoolPlan, { data , originalArgs , error}] = useUpdateStatusOfSchoolPlanMutation();
+  console.log('data: ', data);
+  console.log('originalArgs: ', originalArgs);
+  console.log('error: ', error);
+
+
+  const handleSend = async () => {
+      const objectReq = {
+          "id": 10,
+          "cost": 200,
+          "name": "School Plan 10",
+          "daysCount": 2,
+          "permissions": {
+              "id": 10,
+              "cost": 6,
+              "name": "ATTENDANCE",
+          }  
+      }
+      updateStatusOfSchoolPlan({ token, schoolPlanId: 10, status: false, body: objectReq}).unwrap()
+  }
+
+  const handleCancel = () => {
+    // TODO Handle cancel logic here
+    console.log("Cancelled");
   };
 
   return (
     <div>
-      {/* Render each feature in the features list */}
       {features.map((feature, index) => {
-        const featureKey = Object.keys(feature)[0]; // Get the feature key
-        const { name, children } = feature[featureKey]; // Destructure the name and children from the feature
-        return <ExpandableList key={index} title={name} items={children} onUpdateTotal={updateTotal} />;
+        const { category, Permissions } = feature;
+        return (
+          <ExpandableList 
+            key={index} 
+            title={category} 
+            items={Permissions} 
+            onUpdateCheckedItems={updateCheckedItems} 
+          />
+        );
       })}
-      {/* Display the total price */}
-      <div className="mt-4 text-lg font-bold">Total: ${total}</div>
+      <div className="mt-4 text-lg font-bold">Total Cost: ${calculateTotalCost()}</div>
+
+      <div className="mt-4 flex justify-center space-x-12">
+        <button
+          onClick={handleSend}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+        >
+          Save
+        </button>
+        <button
+          onClick={handleCancel}
+          className="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400 transition"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };

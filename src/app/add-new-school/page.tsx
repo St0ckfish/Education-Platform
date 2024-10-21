@@ -40,10 +40,8 @@ const AddNewSchool = () => {
     const { isSuccess: successType, data: dataType } = useGetTypeQuery(token)
     const { isSuccess: successLanguages, data: dataLanguages } = useGetLanguagesQuery(token)
     const { isSuccess: successLevels, data: dataLevels } = useGetEducationLevelQuery(token)
-    console.log('dataLevels: ', dataLevels);
     const { isSuccess: successEducations, data: dataEducations } = useGetEducationsQuery(token)
     const { isSuccess: successRegions, data: dataRegions } = useGetRegionQuery(token)
-    console.log('dataRegions: ', dataRegions);
     const [addSchool, { error, isError, isSuccess }] = useAddSchoolMutation()
     const [openLanguages, setOpenLanguages] = useState(false);
     const [openLevels, setOpenLevels] = useState(false);
@@ -75,10 +73,11 @@ const AddNewSchool = () => {
     const handleCheckboxChangeLevels = (value: string) => {
         setLevels(prev =>
             prev.includes(value) ?
-                prev.filter(level => level !== value) :
-                [...prev, value]
+            prev.filter(level => level !== value) :
+            [...prev, value]
         );
     };
+    console.log("levels: ", levels);
     const handleCheckboxChangeEducations = (value: string) => {
         setEducations(prev =>
             prev.includes(value) ?
@@ -114,7 +113,7 @@ const AddNewSchool = () => {
             curriculum,
             type,
             languages,
-            levels,
+            stages: levels,
             educationSystemsIds: educations,
             semesterDate: {
                 fallSemesterStartDate,
