@@ -26,32 +26,13 @@ function Page() {
   const token = Cookies.get("token") || "";
 
   const [addCourse, { data, originalArgs, error }] = useAddCourseMutation();
-//   const { data: semesters } = useGetSemesterQuery(token)
-//   console.log('semesters: ', semesters);
   const handleNext = () => {
     setActiveStep((cur) => cur + 1);
   };
   const handlePrev = () => {
     setActiveStep((cur) => cur - 1);
   };
-  console.log("prerequisites", prerequisites);
   const handleSend = async () => {
-    // const objectReq = {
-    //     "code": code,
-    //     "countryId": countryId,
-    //     "level": level,
-    //     "registrationType": registrationType,
-    //     "language": language,
-    //     "eduSystemId": eduSystemId,
-    //     "name_en": name_en,
-    //     "name_ar": name_ar,
-    //     "name_fr": name_fr,
-    //     "description_en": description_en,
-    //     "description_ar": description_ar,
-    //     "description_fr": description_fr,
-    //     "prerequisiteIds": prerequisites
-    // }
-
     const objectReq = {
       countryId: countryId, // Get possible values from /api/v1/management/country/all
       code: code,
@@ -68,15 +49,14 @@ function Page() {
       description_en: description_en,
       description_ar: description_ar,
       description_fr: description_fr,
-      // !ERROR
-      prerequisiteIds: [], // list of courses ids, can be empty list
+      prerequisiteIds: prerequisites, // list of courses ids, can be empty list
         // coefficient: 2, //optional
       // Get possiable values from: /api/v1/public/enumeration/semester-name
-      semesterName: "FALL", //optional
-      // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
-      secondarySchoolDepartment: "SCIENTIFIC", //optional
-      // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
-      subDepartment: "PHYSICAL_SCIENCES", //optional
+      // semesterName: "FALL", //optional
+      // // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
+      // secondarySchoolDepartment: "SCIENTIFIC", //optional
+      // // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
+      // subDepartment: "PHYSICAL_SCIENCES", //optional
     };
     addCourse({ token, data: objectReq }).unwrap();
     console.log("data:", objectReq);
