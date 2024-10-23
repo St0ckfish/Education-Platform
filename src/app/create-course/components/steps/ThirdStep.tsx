@@ -28,10 +28,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
     const [lessonGoalsAr, setLessonGoalsAr] = useState("")
     const [lessonGoalsFr, setLessonGoalsFr] = useState("")
 
-    // TODO: make the id dynamic
-    const { data: dataLeasson, error: err } = useGetLeassonQuery({ token, id: 1 })
-
- 
     const [tutorials, setTutorials] = useState<File[]>([] as File[]);
 
     const [allTopics, setAllTopics] = useState([
@@ -109,17 +105,17 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ dataAddCourse, handleNext, handle
     };
 
 
-    useEffect(() => {
-        if (dataLeasson) {
-            setLessonNameEn(dataLeasson?.data?.name_en)
-            setLessonNameAr(dataLeasson?.data?.name_ar)
-            setLessonNameFr(dataLeasson?.data?.name_fr)
-            setLessonGoalsEn(dataLeasson?.data?.goals_en)
-            setLessonGoalsAr(dataLeasson?.data?.goals_ar)
-            setLessonGoalsFr(dataLeasson?.data?.goals_fr)
-            setAllTopics(dataLeasson?.data?.topics)
-        }
-    }, [dataLeasson])
+    // useEffect(() => {
+    //     if (dataLeasson) {
+    //         setLessonNameEn(dataLeasson?.data?.name_en)
+    //         setLessonNameAr(dataLeasson?.data?.name_ar)
+    //         setLessonNameFr(dataLeasson?.data?.name_fr)
+    //         setLessonGoalsEn(dataLeasson?.data?.goals_en)
+    //         setLessonGoalsAr(dataLeasson?.data?.goals_ar)
+    //         setLessonGoalsFr(dataLeasson?.data?.goals_fr)
+    //         setAllTopics(dataLeasson?.data?.topics)
+    //     }
+    // }, [dataLeasson])
 
 
 
