@@ -73,8 +73,8 @@ const AddNewSchool = () => {
     const handleCheckboxChangeLevels = (value: string) => {
         setLevels(prev =>
             prev.includes(value) ?
-                prev.filter(level => level !== value) :
-                [...prev, value]
+            prev.filter(level => level !== value) :
+            [...prev, value]
         );
     };
     const handleCheckboxChangeEducations = (value: string) => {
@@ -97,34 +97,45 @@ const AddNewSchool = () => {
 
 
     const handleSend = async (e: any) => {
-        e.preventDefault()
+        e.preventDefault();
+    
+        if (!name || !about || !code || !theme || !curriculum || !type || !languages.length || !levels.length || !educations.length || !regionId) {
+            toast.error('Please fill out all required fields.');
+            return;
+        }
+    
         const data = {
-            name: name,
-            about: about,
-            code: code,
-            theme: theme,
-            curriculum: curriculum,
-            type: type,
-            languages: languages,
-            levels: levels,
+            name,
+            about,
+            code,
+            theme,
+            curriculum,
+            type,
+            languages,
+            stages: levels,
             educationSystemsIds: educations,
             semesterDate: {
-                fallSemesterStartDate: fallSemesterStartDate,
-                fallSemesterEndDate: fallSemesterEndDate,
-                springSemesterStartDate: springSemesterStartDate,
-                springSemesterEndDate: springSemesterEndDate,
-                summerSemesterStartDate: summerSemesterStartDate,
-                summerSemesterEndDate: summerSemesterEndDate
+                fallSemesterStartDate,
+                fallSemesterEndDate,
+                springSemesterStartDate,
+                springSemesterEndDate,
+                summerSemesterStartDate,
+                summerSemesterEndDate,
             },
-            established: established,
-            numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
-            workDayStartTime: workDayStartTime,
-            workDayEndTime: workDayEndTime,
-            regionId: regionId
+            established,
+            numberOfLegalAbsenceDays,
+            workDayStartTime,
+            workDayEndTime,
+            regionId,
+        };
+    
+        try {
+            await addSchool({ token, data }).unwrap();
+            toast.success('School added successfully!');
+        } catch (error) {
+            toast.error('Failed to add school. Please try again.');
         }
-        addSchool({ token, data }).unwrap()
-    }
-
+    };
     useEffect(() => {
         if (isError) {
             if (error && 'data' in error && (error as FetchBaseQueryError).data) {
@@ -280,7 +291,7 @@ const AddNewSchool = () => {
                             <div className="relative">
                                 {successLevels && (
                                     <>
-                                        <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="Levels">Levels <span className='text-[#367AFF] text-xl'>*</span></label>
+                                        <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="Levels">Stages <span className='text-[#367AFF] text-xl'>*</span></label>
                                         <button
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -288,7 +299,7 @@ const AddNewSchool = () => {
                                             }}
                                             className="w-full p-2.5 flex justify-between items-center text-sm font-medium text-gray-500 bg-white dark:bg-slate-700 border border-gray-300 rounded-lg "
                                         >
-                                            Select Levels
+                                            Select Stages
                                             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M0.707082 0.71057C0.316552 1.10108 0.316552 1.73428 0.707082 2.12478L5.59927 7.01218C6.38047 7.79258 7.64627 7.79228 8.42707 7.01158L13.3174 2.12118C13.708 1.73068 13.708 1.09748 13.3174 0.70696C12.9269 0.31643 12.2937 0.31643 11.9032 0.70696L7.71757 4.89258C7.32707 5.28318 6.69387 5.28308 6.30337 4.89258L2.12129 0.71057C1.73077 0.32004 1.0976 0.32004 0.707082 0.71057Z" fill="#041631" />
                                             </svg>

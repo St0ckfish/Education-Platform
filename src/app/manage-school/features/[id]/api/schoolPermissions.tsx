@@ -2,13 +2,13 @@ import { baseUrl } from "@/api/axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
-export const createSchoolPlanApi = createApi({
-    reducerPath: "createSchoolPlans",
+export const createSchoolPermissionsSlice = createApi({
+    reducerPath: "createSchoolPermissionsApi",
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl
     }),
     endpoints: (builder) => ({
-        getPermissions: builder.query({
+        getSchoolPermissions: builder.query({
             query: (token: string) => ({
                 url: "management/school/plan/permissions",
                 method: "GET",
@@ -17,17 +17,18 @@ export const createSchoolPlanApi = createApi({
                 }
             })
         }),
-        addSchoolPlan: builder.mutation({
-            query: ({ token, body }) => ({
-                url: "management/school/plan",
-                method: "POST",
+        getSchoolPlans: builder.query({
+            query: ({ token, id }: { token: string, id: any}) => ({
+                url: `management/school/plan/${id}`,
+                method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
-                },
-            })
-        })
+                }
+            }),
+            // providesTags: ["schoolPlans"]
+        }),
     })
 })
 
 
-export const { useGetPermissionsQuery , useAddSchoolPlanMutation } = createSchoolPlanApi
+export const { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } = createSchoolPermissionsSlice

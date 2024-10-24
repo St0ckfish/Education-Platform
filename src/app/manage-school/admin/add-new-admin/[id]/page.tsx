@@ -261,7 +261,7 @@ const AddNewAdmin = () => {
                                 <Select value={regionId} onChange={(e) => setRegionId(e.target.value)} className={`${style.selectForm}`} id='region'>
                                     {successRegion && (
                                         <>
-                                            <option className='hidden'>Select region</option>
+                                            <option>Select region</option>
                                             {regionData.data.content.map((item: any) => (
                                                 <option key={item.id} value={item.id}>{lang === "english" && item.name_en || lang === "arabic" && item.name_ar || lang === "french" && item.name_fr}</option>
                                             ))}

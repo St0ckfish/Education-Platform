@@ -11,10 +11,10 @@ export const AllCoursesSlice = createApi({
     endpoints: (builder) => ({
         getAllCourses: builder.query({
             query: ({token , page , search} : {token: string , page: number , search: string}) => ({
-                url: `management/course/all?size=10&page=${page}${search !== "" ? `&search=${search}` : ""} `,
+                url: `management/course/all?size=10&page=${page}${search !== "" ? `&search=${search}` : ""}`,
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`
+                    "Authorization":`Bearer ${token}`
                 },
                 
             }),

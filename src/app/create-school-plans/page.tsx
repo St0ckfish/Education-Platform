@@ -54,7 +54,6 @@ const CreateSchoolPlans = () => {
                 theme: "light",
             });
             router.push("/school-plans")
-
         }
 
     }

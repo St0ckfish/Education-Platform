@@ -12,6 +12,7 @@ const ResourseManagement = () => {
     const [search , setSearch] = useState("")
 
     const {data , isLoading } = useGetAllCoursesQuery({token , page:currentPage , search})
+    console.log('courses:', data)
 
     return (
         <>

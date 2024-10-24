@@ -49,7 +49,7 @@ const EditSchool = () => {
     const [openLanguages, setOpenLanguages] = useState(false);
     const [openLevels, setOpenLevels] = useState(false);
     const [openEducations, setOpenEducations] = useState(false);
-
+    console.log(successLevels, dataLevels)
     useEffect(() => {
         if (successSchool && dataSchool?.data) {
             setName(dataSchool.data.name || "");

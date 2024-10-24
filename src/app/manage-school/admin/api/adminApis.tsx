@@ -56,7 +56,7 @@ export const adminAPi = createApi({
         }),
         getRegions: builder.query({
             query: (token: string) => ({
-                url: "management/region/all?size=100",
+                url: "management/region/all?page=0&size=1000000",
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
