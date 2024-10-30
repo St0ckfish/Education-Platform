@@ -20,10 +20,12 @@ import { ResetPassword } from "../(auth)/reset-password/api/resetPassword";
 import { createSchoolPlanApi } from "../create-school-plans/api/createSchoolPlansApi";
 import { profileApis } from "@/components/api/profileApi";
 import { createSchoolPermissionsSlice } from "../manage-school/features/[id]/api/schoolPermissions";
+import { authSlice } from "./AuthSlice";
 
 export const store = configureStore({
     reducer: { // RootReducer
         theme: ThemeSlice,
+        auth: authSlice.reducer,
         [loginSlice.reducerPath]: loginSlice.reducer,
         [courseSlice.reducerPath]: courseSlice.reducer,
         [feedbackSlice.reducerPath]: feedbackSlice.reducer,

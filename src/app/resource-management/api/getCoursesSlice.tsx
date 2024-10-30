@@ -1,6 +1,6 @@
+// getCoursesSlice.js
 import { baseUrl } from "@/app/api/axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 
 export const AllCoursesSlice = createApi({
     reducerPath: "getCourses",
@@ -16,7 +16,6 @@ export const AllCoursesSlice = createApi({
                 headers: {
                     "Authorization":`Bearer ${token}`
                 },
-                
             }),
             providesTags: ["courses"]
         }),
@@ -27,7 +26,6 @@ export const AllCoursesSlice = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-                
             }),
             providesTags: ["courses"]
         }),
@@ -38,7 +36,16 @@ export const AllCoursesSlice = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-                
+            }),
+            providesTags: ["courses"]
+        }),
+        getAllLessons: builder.query({
+            query: ({token , id} : {token: string , id: any}) => ({
+                url: `management/lesson/all?page=0&size=1000000&courseId=${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
             }),
             providesTags: ["courses"]
         }),
@@ -49,7 +56,16 @@ export const AllCoursesSlice = createApi({
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
-                
+            }),
+            providesTags: ["courses"]
+        }),
+        getLessonFiles: builder.query({
+            query: ({token , id} : {token: string , id: any}) => ({
+                url: `management/lesson/files?courseId=${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
             }),
             providesTags: ["courses"]
         }),
@@ -63,7 +79,71 @@ export const AllCoursesSlice = createApi({
             }),
             invalidatesTags: ["courses"]
         }),
+        updateCourse: builder.mutation({
+            query: ({ token, data, id }: { token: string, data: object, id: string | string[] }) => ({
+                url: `management/course/${id}`,
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: data,
+            }),
+            invalidatesTags: ["courses"],
+        }),
+        updateLesson: builder.mutation({
+            query: ({ token, data, id }: { token: string, data: object, id: number }) => ({
+                url: `management/lesson/${id}`,
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: data,
+            }),
+            invalidatesTags: ["courses"],
+        }),
+        updateTopicFile: builder.mutation({
+            query: ({ token, data, id }: { token: string, data: File | null, id: number }) => {
+              // إنشاء كائن FormData
+              const formData = new FormData();
+              if (data) {
+                formData.append('file', data);
+              }
+          
+              return {
+                url: `management/lesson-topic/${id}/file`,
+                method: 'PUT',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+              };
+            },
+            invalidatesTags: ["courses"],
+          }),          
+          AddTopic: builder.mutation({
+            query: ({ token, data }: { token: string, data: FormData }) => ({
+                url: `management/lesson-topic`,
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: data,
+            }),
+        }),
     })
-})
+});
 
-export const {useGetAllCoursesQuery , useGetLeassonQuery , useGetTopicQuery , useDeleteCourseMutation , useGetCourseByIdQuery } = AllCoursesSlice
+export const {
+  useGetAllCoursesQuery, 
+  useGetLeassonQuery, 
+  useGetAllLessonsQuery, 
+  useGetTopicQuery, 
+  useDeleteCourseMutation, 
+  useGetCourseByIdQuery,
+  useUpdateCourseMutation, 
+  useUpdateLessonMutation,
+  useGetLessonFilesQuery,
+  useUpdateTopicFileMutation,
+  useAddTopicMutation
+} = AllCoursesSlice;

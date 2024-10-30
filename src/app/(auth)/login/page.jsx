@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 
 const Login = () => {
     const reduxTheme = useSelector((state) => state.theme.theme);
-
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [loginAuth, { isError, error, isLoading: userLoading, data, isSuccess }] = useLoginMutation()
@@ -26,7 +25,6 @@ const Login = () => {
             const token = data.data;
             Cookies.set("token", token, { expires: 7 });
             window.location = "/"
-
         }
     }, [isSuccess, data, router]);
 
