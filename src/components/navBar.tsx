@@ -11,11 +11,15 @@ import { Dropdown, ToggleSwitch } from "flowbite-react";
 import Cookies from "js-cookie"
 import { StaticImageData } from 'next/image';
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setThemeRedux } from "@/app/GlobalRedux/ThemeSlice";
 import { useGetProfileQuery } from "./api/profileApi";
+import { RootState } from "@/app/GlobalRedux/store";
+import { login, logout } from "@/app/GlobalRedux/AuthSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const token = Cookies.get('token') || ""
   const [pathname, setPathname] = useState('');
   const [isLoginPage, setIsLoginPage] = useState(true);
@@ -69,9 +73,9 @@ const NavBar = () => {
 
   useEffect(() => {
     if (pathname === '/login' || pathname === '/forget-password' || pathname === '/reset-password' || pathname === '/otp') {
-      setIsLoginPage(false);
+      dispatch(logout());  
     } else {
-      setIsLoginPage(true);
+      dispatch(login());     
     }
   }, [pathname]);
 
@@ -129,10 +133,10 @@ const NavBar = () => {
     Cookies.remove("token")
     toggleProfile()
     router.push("/login")
+    dispatch(logout());
   }
 
   const mode = Cookies.get("mode")
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (mode === "light") {
@@ -304,7 +308,7 @@ const NavBar = () => {
     <>
 
       <header>
-        {isLoginPage ? (
+        {isLoggedIn ? (
 
           <div>
 

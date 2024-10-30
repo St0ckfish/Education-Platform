@@ -1,13 +1,12 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation';
+import { useGetCourseByIdQuery, useUpdateCourseMutation } from '../api/getCoursesSlice';
+import Cookies from "js-cookie"
+import ThirdStepUpdate from '../components/steps/ThirdStepUpdate';
 import FirstStep from '@/app/create-course/components/steps/FirstStep';
 import SecoundStep from '@/app/create-course/components/steps/SecoundStep';
-import ThirdStep from '@/app/create-course/components/steps/ThirdStep';
 import FourthStep from '@/app/create-course/components/steps/FourthStep';
-import { useAddCourseMutation } from '@/app/create-course/api/createCourseSlice';
-import { useParams } from 'next/navigation';
-import { useGetCourseByIdQuery } from '../api/getCoursesSlice';
-import Cookies from "js-cookie"
 
 function Page() {
     const [activeStep, setActiveStep] = useState(0);
@@ -46,8 +45,8 @@ function Page() {
         }
     },[data])
 
-    const [addCourse, { data : dataAdded}] = useAddCourseMutation();
-    console.log(dataAdded);
+    const [updateCourse, { data : dataAdded}] = useUpdateCourseMutation();
+    console.log('dataAdded', dataAdded);
     const handleNext = () => {
         setActiveStep((cur) => cur + 1)
     }
@@ -69,11 +68,18 @@ function Page() {
             "description_en": description_en,
             "description_ar": description_ar,
             "description_fr": description_fr,
-            "prerequisiteIds": prerequisites
-        }
-        addCourse({ token, data: objectReq }).unwrap()
+            "prerequisiteIds": prerequisites,
+            "coefficient": 2, //optional
+            // Get possiable values from: /api/v1/public/enumeration/semester-name
+            "semesterName" : "FALL", //optional
+            // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
+            "secondarySchoolDepartment": "SCIENTIFIC", //optional
+            // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
+            "subDepartment": "PHYSICAL_SCIENCES" //optional
+            }
+        updateCourse({ token, data: objectReq, id: params.id }).unwrap()
     }
-
+ 
     const steps = [
         {
             step: 1,
@@ -120,7 +126,7 @@ function Page() {
         {
             step: 3,
             about: "Course Content",
-            ele: <ThirdStep dataAddCourse={dataAdded} handleNext={handleNext} handlePrev={handlePrev} />
+            ele: <ThirdStepUpdate dataAddCourse={dataAdded} handleNext={handleNext} handlePrev={handlePrev} />
         },
         {
             step: 4,

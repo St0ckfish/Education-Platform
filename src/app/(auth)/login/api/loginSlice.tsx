@@ -18,4 +18,4 @@ export const loginSlice = createApi({
 })
 
 
-export const {useLoginMutation  } = loginSlice
+export const { useLoginMutation  } = loginSlice

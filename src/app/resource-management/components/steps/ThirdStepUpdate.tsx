@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { FileInput, Label, TextInput } from "flowbite-react";
-import { useAddLessonMutation } from "../../api/createCourseSlice";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useGetAllLessonsQuery, useGetLeassonQuery, useUpdateLessonMutation } from "@/app/resource-management/api/getCoursesSlice";
+import { useGetAllLessonsQuery, useGetLeassonQuery, useGetLessonFilesQuery, useUpdateLessonMutation, useUpdateTopicFileMutation } from "@/app/resource-management/api/getCoursesSlice";
+import { useAddLessonMutation } from "@/app/create-course/api/createCourseSlice";
 // import { useUpdateLessonMutation } from "@/app/resource-management/[id]/api/updateCourseSlice";
 
 interface ThirdStepProps {
@@ -14,7 +14,7 @@ interface ThirdStepProps {
   dataAddCourse: any;
 }
 
-const ThirdStep: React.FC<ThirdStepProps> = ({
+const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
   dataAddCourse,
   handleNext,
   handlePrev,
@@ -32,6 +32,10 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   const [lessonGoalsEn, setLessonGoalsEn] = useState("");
   const [lessonGoalsAr, setLessonGoalsAr] = useState("");
   const [lessonGoalsFr, setLessonGoalsFr] = useState("");
+  const [topicID, setTopicId] = useState(0);
+  const [topicFile, setTopicFile] = useState<File | null>(null);
+  const [topicIds, setTopicIds] = useState<number[]>([]);
+  const [topicsToSend, setTopicsToSend] = useState<any[]>([]);
 
   const [tutorials, setTutorials] = useState<File[]>([] as File[]);
 
@@ -41,6 +45,26 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
 
   const { data: dataLesson } = useGetAllLessonsQuery({ token, id: params.id });
   console.log("dataLesson: ", dataLesson);
+  const topicsWithId = dataLesson?.data?.content[0]?.topics;
+  console.log('topicsWithId', topicsWithId);
+  const idLesson = dataLesson?.data?.content[0]?.lessonId;
+  console.log('idLesson', idLesson);
+
+  // console.log('idTopic', idTopic)
+  const { data: dataLessonUpdate } = useGetLeassonQuery({ token, id: idLesson});
+  console.log('dataLessonUpdate: ', dataLessonUpdate);
+  const { data: dataLessonFiles } = useGetLessonFilesQuery({ token, id: params.id});
+  console.log('dataLessonFiles: ', dataLessonFiles);
+
+  useEffect(() => {
+      setLessonNameEn(dataLessonUpdate?.data?.name_en || "");
+      setLessonNameAr(dataLessonUpdate?.data?.name_ar || "");
+      setLessonNameFr(dataLessonUpdate?.data?.name_fr || "");
+      setLessonGoalsEn(dataLessonUpdate?.data?.goals_en || "");
+      setLessonGoalsAr(dataLessonUpdate?.data?.goals_ar || "");
+      setLessonGoalsFr(dataLessonUpdate?.data?.goals_fr || "");
+      setAllTopics(dataLessonUpdate?.data?.topics || []);
+  }, [dataLessonUpdate]);
 
   console.log('alltopics', allTopics);
   const [addLesson, { data, error, isError, isSuccess }] =
@@ -49,31 +73,80 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
 
   const [updateLesson, {data: dataUpdate}] = useUpdateLessonMutation();
   console.log('dataUpdate: ', dataUpdate)
+
+  const [updateTopicFile, {data: dataTopicFile}] = useUpdateTopicFileMutation();
   
-  console.log('tutorials: ',tutorials)
 //   updateLesson({ token, data, id: params.id});
 
-  const handleSend = async () => {
-    const reqObject = {
-      courseId: dataAddCourse?.data?.id || params.id,
-      name_en: lessonNameEn,
-      name_ar: lessonNameAr,
-      name_fr: lessonNameFr,
-      goals_en: lessonGoalsEn,
-      goals_ar: lessonGoalsAr,
-      goals_fr: lessonGoalsFr,
-      topics: allTopics,
+  useEffect(() => {
+    const ids = topicsWithId?.map((topic: any) => topic.topicId) || [];
+    setTopicIds(ids);
+  }, [topicsWithId]);
+
+    console.log('topicIds: ', topicIds);
+
+    useEffect(() => {
+      if (topicIds.length > 0) {
+        const updatedTopicsToSend = allTopics.map((topic, index) => ({
+          id: topicIds[index],
+          name_en: topic.name_en,
+          name_ar: topic.name_ar,
+          name_fr: topic.name_fr,
+          videoUrls: topic.videoUrls, 
+        }));
+        setTopicsToSend(updatedTopicsToSend);
+      }
+    }, [topicIds, allTopics]);    
+
+    console.log('topicsToSend:', topicsToSend);
+
+    const handleSend = async () => {
+      
+      const dataUpdated = {
+        name_en: lessonNameEn,
+        name_ar: lessonNameAr,
+        name_fr: lessonNameFr,
+        goals_en: lessonGoalsEn,
+        goals_ar: lessonGoalsAr,
+        goals_fr: lessonGoalsFr,
+        topics: topicsToSend,
+      };
+    
+      try {
+        await updateLesson({ token, data: dataUpdated, id: idLesson }).unwrap();
+        toast.success("Lesson updated successfully");
+        router.push("/resource-management");
+      } catch (error) {
+        toast.error("Failed to update lesson");
+      }
     };
+  console.log('allTopics', allTopics);
 
-    const formData = new FormData();
-    formData.append("request", JSON.stringify(reqObject));
+  // const handleChangeFile = (file: File, index: number) => {
+  //   // setTopicFile();
+  //   // if (!tutorials[index]) {
+  //     setTopicId(dataLesson?.data?.content[0]?.topics[index]?.topicId)
+  //     console.log('while sending', file);
+  //     updateTopicFile({ token, data: file, id: topicID});
+  //   // }
+  // }
+  const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>, index: number) => {
+  if (e.target.files && e.target.files[0]) {
+    const file = e.target.files[0];
+    const topicId = topicsWithId[index]?.topicId;
 
-    tutorials.forEach((item) => {
-      formData.append(`files`, item);
-    });
-      addLesson({ token, data: formData });
-  };
-//   console.log('allTopics', allTopics)
+    if(topicId) {
+      try {
+        await updateTopicFile({ token, data: file, id: topicId }).unwrap();
+        toast.success("File updated successfully");
+      } catch (error) {
+        toast.error("Failed to update file");
+      }
+    }
+
+  }
+};
+
 
   const addNewTopic = () => {
     setAllTopics([
@@ -126,6 +199,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
     const updatedTopics = allTopics.filter((_, i) => i !== index);
     setAllTopics(updatedTopics);
   };
+
+
+  console.log('tutorials: ',tutorials)
+  console.log('tutorials[0] ',tutorials[0])
+  console.log('tutorials[0] ',tutorials[0]?.name)
+
 
   useEffect(() => {
     if (isError) {
@@ -361,7 +440,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <TextInput
                     type="text"
                     placeholder="Enter topic name"
-                    // TODO: make the value={topic.name_en || ""}
                     value={topic.name_en || ""}
                     onChange={(e) =>
                     //   updateTopic(index, "name_en", e.target.value)
@@ -410,13 +488,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                       className="md:text-lg capitalize font-medium"
                       value="Tutorial"
                     />
+                    <a className="ml-4 text-blue-600" href={dataLessonFiles?.data[index]}>Download the file</a>
                   </div>
                   <FileInput
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        addTutorial(e.target.files[0]);
-                      }
-                    }}
+                    // value= || ""}
+                    // onChange={(e) => {
+                    //   if (e.target.files && e.target.files.length > 0) {
+                    //     addTutorial(e.target.files[0] || "empty");
+                    //     handleChangeFile(e.target.files[0], index)
+                    //   }
+                    // }}
+                    onChange={(e) => handleChangeFile(e, index)
+                      
+                    }
                   />
                 </div>
 
@@ -564,4 +648,4 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   );
 };
 
-export default ThirdStep;
+export default ThirdStepUpdate;
