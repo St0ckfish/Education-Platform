@@ -120,8 +120,17 @@ export const AllCoursesSlice = createApi({
               };
             },
             invalidatesTags: ["courses"],
-          }),
-          
+          }),          
+          AddTopic: builder.mutation({
+            query: ({ token, data }: { token: string, data: FormData }) => ({
+                url: `management/lesson-topic`,
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: data,
+            }),
+        }),
     })
 });
 
@@ -135,5 +144,6 @@ export const {
   useUpdateCourseMutation, 
   useUpdateLessonMutation,
   useGetLessonFilesQuery,
-  useUpdateTopicFileMutation
+  useUpdateTopicFileMutation,
+  useAddTopicMutation
 } = AllCoursesSlice;

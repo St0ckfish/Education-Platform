@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useGetAllLessonsQuery, useGetLeassonQuery, useGetLessonFilesQuery, useUpdateLessonMutation, useUpdateTopicFileMutation } from "@/app/resource-management/api/getCoursesSlice";
 import { useAddLessonMutation } from "@/app/create-course/api/createCourseSlice";
+import AddTopic from "./AddTopic";
 // import { useUpdateLessonMutation } from "@/app/resource-management/[id]/api/updateCourseSlice";
 
 interface ThirdStepProps {
@@ -24,6 +25,10 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
   const token = Cookies.get("token") || "";
   const params = useParams();
   console.log("params: ", params);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openPopup = () => setIsOpen(true);
+  const closePopup = () => setIsOpen(false);
 
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [lessonNameEn, setLessonNameEn] = useState("");
@@ -570,9 +575,9 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
           </div>
         ))}
         <button
-          onClick={addNewTopic}
-          className="flex items-center my-5 hover:opacity-80"
-        >
+              onClick={openPopup}
+              className="flex items-center my-5 hover:opacity-80"
+          >
           <svg
             width="20"
             height="21"
@@ -644,6 +649,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
           </svg>
         </button>
       </div>
+      {isOpen && <AddTopic onClose={closePopup} idLesson={idLesson} />}
     </div>
   );
 };
