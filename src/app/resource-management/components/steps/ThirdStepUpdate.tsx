@@ -52,18 +52,22 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     { name_en: "", name_ar: "", name_fr: "", videoUrls: [""] },
   ]);
 
-  const { data: dataLesson } = useGetAllLessonsQuery({ token, id: params.id });
+  const { data: dataLesson, refetch: refetchGetAllLessons } = useGetAllLessonsQuery({ token, id: params.id });
   // console.log("dataLesson: ", dataLesson);
   const topicsWithId = dataLesson?.data?.content[0]?.topics;
-  // console.log('topicsWithId', topicsWithId);
+  console.log('topicsWithId', topicsWithId);
   const idLesson = dataLesson?.data?.content[0]?.lessonId;
   // console.log('idLesson', idLesson);
 
   // console.log('idTopic', idTopic)
-  const { data: dataLessonUpdate, refetch } = useGetLeassonQuery({ token, id: idLesson});
+  const { data: dataLessonUpdate, refetch :refetchGetLesson } = useGetLeassonQuery({ token, id: idLesson});
   // console.log('dataLessonUpdate: ', dataLessonUpdate);
   const { data: dataLessonFiles } = useGetLessonFilesQuery({ token, id: params.id});
   // console.log('dataLessonFiles: ', dataLessonFiles);
+  const refetch = () => {
+    refetchGetAllLessons();
+    refetchGetLesson();
+  }
 
   useEffect(() => {
       setLessonNameEn(dataLessonUpdate?.data?.name_en || "");
@@ -92,7 +96,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     setTopicIds(ids);
   }, [topicsWithId]);
 
-    // console.log('topicIds: ', topicIds);
+    console.log('topicIds: ', topicIds);
 
     useEffect(() => {
       if (topicIds.length > 0) {
@@ -109,8 +113,8 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
 
     console.log('topicsToSend:', topicsToSend);
 
+    
     const handleSend = async () => {
-      
       const dataUpdated = {
         name_en: lessonNameEn,
         name_ar: lessonNameAr,
@@ -120,7 +124,9 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
         goals_fr: lessonGoalsFr,
         topics: topicsToSend,
       };
-    
+
+      refetchGetAllLessons();
+      
       try {
         await updateLesson({ token, data: dataUpdated, id: idLesson }).unwrap();
         toast.success("Lesson updated successfully");
@@ -129,16 +135,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
         toast.error("Failed to update lesson, please try again");
       }
     };
-  // console.log('allTopics', allTopics);
 
-  // const handleChangeFile = (file: File, index: number) => {
-  //   // setTopicFile();
-  //   // if (!tutorials[index]) {
-  //     setTopicId(dataLesson?.data?.content[0]?.topics[index]?.topicId)
-  //     console.log('while sending', file);
-  //     updateTopicFile({ token, data: file, id: topicID});
-  //   // }
-  // }
   const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>, index: number) => {
   if (e.target.files && e.target.files[0]) {
     const file = e.target.files[0];
@@ -156,14 +153,6 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
   }
 };
 
-
-  const addNewTopic = () => {
-    setAllTopics([
-      ...allTopics,
-      { name_en: "", name_ar: "", name_fr: "", videoUrls: [""] },
-    ]);
-    setVisibleIndex(allTopics.length);
-  };
 
   const updateTopic = (index: number, field: string, value: any) => {
     const updatedTopics = [...allTopics];
@@ -193,10 +182,6 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     setAllTopics(updatedTopics);
   };
 
-  const addTutorial = (file: File) => {
-    setTutorials((prevTutorials) => [...prevTutorials, file]);
-  };
-
   const toggleVisibility = (index: number) => {
     setVisibleIndex(index);
   };
@@ -208,12 +193,6 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     const updatedTopics = allTopics.filter((_, i) => i !== index);
     setAllTopics(updatedTopics);
   };
-
-
-  // console.log('tutorials: ',tutorials)
-  // console.log('tutorials[0] ',tutorials[0])
-  // console.log('tutorials[0] ',tutorials[0]?.name)
-
 
   useEffect(() => {
     if (isError) {

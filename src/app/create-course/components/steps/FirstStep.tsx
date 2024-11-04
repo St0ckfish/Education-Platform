@@ -166,7 +166,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
           <TextInput value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" placeholder="Enter code" required />
         </div>
       </div>
-      <h3 className='font-semibold my-5 md:text-xl	text-[#526484]'>Category</h3>
+      <h3 className='font-semibold my-5 md:text-xl text-[#526484]'>Category</h3>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseNameEn" value="Course name English" />

@@ -10,7 +10,6 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useGetAllLessonsQuery, useGetLeassonQuery, useUpdateLessonMutation } from "@/app/resource-management/api/getCoursesSlice";
-// import { useUpdateLessonMutation } from "@/app/resource-management/[id]/api/updateCourseSlice";
 
 interface ThirdStepProps {
   handleNext: () => void;
@@ -55,7 +54,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   console.log('dataUpdate: ', dataUpdate)
   
   console.log('tutorials: ',tutorials)
-//   updateLesson({ token, data, id: params.id});
 
   const handleSend = async () => {
     const reqObject = {

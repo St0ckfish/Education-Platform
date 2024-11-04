@@ -56,7 +56,7 @@ function Page() {
     }
     const handleSend = async () => {
         const objectReq = {
-            "code": code,
+            "code": code.toUpperCase(),
             "countryId": countryId,
             "level": level,
             "registrationType": registrationType,
@@ -69,14 +69,15 @@ function Page() {
             "description_ar": description_ar,
             "description_fr": description_fr,
             "prerequisiteIds": prerequisites,
-            "coefficient": 2, //optional
+            // "coefficient": 2, //optional
             // Get possiable values from: /api/v1/public/enumeration/semester-name
-            "semesterName" : "FALL", //optional
+            // "semesterName" : "FALL", //optional
             // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
-            "secondarySchoolDepartment": "SCIENTIFIC", //optional
+            // "secondarySchoolDepartment": "SCIENTIFIC", //optional
             // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
-            "subDepartment": "PHYSICAL_SCIENCES" //optional
+            // "subDepartment": "PHYSICAL_SCIENCES" //optional
             }
+            console.log('objectReq: ', objectReq);
         updateCourse({ token, data: objectReq, id: params.id }).unwrap()
     }
  
