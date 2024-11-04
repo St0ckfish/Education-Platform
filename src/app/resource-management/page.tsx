@@ -21,7 +21,7 @@ const ResourseManagement = () => {
                     data?.data?.empty ?
                     <EmptyCourses/>
                     :
-                    <Courses search={search} setSearch={setSearch} isLoading={isLoading} setCurrentPage={setCurrentPage} data={data}/>
+                    <Courses search={search} setSearch={setSearch} isLoading={isLoading} setCurrentPage={setCurrentPage} data={data} />
                 }
             </div>
         </>

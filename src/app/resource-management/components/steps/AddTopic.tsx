@@ -15,10 +15,11 @@ interface Topic {
 
 interface AddTopicProps {
     onClose: () => void;
-    idLesson: string; // تغيير هنا
+    onAddSuccess: () => void;
+    idLesson: string;
 }
 
-const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
+const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson, onAddSuccess }) => {
     const token = Cookies.get('token') || "";
     const [addTopic] = useAddTopicMutation();
     const [topic, setTopic] = useState<Topic>({
@@ -53,25 +54,42 @@ const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
+        setTopic((prevTopic) => ({
+            ...prevTopic,
+            name_en: event.target.files 
+                ? event.target.files[0].name
+                    .replace(/^نسخة من\s*/, '')       // Remove "نسخة من" and any spaces after it
+                    .replace(/\.pdf$|\.docx$/, '')    // Remove .pdf and .docx extensions
+                : prevTopic.name_en,
+            name_ar: event.target.files 
+                ? event.target.files[0].name
+                    .replace(/^نسخة من\s*/, '')
+                    .replace(/\.pdf$|\.docx$/, '')
+                : prevTopic.name_ar,
+            name_fr: event.target.files 
+                ? event.target.files[0].name
+                    .replace(/^نسخة من\s*/, '')
+                    .replace(/\.pdf$|\.docx$/, '')
+                : prevTopic.name_fr,
+        }));
+              
+        
         updateTopic('file', file);
     };
 
     const handleSubmit = async () => {
         const formData = new FormData();
     
-        // إنشاء كائن request يتضمن جميع البيانات
         const requestData = {
-            lessonId: idLesson, // استخدام idLesson هنا
+            lessonId: idLesson,
             name_en: topic.name_en,
             name_ar: topic.name_ar,
             name_fr: topic.name_fr,
             videoUrls: topic.videoUrls,
         };
     
-        // إضافة كائن request إلى formData
         formData.append("request", JSON.stringify(requestData));
     
-        // إضافة الملف إذا كان موجودًا
         if (topic.file) {
             formData.append("file", topic.file);
         }
@@ -79,7 +97,6 @@ const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
         try {
             await addTopic({ token, data: formData }).unwrap();
             toast.success("Topic added successfully");
-            // إعادة تعيين الحالة بعد الإضافة
             setTopic({
                 name_en: '',
                 name_ar: '',
@@ -88,6 +105,7 @@ const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
                 file: null,
             });
             onClose();
+            onAddSuccess(); 
         } catch (error) {
             toast.error("Failed to add topic");
         }
@@ -95,33 +113,33 @@ const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
 
     return (
         <Modal show onClose={onClose}>
-            <Modal.Header>Add New Topic</Modal.Header>
+            <Modal.Header>Add New Lesson</Modal.Header>
             <Modal.Body>
                 <div className="my-3">
-                    <Label className="md:text-lg capitalize font-medium" value="Topic Name English" />
+                    <Label className="md:text-lg capitalize font-medium" value="Lesson Name English" />
                     <TextInput
                         type="text"
-                        placeholder="Enter topic name"
+                        placeholder="Enter Lesson Name "
                         value={topic.name_en}
                         onChange={(e) => updateTopic('name_en', e.target.value)}
                         required
                     />
                 </div>
                 <div className="my-3">
-                    <Label className="md:text-lg capitalize font-medium" value="Topic Name Arabic" />
+                    <Label className="md:text-lg capitalize font-medium" value="Lesson Name Arabic" />
                     <TextInput
                         type="text"
-                        placeholder="Enter topic name"
+                        placeholder="Enter Lesson Name "
                         value={topic.name_ar}
                         onChange={(e) => updateTopic('name_ar', e.target.value)}
                         required
                     />
                 </div>
                 <div className="my-3">
-                    <Label className="md:text-lg capitalize font-medium" value="Topic Name French" />
+                    <Label className="md:text-lg capitalize font-medium" value="Lesson Name French" />
                     <TextInput
                         type="text"
-                        placeholder="Enter topic name"
+                        placeholder="Enter Lesson Name "
                         value={topic.name_fr}
                         onChange={(e) => updateTopic('name_fr', e.target.value)}
                         required
@@ -169,8 +187,8 @@ const AddTopic: React.FC<AddTopicProps> = ({ onClose, idLesson }) => {
                 ))}
 
                 <div className="flex justify-center">
-                    <Button onClick={handleSubmit} className="bg-blue-500 text-white py-2 px-4 rounded">
-                        Add Topic
+                    <Button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                        Add Lesson
                     </Button>
                 </div>
             </Modal.Body>

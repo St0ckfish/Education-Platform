@@ -1,3 +1,7 @@
+// Lesson = Chapter Now
+// Topic = Lesson Now
+// TODO: change the name of variables to be more clear
+
 import React, { useEffect, useState } from "react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { useAddLessonMutation } from "../../api/createCourseSlice";
@@ -175,15 +179,15 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   }, [isSuccess, router]);
 
   return (
-    <div className="bg-white card p-3 shadow-md  rounded-md">
+    <div className="bg-white card p-3 shadow-md rounded-md">
       <div>
-        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">Lesson</h3>
+        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">Chapter</h3>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameEn"
-              value="Lesson Name English"
+              value="Chapter Name English"
             />
           </div>
           <TextInput
@@ -191,7 +195,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameEn(e.target.value)}
             id="LessonNameEn"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
         </div>
@@ -200,7 +204,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameAr"
-              value="Lesson Name Arabic"
+              value="Chapter Name Arabic"
             />
           </div>
           <TextInput
@@ -208,7 +212,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameAr(e.target.value)}
             id="LessonNameAr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
         </div>
@@ -217,7 +221,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameFr"
-              value="Lesson Name French"
+              value="Chapter Name French"
             />
           </div>
           <TextInput
@@ -225,7 +229,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameFr(e.target.value)}
             id="LessonNameFr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
         </div>
@@ -234,7 +238,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsEn"
-              value="Lesson Goals English"
+              value="Chapter Goals English"
             />
           </div>
           <TextInput
@@ -242,7 +246,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsEn(e.target.value)}
             id="LessonGoalsEn"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
         </div>
@@ -251,7 +255,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsAr"
-              value="Lesson Goals Arabic"
+              value="Chapter Goals Arabic"
             />
           </div>
           <TextInput
@@ -259,7 +263,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsAr(e.target.value)}
             id="LessonGoalsAr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
         </div>
@@ -268,7 +272,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsFr"
-              value="Lesson Goals French"
+              value="Chapter Goals French"
             />
           </div>
           <TextInput
@@ -276,17 +280,17 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsFr(e.target.value)}
             id="LessonGoalsFr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
         </div>
-        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Topic</h3>
+        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Lesson</h3>
 
         {allTopics?.map((topic, index) => (
           <div key={index}>
             <div className="flex justify-between items-center py-2">
               <div className="text-lg font-medium text-gray-800 dark:text-white">
-                {index + 1}. Course Tools
+               Lesson .{index + 1}
               </div>
               <div className="flex items-center space-x-2">
                 {allTopics.length > 1 && (
@@ -355,13 +359,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name English"
+                      value="Lesson Name English"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
-                    // TODO: make the value={topic.name_en || ""}
+                    placeholder="Enter Lesson Name "
                     value={topic.name_en || ""}
                     onChange={(e) =>
                     //   updateTopic(index, "name_en", e.target.value)
@@ -374,12 +377,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name Arabic"
+                      value="Lesson Name  Arabic"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter Lesson Name "
                     value={topic.name_ar || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_ar", e.target.value)
@@ -391,12 +394,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name French"
+                      value="Lesson Name  French"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter Lesson Name "
                     value={topic.name_fr || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_fr", e.target.value)
