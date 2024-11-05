@@ -5,6 +5,7 @@ import SecoundStep from "./components/steps/SecoundStep";
 import ThirdStep from "./components/steps/ThirdStep";
 import { useAddCourseMutation } from "./api/createCourseSlice";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -36,12 +37,9 @@ function Page() {
     const objectReq = {
       countryId: countryId, // Get possible values from /api/v1/management/country/all
       code: code,
-      // Get possiable values from: /api/v1/public/enumeration/study-level
-      level: level,
-      // Get possiable values from: /api/v1/public/enumeration/registration-type
-      registrationType: registrationType,
-      // Get possiable values from: /api/v1/public/enumeration/language
-      language: language,
+      level: level, // Get possible values from: /api/v1/public/enumeration/study-level
+      registrationType: registrationType, // Get possible values from: /api/v1/public/enumeration/registration-type
+      language: language, // Get possible values from: /api/v1/public/enumeration/language
       eduSystemId: eduSystemId,
       name_en: name_en,
       name_ar: name_ar,
@@ -49,18 +47,23 @@ function Page() {
       description_en: description_en,
       description_ar: description_ar,
       description_fr: description_fr,
-      prerequisiteIds: prerequisites, // list of courses ids, can be empty list
-        // coefficient: 2, //optional
-      // Get possiable values from: /api/v1/public/enumeration/semester-name
-      // semesterName: "FALL", //optional
-      // // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
-      // secondarySchoolDepartment: "SCIENTIFIC", //optional
-      // // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
-      // subDepartment: "PHYSICAL_SCIENCES", //optional
+      prerequisiteIds: prerequisites, // list of courses ids, can be an empty list
+      // coefficient: 2, // optional
+      // semesterName: "FALL", // optional // Get possible values from: /api/v1/public/enumeration/semester-name
+      // secondarySchoolDepartment: "SCIENTIFIC", // optional // Get possible values from: /api/v1/public/enumeration/secondary-school-department
+      // subDepartment: "PHYSICAL_SCIENCES", // optional // Get possible values from: /api/v1/public/enumeration/secondary-school-sub-department
     };
-    addCourse({ token, data: objectReq }).unwrap();
-    console.log("data:", objectReq);
+  
+    try {
+      // Await the promise returned by addCourse
+      const response = await addCourse({ token, data: objectReq }).unwrap();
+      toast.success("Course added successfully!");
+    } catch (error) {
+      toast.error("Error adding course: ");
+    }
+  
   };
+  
 
   const steps = [
     {

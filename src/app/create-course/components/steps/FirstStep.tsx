@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { Label, Select, Textarea, TextInput } from "flowbite-react";
 import style from "./style.module.css"
 import { useGetCountryQuery, useGetEduSystemQuery, useGetLanguageQuery, useGetRegistrationTypeQuery, useGetStudyLevelQuery } from '../../api/createCourseSlice';
@@ -69,14 +69,134 @@ const FirstStep: React.FC<FirstStepProps> = ({
   const { data: dataLang, isSuccess: successLanguage } = useGetLanguageQuery(token)
   const { data: dataRegistrationType, isSuccess: successRegistrationType } = useGetRegistrationTypeQuery(token)
   const { data: dataStudyLevel, isSuccess: successStudyLevel } = useGetStudyLevelQuery(token)
+
+  // Error Messages
+  const [countryError, setCountryError] = useState("");
+  const [eduSystemError, setEduSystemError] = useState("");
+  const [languageError, setLanguageError] = useState("");
+  const [registrationTypeError, setRegistrationTypeError] = useState("");
+  const [levelError, setLevelError] = useState("");
+  const [codeError, setCodeError] = useState("");
+  const [nameEnError, setNameEnError] = useState("");
+  const [nameArError, setNameArError] = useState("");
+  const [nameFrError, setNameFrError] = useState("");
+  const [descriptionEnError, setDescriptionEnError] = useState("");
+  const [descriptionArError, setDescriptionArError] = useState("");
+  const [descriptionFrError, setDescriptionFrError] = useState("");
+  const validateFields = () => {
+    let isValid = true;
+
+    // Reset error messages
+    setCountryError("");
+    setEduSystemError("");
+    setLanguageError("");
+    setRegistrationTypeError("");
+    setLevelError("");
+    setCodeError("");
+    setNameEnError("");
+    setNameArError("");
+    setNameFrError("");
+    setDescriptionEnError("");
+    setDescriptionArError("");
+    setDescriptionFrError("");
+
+    if (!countryId) {
+      setCountryError("Country is required");
+      isValid = false;
+    } else {
+      setCountryError("");
+    }
+    if (!eduSystemId) {
+      setEduSystemError("Education System is required");
+      isValid = false;
+    } else {
+      setEduSystemError("");
+    }
+
+    if (!language) {
+      setLanguageError("Language is required");
+      isValid = false;
+    } else {
+      setLanguageError("");
+    }
+
+    if (!registrationType) {
+      setRegistrationTypeError("Registration type is required");
+      isValid = false;
+    } else {
+      setRegistrationTypeError("");
+    }
+
+    if (!level) {
+      setLevelError("Grade Level is required");
+      isValid = false;
+    } else {
+      setLevelError("");
+    }
+
+    if (!code) {
+      setCodeError("Code is required");
+      isValid = false;
+    } else {
+      setCodeError("");
+    }
+
+    if (!name_en) {
+      setNameEnError("Course name in English is required");
+      isValid = false;
+    } else {
+      setNameEnError("");
+    }
+
+    if (!name_ar) {
+      setNameArError("Course name in Arabic is required");
+      isValid = false;
+    } else {
+      setNameArError("");
+    }
+
+    if (!name_fr) {
+      setNameFrError("Course name in French is required");
+      isValid = false;
+    } else {
+      setNameFrError("");
+    }
+
+    if (!description_en) {
+      setDescriptionEnError("Course description in English is required");
+      isValid = false;
+    } else {
+      setDescriptionEnError("");
+    }
+
+    if (!description_ar) {
+      setDescriptionArError("Course description in Arabic is required");
+      isValid = false;
+    } else {
+      setDescriptionArError("");
+    }
+
+    if (!description_fr) {
+      setDescriptionFrError("Course description in French is required");
+      isValid = false;
+    } else {
+      setDescriptionFrError("");
+    }
+
+    return isValid;
+  };
+
   const lang = Cookies.get("lang") || "english"
   return (
     <form className='bg-white card p-3 shadow-md shadow-[#00000040] rounded-md' onSubmit={(e) => {
-      e.preventDefault()
-      if (countryId && eduSystemId && language && registrationType && level) {
-        handleNext()
+      e.preventDefault();
+
+      const isValid = validateFields();
+      
+      if (isValid) {
+        handleNext();
       } else {
-        toast.warning("please fill the inputs data", {
+        toast.warning("Please fill all required fields", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -100,8 +220,9 @@ const FirstStep: React.FC<FirstStepProps> = ({
                 ))}
               </>
             )}
-
           </Select>
+          {countryError && <p className="text-red-500 text-xs italic">{countryError}</p>}
+
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="eduSystem">eduSystem <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -115,6 +236,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
               </>
             )}
           </Select>
+          {eduSystemError && <p className="text-red-500 text-xs italic">{eduSystemError}</p>}
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="language">language <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -130,6 +252,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
               </>
             )}
           </Select>
+          {languageError && <p className="text-red-500 text-xs italic">{languageError}</p>}
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="registrationType">registration type <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -145,6 +268,7 @@ const FirstStep: React.FC<FirstStepProps> = ({
               </>
             )}
           </Select>
+          {registrationTypeError && <p className="text-red-500 text-xs italic">{registrationTypeError}</p>}
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="grade">Grade Level <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -160,54 +284,62 @@ const FirstStep: React.FC<FirstStepProps> = ({
               </>
             )}
           </Select>
+          {levelError && <p className="text-red-500 text-xs italic">{levelError}</p>}
         </div>
         <div>
           <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="code">Code <span className='text-[#367AFF] text-xl'>*</span></label>
-          <TextInput value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" placeholder="Enter code" required />
+          <TextInput value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" placeholder="Enter code" />
+          {codeError && <p className="text-red-500 text-xs italic">{codeError}</p>}
         </div>
       </div>
       <h3 className='font-semibold my-5 md:text-xl text-[#526484]'>Category</h3>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseNameEn" value="Course name English" />
-          <span className='text-[#367AFF] text-2xl ms-1'>*</span>
+        <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <TextInput value={name_en} onChange={(e) => setName_en(e.target.value)} id="courseNameEn" type="text" placeholder="Enter course name" required />
+        <TextInput value={name_en} onChange={(e) => setName_en(e.target.value)} id="courseNameEn" type="text" placeholder="Enter course name" />
+          {nameEnError && <p className="text-red-500 text-xs italic">{nameEnError}</p>}
       </div>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseNameAr" value="Course name Arabic" />
           <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <TextInput value={name_ar} onChange={(e) => setName_ar(e.target.value)} id="courseNameAr" type="text" placeholder="Enter course name" required />
+        <TextInput value={name_ar} onChange={(e) => setName_ar(e.target.value)} id="courseNameAr" type="text" placeholder="Enter course name" />
+        {nameArError && <p className="text-red-500 text-xs italic">{nameArError}</p>}
       </div>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseNameFr" value="Course name French" />
           <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <TextInput value={name_fr} onChange={(e) => setName_fr(e.target.value)} id="courseNameFr" type="text" placeholder="Enter course name" required />
+        <TextInput value={name_fr} onChange={(e) => setName_fr(e.target.value)} id="courseNameFr" type="text" placeholder="Enter course name" />
+        {nameFrError && <p className="text-red-500 text-xs italic">{nameFrError}</p>}  
       </div>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseDescriptionEn" value="course description English" />
           <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <Textarea value={description_en} onChange={(e) => setDescription_en(e.target.value)} rows={7} id="courseDescriptionEn" placeholder="Write course description" required />
+        <Textarea value={description_en} onChange={(e) => setDescription_en(e.target.value)} rows={7} id="courseDescriptionEn" placeholder="Write course description" />
+        {descriptionEnError && <p className="text-red-500 text-xs italic">{descriptionEnError}</p>}
       </div>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseDescriptionAr" value="course description Arabic" />
           <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <Textarea value={description_ar} onChange={(e) => setDescription_ar(e.target.value)} rows={7} id="courseDescriptionAr" placeholder="Write course description" required />
+        <Textarea value={description_ar} onChange={(e) => setDescription_ar(e.target.value)} rows={7} id="courseDescriptionAr" placeholder="Write course description" />
+        {descriptionArError && <p className="text-red-500 text-xs italic">{descriptionArError}</p>}
       </div>
       <div>
         <div className="my-4 block">
           <Label className='md:text-lg capitalize font-medium' htmlFor="courseDescriptionFr" value="course description French" />
           <span className='text-[#367AFF] text-2xl ms-1'>*</span>
         </div>
-        <Textarea value={description_fr} onChange={(e) => setDescription_fr(e.target.value)} rows={7} id="courseDescriptionFr" placeholder="Write course description" required />
+        <Textarea value={description_fr} onChange={(e) => setDescription_fr(e.target.value)} rows={7} id="courseDescriptionFr" placeholder="Write course description" />
+        {descriptionFrError && <p className="text-red-500 text-xs italic">{descriptionFrError}</p>}
       </div>
       <div className='my-4 flex justify-end'>
         <button className='text-white flex items-center bg-[#367AFF] md:text-lg py-1.5 px-8 rounded-md hover:opacity-80' >Next

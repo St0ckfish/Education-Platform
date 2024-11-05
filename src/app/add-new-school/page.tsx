@@ -46,6 +46,175 @@ const AddNewSchool = () => {
     const [openLanguages, setOpenLanguages] = useState(false);
     const [openLevels, setOpenLevels] = useState(false);
     const [openEducations, setOpenEducations] = useState(false);
+
+    // Error Messages
+    const [nameError, setNameError] = useState("");
+    const [codeError, setCodeError] = useState("");
+    const [aboutError, setAboutError] = useState("");
+    const [themeError, setThemeError] = useState("");
+    const [curriculumError, setCurriculumError] = useState("");
+    const [typeError, setTypeError] = useState("");
+    const [languagesError, setLanguagesError] = useState("");
+    const [levelsError, setLevelsError] = useState("");
+    const [educationsError, setEducationsError] = useState("");
+    const [errorFallSemesterStartDate, setErrorFallSemesterStartDate] = useState('');
+    const [errorFallSemesterEndDate, setErrorFallSemesterEndDate] = useState('');
+    const [errorSpringSemesterStartDate, setErrorSpringSemesterStartDate] = useState('');
+    const [errorSpringSemesterEndDate, setErrorSpringSemesterEndDate] = useState('');
+    const [errorSummerSemesterStartDate, setErrorSummerSemesterStartDate] = useState('');
+    const [errorSummerSemesterEndDate, setErrorSummerSemesterEndDate] = useState('');
+    const [errorEstablished, setErrorEstablished] = useState('');
+    const [errorWorkDayStartTime, setErrorWorkDayStartTime] = useState('');
+    const [errorWorkDayEndTime, setErrorWorkDayEndTime] = useState('');
+    const [errorRegionId, setErrorRegionId] = useState('');
+    const [errorNumberOfLegalAbsenceDays, setErrorNumberOfLegalAbsenceDays] = useState('');
+  
+
+    const validateInputs = () => {
+        // Reset all error messages
+        setNameError("");
+        setCodeError("");
+        setAboutError("");
+        setThemeError("");
+        setCurriculumError("");
+        setTypeError("");
+        setLanguagesError("");
+        setLevelsError("");
+        setEducationsError("");
+        setErrorFallSemesterStartDate('');
+        setErrorFallSemesterEndDate('');
+        setErrorSpringSemesterStartDate('');
+        setErrorSpringSemesterEndDate('');
+        setErrorSummerSemesterStartDate('');
+        setErrorSummerSemesterEndDate('');
+        setErrorEstablished('');
+        setErrorWorkDayStartTime('');
+        setErrorWorkDayEndTime('');
+        setErrorRegionId('');
+        setErrorNumberOfLegalAbsenceDays('');
+    
+        let isValid = true;
+    
+        // Perform validations
+        if (name.trim() === "") {
+            setNameError("Name School is required");
+            isValid = false;
+        }
+    
+        if (code.trim() === "") {
+            setCodeError("Code is required");
+            isValid = false;
+        }
+    
+        if (about.trim() === "") {
+            setAboutError("About is required");
+            isValid = false;
+        }
+    
+        if (theme.trim() === "") {
+            setThemeError("Theme is required");
+            isValid = false;
+        }
+    
+        if (!curriculum) {
+            setCurriculumError("Curriculum is required");
+            isValid = false;
+        }
+    
+        if (!type) {
+            setTypeError("Type is required");
+            isValid = false;
+        }
+    
+        if (languages.length === 0) {
+            setLanguagesError("At least one language is required");
+            isValid = false;
+        }
+    
+        if (levels.length === 0) {
+            setLevelsError("At least one level is required");
+            isValid = false;
+        }
+    
+        if (educations.length === 0) {
+            setEducationsError("At least one education system is required");
+            isValid = false;
+        }
+    
+        if (!fallSemesterStartDate) {
+            setErrorFallSemesterStartDate('This field is required');
+            isValid = false;
+        }
+        if (!fallSemesterEndDate) {
+            setErrorFallSemesterEndDate('This field is required');
+            isValid = false;
+        }
+        if (!springSemesterStartDate) {
+            setErrorSpringSemesterStartDate('This field is required');
+            isValid = false;
+        }
+        if (!springSemesterEndDate) {
+            setErrorSpringSemesterEndDate('This field is required');
+            isValid = false;
+        }
+        if (!summerSemesterStartDate) {
+            setErrorSummerSemesterStartDate('This field is required');
+            isValid = false;
+        }
+        if (!summerSemesterEndDate) {
+            setErrorSummerSemesterEndDate('This field is required');
+            isValid = false;
+        }
+        if (!established) {
+            setErrorEstablished('This field is required');
+            isValid = false;
+        }
+        if (!workDayStartTime) {
+            setErrorWorkDayStartTime('This field is required');
+            isValid = false;
+        }
+        if (!workDayEndTime) {
+            setErrorWorkDayEndTime('This field is required');
+            isValid = false;
+        }
+        if (!regionId) {
+            setErrorRegionId('This field is required');
+            isValid = false;
+        }
+    
+        // Parse the number for validation
+        const parsedNumberOfLegalAbsenceDays = parseFloat(numberOfLegalAbsenceDays);
+    
+        if (!numberOfLegalAbsenceDays) {
+            setErrorNumberOfLegalAbsenceDays('This field is required');
+            isValid = false;
+        } else if (isNaN(parsedNumberOfLegalAbsenceDays)) {
+            setErrorNumberOfLegalAbsenceDays('Must be a number');
+            isValid = false;
+        }
+    
+        // Date validations
+        if (new Date(fallSemesterStartDate) >= new Date(fallSemesterEndDate)) {
+            setErrorFallSemesterEndDate('End date must be greater than start date');
+            isValid = false;
+        }
+        if (new Date(springSemesterStartDate) >= new Date(springSemesterEndDate)) {
+            setErrorSpringSemesterEndDate('End date must be greater than start date');
+            isValid = false;
+        }
+        if (new Date(summerSemesterStartDate) >= new Date(summerSemesterEndDate)) {
+            setErrorSummerSemesterEndDate('End date must be greater than start date');
+            isValid = false;
+        }
+        if (new Date(workDayStartTime) >= new Date(workDayEndTime)) {
+            setErrorWorkDayEndTime('End time must be greater than start time');
+            isValid = false;
+        }
+    
+        return isValid;
+    };
+    
+
     const toggleDropdown = () => {
         setOpenLanguages(!openLanguages);
         setOpenLevels(false)
@@ -98,7 +267,11 @@ const AddNewSchool = () => {
 
     const handleSend = async (e: any) => {
         e.preventDefault();
-    
+
+        if (!validateInputs()) {
+            return;
+        }
+
         if (!name || !about || !code || !theme || !curriculum || !type || !languages.length || !levels.length || !educations.length || !regionId) {
             toast.error('Please fill out all required fields.');
             return;
@@ -199,18 +372,22 @@ const AddNewSchool = () => {
                             <label htmlFor="name" className="grid text-[18px] font-sans font-semibold">
                                 Name School
                                 <input value={name} onChange={(e) => setName(e.target.value)} id="name" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                {nameError && <span className="text-red-600 text-sm">{nameError}</span>}
                             </label>
                             <label htmlFor="code" className="grid text-[18px] font-sans font-semibold">
                                 Code
                                 <input value={code} onChange={(e) => setCode(e.target.value)} id="code" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                {codeError && <span className="text-red-600 text-sm">{codeError}</span>}
                             </label>
                             <label htmlFor="about" className="grid text-[18px] font-sans font-semibold">
                                 About
                                 <input value={about} onChange={(e) => setAbout(e.target.value)} id="about" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                {aboutError && <span className="text-red-600 text-sm">{aboutError}</span>}
                             </label>
                             <label htmlFor="theme" className="grid text-[18px] font-sans font-semibold">
                                 theme
                                 <input value={theme} onChange={(e) => setTheme(e.target.value)} id="theme" type="text" className="w-full py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                                {themeError && <span className="text-red-600 text-sm">{themeError}</span>}
                             </label>
                             <div>
                                 <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="curriculum">curriculum <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -226,6 +403,7 @@ const AddNewSchool = () => {
                                         </>
                                     )}
                                 </Select>
+                                {curriculumError && <span className="text-red-600 text-sm">{curriculumError}</span>}
                             </div>
                             <div>
                                 <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="type">type <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -241,6 +419,7 @@ const AddNewSchool = () => {
                                         </>
                                     )}
                                 </Select>
+                                {typeError && <span className="text-red-600 text-sm">{typeError}</span>}
                             </div>
                             <div className="relative">
                                 {successLanguages && (
@@ -285,8 +464,7 @@ const AddNewSchool = () => {
                                         )}
                                     </>
                                 )}
-
-
+                            {languagesError && <span className="text-red-600 text-sm">{languagesError}</span>}
                             </div>
                             <div className="relative">
                                 {successLevels && (
@@ -331,9 +509,9 @@ const AddNewSchool = () => {
                                         )}
                                     </>
                                 )}
-
-
-                            </div>
+                            {levelsError && <span className="text-red-600 text-sm">{levelsError}</span>}
+                          
+  </div>
                             <div className="relative">
                                 {successEducations && (
                                     <>
@@ -377,7 +555,7 @@ const AddNewSchool = () => {
                                         )}
                                     </>
                                 )}
-
+                            {educationsError && <span className="text-red-600 text-sm">{educationsError}</span>}
 
                             </div>
                             <div>
@@ -390,6 +568,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setFallSemesterStartDate(formatDate(e.target.value))}
                                 />
+                                {errorFallSemesterStartDate && <p className="text-red-500">{errorFallSemesterStartDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="fallSemesterEndDate" className="text-[18px] font-sans font-semibold">
@@ -401,6 +580,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setFallSemesterEndDate(formatDate(e.target.value))}
                                 />
+                            {errorFallSemesterEndDate && <p className="text-red-500">{errorFallSemesterEndDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="springSemesterStartDate" className="text-[18px] font-sans font-semibold">
@@ -412,6 +592,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setSpringSemesterStartDate(formatDate(e.target.value))}
                                 />
+                            {errorSpringSemesterStartDate && <p className="text-red-500">{errorSpringSemesterStartDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="springSemesterEndDate" className="text-[18px] font-sans font-semibold">
@@ -423,6 +604,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setSpringSemesterEndDate(formatDate(e.target.value))}
                                 />
+                                {errorSpringSemesterEndDate && <p className="text-red-500">{errorSpringSemesterEndDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="summerSemesterStartDate" className="text-[18px] font-sans font-semibold">
@@ -434,6 +616,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setSummerSemesterStartDate(formatDate(e.target.value))}
                                 />
+                                {errorSummerSemesterStartDate && <p className="text-red-500">{errorSummerSemesterStartDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="summerSemesterEndDate" className="text-[18px] font-sans font-semibold">
@@ -445,6 +628,7 @@ const AddNewSchool = () => {
                                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                                     onChange={(e) => setSummerSemesterEndDate(formatDate(e.target.value))}
                                 />
+                                {errorSummerSemesterEndDate && <p className="text-red-500">{errorSummerSemesterEndDate}</p>}
                             </div>
                             <div>
                                 <label htmlFor="established" className="text-[18px] font-sans font-semibold">
@@ -457,6 +641,7 @@ const AddNewSchool = () => {
                                     value={established}
                                     onChange={(e) => setEstablished(e.target.value)}
                                 />
+                                {errorEstablished && <p className="text-red-500">{errorEstablished}</p>}
                             </div>
                             <div>
                                 <label htmlFor="workDayStartTime" className="text-[18px] font-sans font-semibold">
@@ -470,6 +655,7 @@ const AddNewSchool = () => {
                                     value={workDayStartTime}
                                     onChange={(e) => setWorkDayStartTime(e.target.value)}
                                 />
+                                {errorWorkDayStartTime && <p className="text-red-500">{errorWorkDayStartTime}</p>}
                             </div>
                             <div>
                                 <label htmlFor="workDayEndTime" className="text-[18px] font-sans font-semibold">
@@ -483,6 +669,7 @@ const AddNewSchool = () => {
                                     value={workDayEndTime}
                                     onChange={(e) => setWorkDayEndTime(e.target.value)}
                                 />
+                                {errorWorkDayEndTime && <p className="text-red-500">{errorWorkDayEndTime}</p>}
                             </div>
                             <div>
                                 <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="region">region <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -499,12 +686,14 @@ const AddNewSchool = () => {
                                         </>
                                     )}
                                 </Select>
+                                {errorRegionId && <p className="text-red-500">{errorRegionId}</p>}
                             </div>
                             <div>
                                 <label htmlFor="numberOfLegalAbsenceDays" className="text-[18px]  font-sans font-semibold">
                                     Number Of Legal Absence Days
                                 </label>
                                 <input value={numberOfLegalAbsenceDays} onChange={(e) => setNumberOfLegalAbsenceDays(e.target.value)} id="numberOfLegalAbsenceDays" type="text" className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]" />
+                                {errorNumberOfLegalAbsenceDays && <p className="text-red-500">{errorNumberOfLegalAbsenceDays}</p>}
                             </div>
                         </div>
                         <div className="flex justify-center text-center">

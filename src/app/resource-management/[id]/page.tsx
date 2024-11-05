@@ -7,6 +7,7 @@ import ThirdStepUpdate from '../components/steps/ThirdStepUpdate';
 import FirstStep from '@/app/create-course/components/steps/FirstStep';
 import SecoundStep from '@/app/create-course/components/steps/SecoundStep';
 import FourthStep from '@/app/create-course/components/steps/FourthStep';
+import { toast } from 'react-toastify';
 
 function Page() {
     const [activeStep, setActiveStep] = useState(0);
@@ -54,32 +55,40 @@ function Page() {
     const handlePrev = () => {
         setActiveStep((cur) => cur - 1)
     }
+
     const handleSend = async () => {
         const objectReq = {
-            "code": code.toUpperCase(),
-            "countryId": countryId,
-            "level": level,
-            "registrationType": registrationType,
-            "language": language,
-            "eduSystemId": eduSystemId,
-            "name_en": name_en,
-            "name_ar": name_ar,
-            "name_fr": name_fr,
-            "description_en": description_en,
-            "description_ar": description_ar,
-            "description_fr": description_fr,
-            "prerequisiteIds": prerequisites,
-            // "coefficient": 2, //optional
-            // Get possiable values from: /api/v1/public/enumeration/semester-name
-            // "semesterName" : "FALL", //optional
-            // Get possiable values from: /api/v1/public/enumeration/secondary-school-department
-            // "secondarySchoolDepartment": "SCIENTIFIC", //optional
-            // Get possiable values from: /api/v1/public/enumeration/secondary-school-sub-department
-            // "subDepartment": "PHYSICAL_SCIENCES" //optional
-            }
-            console.log('objectReq: ', objectReq);
-        updateCourse({ token, data: objectReq, id: params.id }).unwrap()
-    }
+            code: code.toUpperCase(),
+            countryId: countryId,
+            level: level,
+            registrationType: registrationType,
+            language: language,
+            eduSystemId: eduSystemId,
+            name_en: name_en,
+            name_ar: name_ar,
+            name_fr: name_fr,
+            description_en: description_en,
+            description_ar: description_ar,
+            description_fr: description_fr,
+            prerequisiteIds: prerequisites,
+            // "coefficient": 2, // optional
+            // "semesterName": "FALL", // optional
+            // "secondarySchoolDepartment": "SCIENTIFIC", // optional
+            // "subDepartment": "PHYSICAL_SCIENCES" // optional
+        };
+    
+        try {
+            // Await the promise returned by updateCourse
+            const response = await updateCourse({ token, data: objectReq, id: params.id }).unwrap();
+
+            // Show success toast notification
+            toast.success("Course updated successfully!");
+        } catch (error) {
+            // Show error toast notification
+            toast.error("Error updating course");
+        }
+    };
+    
  
     const steps = [
         {
