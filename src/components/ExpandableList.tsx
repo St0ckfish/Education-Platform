@@ -135,7 +135,8 @@ const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
 
   // Handle the "Cancel" button click
   const handleCancel = () => {
-    console.log("Cancelled"); // Placeholder for cancel functionality
+    router.push(`/manage-school`); 
+    toast.success("Operation cancelled"); // Show success message
   };
 
   return (

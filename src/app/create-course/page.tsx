@@ -147,9 +147,7 @@ function Page() {
                 >
                   {item.step}
                 </div>
-                {activeStep >= index && (
-                  <span className="ms-3 text-[#526484]">{item.about}</span>
-                )}
+                <span className="ms-3 text-[#526484]">{item.about}</span>
               </div>
             ))}
           </div>
