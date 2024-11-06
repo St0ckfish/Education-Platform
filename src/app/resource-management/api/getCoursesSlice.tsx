@@ -104,10 +104,11 @@ export const AllCoursesSlice = createApi({
         }),
         updateTopicFile: builder.mutation({
             query: ({ token, data, id }: { token: string, data: File | null, id: number }) => {
-              // إنشاء كائن FormData
               const formData = new FormData();
               if (data) {
                 formData.append('file', data);
+              } else {
+                formData.append('files', new Blob());
               }
           
               return {

@@ -36,7 +36,11 @@ const Features = () => {
       {features && features.length > 0 ? (
         <div className="rounded-xl pb-5">
           <div className="flex rounded-t-xl bg-blue-100 px-10 py-4 text-[18px] font-semibold">
+            <div className="flex justify-between w-full text-black">
             <p>{schoolData?.data?.name} features</p>
+            <a href={`/manage-school/view-features/${id}`} className="text-blue-500 cursor-pointer">View Features</a>
+            </div>
+
           </div>
           <div>
       {/* Add a check to ensure features are not undefined or null */}

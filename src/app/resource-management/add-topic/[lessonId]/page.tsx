@@ -96,30 +96,30 @@ const AddTopic: React.FC = () => {
                 <h1 className="text-2xl font-semibold mb-4">Add New Topic</h1>
                 <div className="collapse-content">
                     <div className="my-3">
-                        <Label className="md:text-lg capitalize font-medium" value="Topic Name English" />
+                        <Label className="md:text-lg capitalize font-medium" value="Lesson Name  English" />
                         <TextInput
                             type="text"
-                            placeholder="Enter topic name"
+                            placeholder="Enter Lesson Name "
                             value={topic.name_en}
                             onChange={(e) => updateTopic('name_en', e.target.value)}
                             required
                         />
                     </div>
                     <div className="my-3">
-                        <Label className="md:text-lg capitalize font-medium" value="Topic Name Arabic" />
+                        <Label className="md:text-lg capitalize font-medium" value="Lesson Name  Arabic" />
                         <TextInput
                             type="text"
-                            placeholder="Enter topic name"
+                            placeholder="Enter Lesson Name "
                             value={topic.name_ar}
                             onChange={(e) => updateTopic('name_ar', e.target.value)}
                             required
                         />
                     </div>
                     <div className="my-3">
-                        <Label className="md:text-lg capitalize font-medium" value="Topic Name French" />
+                        <Label className="md:text-lg capitalize font-medium" value="Lesson Name  French" />
                         <TextInput
                             type="text"
-                            placeholder="Enter topic name"
+                            placeholder="Enter Lesson Name "
                             value={topic.name_fr}
                             onChange={(e) => updateTopic('name_fr', e.target.value)}
                             required

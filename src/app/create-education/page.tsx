@@ -24,17 +24,62 @@ function Page() {
     const [name, setName] = useState("")
     const [language, setLanguage] = useState("")
     const [countryId, setCountryId] = useState("")
-
+    // Error Messages
+    const [nameError, setNameError] = useState("");
+    const [countryError, setCountryError] = useState("");
+    const [languageError, setLanguageError] = useState("");
     const [createEduSystem, { data, isSuccess, error, isError, isLoading }] = useCreateEduSystemMutation()
 
+    const validateInputs = () => {
+        let isValid = true;
+    
+        // Reset error messages
+        setNameError("");
+        setCountryError("");
+        setLanguageError("");
+    
+        // Validate name
+        if (name.trim() === "") {
+            setNameError("Name is required");
+            isValid = false;
+        }
+    
+        // Validate country
+        if (!countryId) {
+            setCountryError("Country is required");
+            isValid = false;
+        }
+    
+        // Validate language
+        if (!language) {
+            setLanguageError("Language is required");
+            isValid = false;
+        }
+    
+        return isValid;
+    };
+
+
     const handleSend = async () => {
+        const isValid = validateInputs();
+        if (!isValid) {
+            return;
+        }
+
         const obj = {
             name,
             language,
             countryId
-        }
-        createEduSystem({ token, body: obj }).unwrap()
-    }
+        };
+
+        try {
+            await createEduSystem({ token, body: obj }).unwrap();
+            toast.success("Educational system created successfully!");
+        } catch (error) {
+            toast.error("Failed to create educational system: ");
+        } 
+    };
+
 
     useEffect(() => {
         if (isError) {
@@ -95,6 +140,8 @@ function Page() {
                         <span className='text-[#367AFF] text-2xl ms-1'>*</span>
                     </div>
                     <TextInput value={name} onChange={(e) => setName(e.target.value)} id="name" type="text" placeholder="name" required />
+                    {/* Error message for name */}
+                    {nameError && <p className="text-red-500 text-sm">{nameError}</p>} 
                 </div>
                 <div className='xl:mt-6'>
                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="country">country <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -109,6 +156,8 @@ function Page() {
                         )}
 
                     </Select>
+                    {/* Error message for country */}
+                    {countryError && <p className="text-red-500 text-sm">{countryError}</p>} 
                 </div>
                 <div>
                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="language">language <span className='text-[#367AFF] text-xl'>*</span></label>
@@ -122,6 +171,8 @@ function Page() {
                             </>
                         )}
                     </Select>
+                    {/* Error message for language */}
+                    {languageError && <p className="text-red-500 text-sm">{languageError}</p>} 
                 </div>
             </div>
             {isLoading ? (
@@ -133,9 +184,6 @@ function Page() {
                 </div >
             )
             }
-
-
-
         </div >
     )
 }

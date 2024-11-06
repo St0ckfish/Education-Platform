@@ -1,3 +1,7 @@
+// Lesson = Chapter Now
+// Topic = Lesson Now
+// TODO: change the name of variables to be more clear
+
 import React, { useEffect, useState } from "react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { useAddLessonMutation } from "../../api/createCourseSlice";
@@ -5,8 +9,10 @@ import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useGetAllLessonsQuery, useGetLeassonQuery, useUpdateLessonMutation } from "@/app/resource-management/api/getCoursesSlice";
-// import { useUpdateLessonMutation } from "@/app/resource-management/[id]/api/updateCourseSlice";
+import {
+  useGetAllLessonsQuery,
+  useUpdateLessonMutation,
+} from "@/app/resource-management/api/getCoursesSlice";
 
 interface ThirdStepProps {
   handleNext: () => void;
@@ -42,18 +48,71 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   const { data: dataLesson } = useGetAllLessonsQuery({ token, id: params.id });
   console.log("dataLesson: ", dataLesson);
 
-  console.log('alltopics', allTopics);
+  console.log("alltopics", allTopics);
   const [addLesson, { data, error, isError, isSuccess }] =
     useAddLessonMutation();
-    
 
-  const [updateLesson, {data: dataUpdate}] = useUpdateLessonMutation();
-  console.log('dataUpdate: ', dataUpdate)
-  
-  console.log('tutorials: ',tutorials)
-//   updateLesson({ token, data, id: params.id});
+  const [updateLesson, { data: dataUpdate }] = useUpdateLessonMutation();
+  console.log("dataUpdate: ", dataUpdate);
+
+  // Error Messages
+  const [lessonNameEnError, setLessonNameEnError] = useState("");
+  const [lessonNameArError, setLessonNameArError] = useState("");
+  const [lessonNameFrError, setLessonNameFrError] = useState("");
+  const [lessonGoalsEnError, setLessonGoalsEnError] = useState("");
+  const [lessonGoalsArError, setLessonGoalsArError] = useState("");
+  const [lessonGoalsFrError, setLessonGoalsFrError] = useState("");
+
+  const validateFields = () => {
+    let isValid = true;
+
+    setLessonNameEnError("");
+    setLessonNameArError("");
+    setLessonNameFrError("");
+    setLessonGoalsEnError("");
+    setLessonGoalsArError("");
+    setLessonGoalsFrError("");
+
+    if (!lessonNameEn) {
+      setLessonNameEnError("Chapter Name in English is required");
+      isValid = false;
+    }
+
+    if (!lessonNameAr) {
+      setLessonNameArError("Chapter Name in Arabic is required");
+      isValid = false;
+    }
+
+    if (!lessonNameFr) {
+      setLessonNameFrError("Chapter Name in French is required");
+      isValid = false;
+    }
+
+    if (!lessonGoalsEn) {
+      setLessonGoalsEnError("Chapter Goals in English are required");
+      isValid = false;
+    }
+
+    if (!lessonGoalsAr) {
+      setLessonGoalsArError("Chapter Goals in Arabic are required");
+      isValid = false;
+    }
+
+    if (!lessonGoalsFr) {
+      setLessonGoalsFrError("Chapter Goals in French are required");
+      isValid = false;
+    }
+
+    return isValid;
+  };
 
   const handleSend = async () => {
+    const isValid = validateFields();
+    if (!isValid) {
+      toast.warning("Please fill all required fields");
+      return;
+    }
+
     const reqObject = {
       courseId: dataAddCourse?.data?.id || params.id,
       name_en: lessonNameEn,
@@ -67,13 +126,16 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
 
     const formData = new FormData();
     formData.append("request", JSON.stringify(reqObject));
-
-    tutorials.forEach((item) => {
-      formData.append(`files`, item);
-    });
-      addLesson({ token, data: formData });
+    if (tutorials.length > 0) {
+      tutorials.forEach((item) => {
+        formData.append(`files`, item);
+      });
+    } else {
+      formData.append("files", new Blob());
+    }
+    addLesson({ token, data: formData });
   };
-//   console.log('allTopics', allTopics)
+  //   console.log('allTopics', allTopics)
 
   const addNewTopic = () => {
     setAllTopics([
@@ -175,15 +237,17 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
   }, [isSuccess, router]);
 
   return (
-    <div className="bg-white card p-3 shadow-md  rounded-md">
+    <div className="bg-white card p-3 shadow-md rounded-md">
       <div>
-        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">Lesson</h3>
+        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">
+          Chapter
+        </h3>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameEn"
-              value="Lesson Name English"
+              value="Chapter Name English"
             />
           </div>
           <TextInput
@@ -191,16 +255,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameEn(e.target.value)}
             id="LessonNameEn"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameEnError && (
+            <p className="text-red-500">{lessonNameEnError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameAr"
-              value="Lesson Name Arabic"
+              value="Chapter Name Arabic"
             />
           </div>
           <TextInput
@@ -208,16 +275,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameAr(e.target.value)}
             id="LessonNameAr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameArError && (
+            <p className="text-red-500">{lessonNameArError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameFr"
-              value="Lesson Name French"
+              value="Chapter Name French"
             />
           </div>
           <TextInput
@@ -225,16 +295,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameFr(e.target.value)}
             id="LessonNameFr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameFrError && (
+            <p className="text-red-500">{lessonNameFrError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsEn"
-              value="Lesson Goals English"
+              value="Chapter Goals English"
             />
           </div>
           <TextInput
@@ -242,16 +315,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsEn(e.target.value)}
             id="LessonGoalsEn"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsEnError && (
+            <p className="text-red-500">{lessonGoalsEnError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsAr"
-              value="Lesson Goals Arabic"
+              value="Chapter Goals Arabic"
             />
           </div>
           <TextInput
@@ -259,16 +335,19 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsAr(e.target.value)}
             id="LessonGoalsAr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsArError && (
+            <p className="text-red-500">{lessonGoalsArError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsFr"
-              value="Lesson Goals French"
+              value="Chapter Goals French"
             />
           </div>
           <TextInput
@@ -276,17 +355,20 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsFr(e.target.value)}
             id="LessonGoalsFr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsFrError && (
+            <p className="text-red-500">{lessonGoalsFrError}</p>
+          )}
         </div>
-        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Topic</h3>
+        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Lesson</h3>
 
         {allTopics?.map((topic, index) => (
           <div key={index}>
             <div className="flex justify-between items-center py-2">
               <div className="text-lg font-medium text-gray-800 dark:text-white">
-                {index + 1}. Course Tools
+                Lesson .{index + 1}
               </div>
               <div className="flex items-center space-x-2">
                 {allTopics.length > 1 && (
@@ -355,16 +437,15 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name English"
+                      value="Lesson Name English"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
-                    // TODO: make the value={topic.name_en || ""}
+                    placeholder="Enter Lesson Name "
                     value={topic.name_en || ""}
                     onChange={(e) =>
-                    //   updateTopic(index, "name_en", e.target.value)
+                      //   updateTopic(index, "name_en", e.target.value)
                       updateTopic(index, "name_en", e.target.value)
                     }
                     required
@@ -374,12 +455,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name Arabic"
+                      value="Lesson Name  Arabic"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter Lesson Name "
                     value={topic.name_ar || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_ar", e.target.value)
@@ -391,12 +472,12 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name French"
+                      value="Lesson Name  French"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter Lesson Name "
                     value={topic.name_fr || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_fr", e.target.value)
@@ -414,7 +495,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({
                   <FileInput
                     onChange={(e) => {
                       if (e.target.files && e.target.files.length > 0) {
-                        addTutorial(e.target.files[0]);
+                        addTutorial(e.target.files[0] || null);
                       }
                     }}
                   />

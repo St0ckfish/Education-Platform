@@ -35,22 +35,36 @@ const Courses: React.FC<CoursesProps> = ({ search, setSearch, isLoading, data, s
         setOpenModal(true);
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (selectedCourseId !== null) {
-            deleteCourse({ token, id: selectedCourseId })
-            toast.success("Course deleted successfully", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            setOpenModal(false)
+            try {
+                await deleteCourse({ token, id: selectedCourseId });
+                toast.success("Course deleted successfully", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setOpenModal(false);
+            } catch (error) {
+                toast.error("Failed to delete course", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         }
-    }
+    };
+    
 
     return (
         <>

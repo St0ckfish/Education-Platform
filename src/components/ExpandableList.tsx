@@ -1,52 +1,65 @@
 'use client';
-import { useUpdateStatusOfSchoolPlanMutation } from '@/app/school-plans/api/SchoolPlans';
+import { useSetSchoolPermissionByIdMutation } from '@/app/manage-school/features/[id]/api/schoolPermissions';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
-const ExpandableList = ({ title, items, onUpdateCheckedItems }: { title: string; items: any[]; onUpdateCheckedItems: (selectedItems: any[], isAdding: boolean) => void }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  // y
+// Define types for individual permission items
+interface Permission {
+  name: string;
+  cost: number;
+}
+
+// Define props for the ExpandableList component
+interface ExpandableListProps {
+  title: string;
+  items: Permission[];
+  onUpdateCheckedItems: (selectedItems: Permission[], isAdding: boolean) => void;
+}
+
+// Component for displaying a list of items that can be expanded or collapsed
+const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, onUpdateCheckedItems }) => {
+  // State to manage the expansion of the list
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   
+  // State to track which items are checked
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>(
     items.reduce((acc, _item, index) => {
-      acc[index] = false;
+      acc[index] = false; // Initialize all items as unchecked
       return acc;
     }, {} as Record<number, boolean>)
   );
 
+  // Toggle the expansion state of the list
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(prev => !prev);
   };
 
-  const handleChildCheckboxChange = (key: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    const newCheckedState = !checkedItems[key];
+  // Handle checkbox changes for child items
+  const handleChildCheckboxChange = (key: number) => {
+    const newCheckedState = !checkedItems[key]; // Determine the new checked state
     const updatedState = {
       ...checkedItems,
-      [key]: newCheckedState,
+      [key]: newCheckedState, // Update the checked state for the specific item
     };
 
     setCheckedItems(updatedState);
-    const selectedItems = getSelectedItems(updatedState);
-
-    // Update based on whether the item is checked or unchecked
+    const selectedItems = getSelectedItems(updatedState); // Get currently selected items
+    // Call the parent function to update the selected items
     onUpdateCheckedItems([items[key]], newCheckedState);
   };
 
-  // Function to get the selected items based on checked status
-  const getSelectedItems = (checkedState: Record<number, boolean>) => {
+  // Retrieve the list of selected items based on their checked state
+  const getSelectedItems = (checkedState: Record<number, boolean>): Permission[] => {
     return items.filter((_item, index) => checkedState[index]);
   };
 
-  const totalChecked = getSelectedItems(checkedItems).length;
-
   return (
     <div className="my-4">
-      <div className="flex items-center cursor-pointer ml-5">
-        <div className="flex items-center" onClick={toggleExpand} style={{ userSelect: 'none' }}>
-          {isExpanded ? <FiChevronDown size={25} className="mr-2" /> : <FiChevronRight size={25} className="mr-2" />}
-          <span className="text-lg font-semibold" style={{ userSelect: 'none' }}>{title}</span>
-        </div>
+      <div className="flex items-center cursor-pointer ml-5" onClick={toggleExpand} style={{ userSelect: 'none' }}>
+        {isExpanded ? <FiChevronDown size={25} className="mr-2" /> : <FiChevronRight size={25} className="mr-2" />}
+        <span className="text-lg font-semibold">{title}</span>
       </div>
 
       {isExpanded && (
@@ -56,12 +69,12 @@ const ExpandableList = ({ title, items, onUpdateCheckedItems }: { title: string;
               <input
                 type="checkbox"
                 id={`checkbox-${index}`}
-                checked={checkedItems[index]}
-                onChange={(event) => handleChildCheckboxChange(index, event)}
+                checked={checkedItems[index]} // Bind checkbox to checked state
+                onChange={() => handleChildCheckboxChange(index)} // Handle checkbox change
                 className="mr-2"
               />
-              <label htmlFor={`checkbox-${index}`} style={{ userSelect: 'none' }} className="flex justify-between w-full">
-                {item.name} - ${item.cost}
+              <label htmlFor={`checkbox-${index}`} className="flex justify-between w-full" style={{ userSelect: 'none' }}>
+                {item.name} - ${item.cost} {/* Display item name and cost */}
               </label>
             </li>
           ))}
@@ -71,94 +84,75 @@ const ExpandableList = ({ title, items, onUpdateCheckedItems }: { title: string;
   );
 };
 
-// Main component to display all feature categories and their permissions
-const FeaturesList = ({ features , token}: { features: any[], token: string }) => {
-  const [selectedItems, setSelectedItems] = useState<any[]>([]);
-  // handleSender(10, token, )
+// Define props for the FeaturesList component
+interface FeaturesListProps {
+  features: { category: string; Permissions: Permission[] }[]; // Structure for feature categories
+  token: string;
+}
 
-  // const handleSender = useUpdateStatusOfSchoolPlanMutation(10, token, true, body);
-  // استدعاء الـ mutation
-  // const handleUpdateStatus = async () => {
-  //     const schoolPlanId = 10;
-  //     const status = true; 
-  //     c
-  
-  //     try {
-  //         const result = await updateStatusOfSchoolPlan({
-  //             token,
-  //             schoolPlanId,
-  //             status,
-  //             body
-  //         });
-  //         console.log(result); // معالجة النتيجة
-  //     } catch (error) {
-  //         console.error("Error updating status:", error);
-  //     }
-  // };
-  
-  const updateCheckedItems = (newSelectedItems: any[], isAdding: boolean) => {
+// Main component to display all feature categories and their permissions
+const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
+  const router = useRouter();
+  const params = useParams();
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  // Update the list of selected items based on user interaction
+  const updateCheckedItems = (newSelectedItems: Permission[], isAdding: boolean) => {
     setSelectedItems((prevItems) => {
-      if (isAdding) {
-        // Add new selected items and keep the previously selected items
-        return [...prevItems, ...newSelectedItems.filter((item) => !prevItems.includes(item))];
-      } else {
-        // When the category is unchecked, remove all items from the selection
-        return prevItems.filter((item) => !newSelectedItems.includes(item));
-      }
+      const itemNames = newSelectedItems.map((item) => item.name); // Extract only names
+      const updatedItems = isAdding
+        ? [...prevItems, ...itemNames.filter((name) => !prevItems.includes(name))] // Add new items
+        : prevItems.filter((name) => !itemNames.includes(name)); // Remove unchecked items
+      return updatedItems; // Update state with the new selection
     });
   };
 
-  // Function to calculate the total cost of selected items
+  // Calculate the total cost of selected items
   const calculateTotalCost = () => {
-    return selectedItems.reduce((total, item) => total + item.cost, 0);
+    return selectedItems.reduce((total, itemName) => {
+      // Find the item in the feature list based on its name
+      const item = features.flatMap(feature => feature.Permissions).find(permission => permission.name === itemName);
+      return total + (item ? item.cost : 0); // Sum the costs
+    }, 0);
   };
 
-
-
-
-
-
-  const [updateStatusOfSchoolPlan, { data , originalArgs , error}] = useUpdateStatusOfSchoolPlanMutation();
-  console.log('data: ', data);
-  console.log('originalArgs: ', originalArgs);
-  console.log('error: ', error);
-
-
+  // Mutation hook to update school permissions
+  const [setSchoolPermissionById] = useSetSchoolPermissionByIdMutation(); 
+  
+  // Handle the "Save" button click to send selected permissions
   const handleSend = async () => {
-      const objectReq = {
-          "id": 10,
-          "cost": 200,
-          "name": "School Plan 10",
-          "daysCount": 2,
-          "permissions": {
-              "id": 10,
-              "cost": 6,
-              "name": "ATTENDANCE",
-          }  
-      }
-      updateStatusOfSchoolPlan({ token, schoolPlanId: 10, status: false, body: objectReq}).unwrap()
-  }
+    const body = { permissions: selectedItems }; // Prepare body for the API call
 
+    try {
+      // Call the mutation to update permissions
+      await setSchoolPermissionById({ token, id: params.id, body }).unwrap();
+      toast.success("Permissions updated successfully!"); // Show success message
+      router.push(`/manage-school`); // Redirect after successful update
+    } catch (err) {
+      toast.error("Failed to update permissions"); // Show error message
+    }
+  };
+
+  // Handle the "Cancel" button click
   const handleCancel = () => {
-    // TODO Handle cancel logic here
-    console.log("Cancelled");
+    router.push(`/manage-school`); 
+    toast.success("Operation cancelled"); // Show success message
   };
 
   return (
     <div>
-      {features.map((feature, index) => {
-        const { category, Permissions } = feature;
-        return (
-          <ExpandableList 
-            key={index} 
-            title={category} 
-            items={Permissions} 
-            onUpdateCheckedItems={updateCheckedItems} 
-          />
-        );
-      })}
+      {/* Render expandable lists for each feature category */}
+      {features.map((feature, index) => (
+        <ExpandableList 
+          key={index} 
+          title={feature.category} 
+          items={feature.Permissions} 
+          onUpdateCheckedItems={updateCheckedItems} 
+        />
+      ))}
       <div className="mt-4 text-lg font-bold">Total Cost: ${calculateTotalCost()}</div>
 
+      {/* Buttons for saving or cancelling the changes */}
       <div className="mt-4 flex justify-center space-x-12">
         <button
           onClick={handleSend}

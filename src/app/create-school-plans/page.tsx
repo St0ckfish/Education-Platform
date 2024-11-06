@@ -17,6 +17,10 @@ const CreateSchoolPlans = () => {
     const [daysCount, setDaysCount] = useState("")
     const [permissions, setPermissions] = useState<string[]>([])
 
+    const [nameError, setNameError] = useState("");
+    const [daysCountError, setDaysCountError] = useState("");
+    const [permissionsError, setPermissionsError] = useState('');
+    
     const [openPermissions, setOpenPermissions] = useState(false)
     const { data: permissionsData, isSuccess: permissionsSuccess } = useGetPermissionsQuery(token)
     const [addSchoolPlan, { data, isSuccess, isLoading, error, isError }] = useAddSchoolPlanMutation()
@@ -33,7 +37,49 @@ const CreateSchoolPlans = () => {
         );
     };
 
+    const validateInputs = () => {
+        let isValid = true;
+    
+        // Reset all error messages before validation
+        setNameError("");
+        setDaysCountError("");
+        setPermissionsError("");
+    
+        // Validate name
+        if (name.trim() === "") {
+            setNameError("Name is required");
+            isValid = false;
+        }
+    
+        // Validate days count
+        if (daysCount.trim() === "") {
+            setDaysCountError("Days count is required");
+            isValid = false;
+        } else {
+            // Parse the daysCount and check if it's a valid number
+            const parsedDaysCount = parseInt(daysCount, 10);
+            if (isNaN(parsedDaysCount) || parsedDaysCount <= 0) {
+                setDaysCountError("Days count must be a positive number");
+                isValid = false;
+            }
+        }
+    
+        // Validate permissions
+        if (permissions.length === 0) {
+            setPermissionsError("At least one permission is required");
+            isValid = false;
+        }
+    
+        return isValid;
+    };
+    
+    
     const handleSend = async (e: any) => {
+        e.preventDefault();
+
+        if (!validateInputs()) {
+            return;
+        }
 
         const body = {
             name,
@@ -146,22 +192,25 @@ const CreateSchoolPlans = () => {
 
                                         </ul>
                                     )}
+                                    {/* Error message for permissions */}
+                                    {permissionsError && (
+                                        <p className="mt-2 text-red-600 text-sm">{permissionsError}</p>
+                                    )}
                                 </>
                             )}
 
 
                         </div>
 
-
-
-
                         <label htmlFor="name" className="grid text-[18px] font-sans font-semibold">
                             Name
                             <input value={name} onChange={(e) => setName(e.target.value)} id="name" type="text" className="w-full mt-2 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                            {nameError && <span className="text-red-500 text-sm">{nameError}</span>}
                         </label>
                         <label htmlFor="daysCount" className="grid text-[18px] font-sans font-semibold">
                             Days Count
                             <input value={daysCount} onChange={(e) => setDaysCount(e.target.value)} id="daysCount" type="text" className="w-full mt-2 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]" />
+                            {daysCountError && <span className="text-red-500 text-sm">{daysCountError}</span>}
                         </label>
 
                     </div>

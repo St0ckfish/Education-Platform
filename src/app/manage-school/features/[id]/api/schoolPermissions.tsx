@@ -27,8 +27,28 @@ export const createSchoolPermissionsSlice = createApi({
             }),
             // providesTags: ["schoolPlans"]
         }),
+        getSchoolPermissionById: builder.query({
+            query: ({ token, id }: { token: string, id: any}) => ({
+                url: `management/school/plan/permissions-for-school?schoolId=${id}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }),
+            // providesTags: ["schoolPlans"]
+        }),
+        setSchoolPermissionById: builder.mutation({
+            query: ({ token, id , body }: { token: string, id: any  , body: any}) => ({
+                url: `management/school/plan/set-features-for-school?schoolId=${id}`,
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: body
+            }),
+        }),
     })
 })
 
 
-export const { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } = createSchoolPermissionsSlice
+export const { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery, useGetSchoolPermissionByIdQuery, useSetSchoolPermissionByIdMutation } = createSchoolPermissionsSlice

@@ -1,10 +1,20 @@
+// Lesson = Chapter Now
+// Topic = Lesson Now
+// TODO: change the name of variables to be more clear
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useGetAllLessonsQuery, useGetLeassonQuery, useGetLessonFilesQuery, useUpdateLessonMutation, useUpdateTopicFileMutation } from "@/app/resource-management/api/getCoursesSlice";
+import {
+  useGetAllLessonsQuery,
+  useGetLeassonQuery,
+  useGetLessonFilesQuery,
+  useUpdateLessonMutation,
+  useUpdateTopicFileMutation,
+} from "@/app/resource-management/api/getCoursesSlice";
 import { useAddLessonMutation } from "@/app/create-course/api/createCourseSlice";
 import AddTopic from "./AddTopic";
 // import { useUpdateLessonMutation } from "@/app/resource-management/[id]/api/updateCourseSlice";
@@ -24,7 +34,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
 
   const token = Cookies.get("token") || "";
   const params = useParams();
-  console.log("params: ", params);
+  // console.log("params: ", params);
   const [isOpen, setIsOpen] = useState(false);
 
   const openPopup = () => setIsOpen(true);
@@ -48,117 +58,167 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     { name_en: "", name_ar: "", name_fr: "", videoUrls: [""] },
   ]);
 
-  const { data: dataLesson } = useGetAllLessonsQuery({ token, id: params.id });
-  console.log("dataLesson: ", dataLesson);
+  const { data: dataLesson, refetch: refetchGetAllLessons } =
+    useGetAllLessonsQuery({ token, id: params.id });
+  // console.log("dataLesson: ", dataLesson);
   const topicsWithId = dataLesson?.data?.content[0]?.topics;
-  console.log('topicsWithId', topicsWithId);
+  console.log("topicsWithId", topicsWithId);
   const idLesson = dataLesson?.data?.content[0]?.lessonId;
-  console.log('idLesson', idLesson);
+  // console.log('idLesson', idLesson);
 
   // console.log('idTopic', idTopic)
-  const { data: dataLessonUpdate } = useGetLeassonQuery({ token, id: idLesson});
-  console.log('dataLessonUpdate: ', dataLessonUpdate);
-  const { data: dataLessonFiles } = useGetLessonFilesQuery({ token, id: params.id});
-  console.log('dataLessonFiles: ', dataLessonFiles);
+  const { data: dataLessonUpdate, refetch: refetchGetLesson } =
+    useGetLeassonQuery({ token, id: idLesson });
+  // console.log('dataLessonUpdate: ', dataLessonUpdate);
+  const { data: dataLessonFiles } = useGetLessonFilesQuery({
+    token,
+    id: params.id,
+  });
+  // console.log('dataLessonFiles: ', dataLessonFiles);
+  const refetch = () => {
+    refetchGetAllLessons();
+    refetchGetLesson();
+  };
 
   useEffect(() => {
-      setLessonNameEn(dataLessonUpdate?.data?.name_en || "");
-      setLessonNameAr(dataLessonUpdate?.data?.name_ar || "");
-      setLessonNameFr(dataLessonUpdate?.data?.name_fr || "");
-      setLessonGoalsEn(dataLessonUpdate?.data?.goals_en || "");
-      setLessonGoalsAr(dataLessonUpdate?.data?.goals_ar || "");
-      setLessonGoalsFr(dataLessonUpdate?.data?.goals_fr || "");
-      setAllTopics(dataLessonUpdate?.data?.topics || []);
+    setLessonNameEn(dataLessonUpdate?.data?.name_en || "");
+    setLessonNameAr(dataLessonUpdate?.data?.name_ar || "");
+    setLessonNameFr(dataLessonUpdate?.data?.name_fr || "");
+    setLessonGoalsEn(dataLessonUpdate?.data?.goals_en || "");
+    setLessonGoalsAr(dataLessonUpdate?.data?.goals_ar || "");
+    setLessonGoalsFr(dataLessonUpdate?.data?.goals_fr || "");
+    setAllTopics(dataLessonUpdate?.data?.topics || []);
   }, [dataLessonUpdate]);
 
-  console.log('alltopics', allTopics);
+  // console.log('alltopics', allTopics);
   const [addLesson, { data, error, isError, isSuccess }] =
     useAddLessonMutation();
-    
 
-  const [updateLesson, {data: dataUpdate}] = useUpdateLessonMutation();
-  console.log('dataUpdate: ', dataUpdate)
+  const [updateLesson, { data: dataUpdate }] = useUpdateLessonMutation();
+  // console.log('dataUpdate: ', dataUpdate)
 
-  const [updateTopicFile, {data: dataTopicFile}] = useUpdateTopicFileMutation();
-  
-//   updateLesson({ token, data, id: params.id});
+  const [updateTopicFile, { data: dataTopicFile }] =
+    useUpdateTopicFileMutation();
+
+  //   updateLesson({ token, data, id: params.id});
 
   useEffect(() => {
     const ids = topicsWithId?.map((topic: any) => topic.topicId) || [];
     setTopicIds(ids);
   }, [topicsWithId]);
 
-    console.log('topicIds: ', topicIds);
+  console.log("topicIds: ", topicIds);
 
-    useEffect(() => {
-      if (topicIds.length > 0) {
-        const updatedTopicsToSend = allTopics.map((topic, index) => ({
-          id: topicIds[index],
-          name_en: topic.name_en,
-          name_ar: topic.name_ar,
-          name_fr: topic.name_fr,
-          videoUrls: topic.videoUrls, 
-        }));
-        setTopicsToSend(updatedTopicsToSend);
-      }
-    }, [topicIds, allTopics]);    
+  useEffect(() => {
+    if (topicIds.length > 0) {
+      const updatedTopicsToSend = allTopics.map((topic, index) => ({
+        id: topicIds[index],
+        name_en: topic.name_en,
+        name_ar: topic.name_ar,
+        name_fr: topic.name_fr,
+        videoUrls: topic.videoUrls,
+      }));
+      setTopicsToSend(updatedTopicsToSend);
+    }
+  }, [topicIds, allTopics]);
 
-    console.log('topicsToSend:', topicsToSend);
+  console.log("topicsToSend:", topicsToSend);
 
-    const handleSend = async () => {
-      
-      const dataUpdated = {
-        name_en: lessonNameEn,
-        name_ar: lessonNameAr,
-        name_fr: lessonNameFr,
-        goals_en: lessonGoalsEn,
-        goals_ar: lessonGoalsAr,
-        goals_fr: lessonGoalsFr,
-        topics: topicsToSend,
-      };
-    
-      try {
-        await updateLesson({ token, data: dataUpdated, id: idLesson }).unwrap();
-        toast.success("Lesson updated successfully");
-        router.push("/resource-management");
-      } catch (error) {
-        toast.error("Failed to update lesson");
-      }
-    };
-  console.log('allTopics', allTopics);
+  // Error Messages
+  const [lessonNameEnError, setLessonNameEnError] = useState("");
+  const [lessonNameArError, setLessonNameArError] = useState("");
+  const [lessonNameFrError, setLessonNameFrError] = useState("");
+  const [lessonGoalsEnError, setLessonGoalsEnError] = useState("");
+  const [lessonGoalsArError, setLessonGoalsArError] = useState("");
+  const [lessonGoalsFrError, setLessonGoalsFrError] = useState("");
 
-  // const handleChangeFile = (file: File, index: number) => {
-  //   // setTopicFile();
-  //   // if (!tutorials[index]) {
-  //     setTopicId(dataLesson?.data?.content[0]?.topics[index]?.topicId)
-  //     console.log('while sending', file);
-  //     updateTopicFile({ token, data: file, id: topicID});
-  //   // }
-  // }
-  const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>, index: number) => {
-  if (e.target.files && e.target.files[0]) {
-    const file = e.target.files[0];
-    const topicId = topicsWithId[index]?.topicId;
+  const validateFields = () => {
+    let isValid = true;
 
-    if(topicId) {
-      try {
-        await updateTopicFile({ token, data: file, id: topicId }).unwrap();
-        toast.success("File updated successfully");
-      } catch (error) {
-        toast.error("Failed to update file");
-      }
+    setLessonNameEnError("");
+    setLessonNameArError("");
+    setLessonNameFrError("");
+    setLessonGoalsEnError("");
+    setLessonGoalsArError("");
+    setLessonGoalsFrError("");
+
+    if (!lessonNameEn) {
+      setLessonNameEnError("Chapter Name in English is required");
+      isValid = false;
     }
 
-  }
-};
+    if (!lessonNameAr) {
+      setLessonNameArError("Chapter Name in Arabic is required");
+      isValid = false;
+    }
 
+    if (!lessonNameFr) {
+      setLessonNameFrError("Chapter Name in French is required");
+      isValid = false;
+    }
 
-  const addNewTopic = () => {
-    setAllTopics([
-      ...allTopics,
-      { name_en: "", name_ar: "", name_fr: "", videoUrls: [""] },
-    ]);
-    setVisibleIndex(allTopics.length);
+    if (!lessonGoalsEn) {
+      setLessonGoalsEnError("Chapter Goals in English are required");
+      isValid = false;
+    }
+
+    if (!lessonGoalsAr) {
+      setLessonGoalsArError("Chapter Goals in Arabic are required");
+      isValid = false;
+    }
+
+    if (!lessonGoalsFr) {
+      setLessonGoalsFrError("Chapter Goals in French are required");
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  const handleSend = async () => {
+    const isValid = validateFields();
+    if (!isValid) {
+      toast.warning("Please fill all required fields");
+      return;
+    }
+    const dataUpdated = {
+      name_en: lessonNameEn,
+      name_ar: lessonNameAr,
+      name_fr: lessonNameFr,
+      goals_en: lessonGoalsEn,
+      goals_ar: lessonGoalsAr,
+      goals_fr: lessonGoalsFr,
+      topics: topicsToSend,
+    };
+
+    refetchGetAllLessons();
+    console.log("dataUpdated: ", dataUpdated);
+    try {
+      await updateLesson({ token, data: dataUpdated, id: idLesson }).unwrap();
+      toast.success("Lesson updated successfully");
+      router.push("/resource-management");
+    } catch (error) {
+      toast.error("Failed to update lesson, please try again");
+    }
+  };
+
+  const handleChangeFile = async (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const topicId = topicsWithId[index]?.topicId;
+
+      if (topicId) {
+        try {
+          await updateTopicFile({ token, data: file, id: topicId }).unwrap();
+          toast.success("File updated successfully");
+        } catch (error) {
+          toast.error("Failed to update file");
+        }
+      }
+    }
   };
 
   const updateTopic = (index: number, field: string, value: any) => {
@@ -189,10 +249,6 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     setAllTopics(updatedTopics);
   };
 
-  const addTutorial = (file: File) => {
-    setTutorials((prevTutorials) => [...prevTutorials, file]);
-  };
-
   const toggleVisibility = (index: number) => {
     setVisibleIndex(index);
   };
@@ -204,12 +260,6 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
     const updatedTopics = allTopics.filter((_, i) => i !== index);
     setAllTopics(updatedTopics);
   };
-
-
-  console.log('tutorials: ',tutorials)
-  console.log('tutorials[0] ',tutorials[0])
-  console.log('tutorials[0] ',tutorials[0]?.name)
-
 
   useEffect(() => {
     if (isError) {
@@ -259,15 +309,17 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
   }, [isSuccess, router]);
 
   return (
-    <div className="bg-white card p-3 shadow-md  rounded-md">
+    <div className="bg-white card p-3 shadow-md rounded-md">
       <div>
-        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">Lesson</h3>
+        <h3 className="font-semibold mb-5 md:text-xl text-[#526484]">
+          Chapter
+        </h3>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameEn"
-              value="Lesson Name English"
+              value="Chapter Name English"
             />
           </div>
           <TextInput
@@ -275,16 +327,19 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameEn(e.target.value)}
             id="LessonNameEn"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameEnError && (
+            <p className="text-red-500">{lessonNameEnError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameAr"
-              value="Lesson Name Arabic"
+              value="Chapter Name Arabic"
             />
           </div>
           <TextInput
@@ -292,16 +347,19 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameAr(e.target.value)}
             id="LessonNameAr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameArError && (
+            <p className="text-red-500">{lessonNameArError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonNameFr"
-              value="Lesson Name French"
+              value="Chapter Name French"
             />
           </div>
           <TextInput
@@ -309,16 +367,19 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonNameFr(e.target.value)}
             id="LessonNameFr"
             type="text"
-            placeholder="Enter lesson name"
+            placeholder="Enter Chapter Name"
             required
           />
+          {lessonNameFrError && (
+            <p className="text-red-500">{lessonNameFrError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsEn"
-              value="Lesson Goals English"
+              value="Chapter Goals English"
             />
           </div>
           <TextInput
@@ -326,16 +387,19 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsEn(e.target.value)}
             id="LessonGoalsEn"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsEnError && (
+            <p className="text-red-500">{lessonGoalsEnError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsAr"
-              value="Lesson Goals Arabic"
+              value="Chapter Goals Arabic"
             />
           </div>
           <TextInput
@@ -343,16 +407,19 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsAr(e.target.value)}
             id="LessonGoalsAr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsArError && (
+            <p className="text-red-500">{lessonGoalsArError}</p>
+          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
             <Label
               className="md:text-lg capitalize font-medium"
               htmlFor="LessonGoalsFr"
-              value="Lesson Goals French"
+              value="Chapter Goals French"
             />
           </div>
           <TextInput
@@ -360,17 +427,20 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             onChange={(e) => setLessonGoalsFr(e.target.value)}
             id="LessonGoalsFr"
             type="text"
-            placeholder="Enter lesson goals"
+            placeholder="Enter Chapter Goals"
             required
           />
+          {lessonGoalsFrError && (
+            <p className="text-red-500">{lessonGoalsFrError}</p>
+          )}
         </div>
-        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Topic</h3>
+        <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Lesson</h3>
 
         {allTopics?.map((topic, index) => (
           <div key={index}>
             <div className="flex justify-between items-center py-2">
               <div className="text-lg font-medium text-gray-800 dark:text-white">
-                {index + 1}. Course Tools
+                Lesson .{index + 1}
               </div>
               <div className="flex items-center space-x-2">
                 {allTopics.length > 1 && (
@@ -439,15 +509,15 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name English"
+                      value="Lesson Name  English"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter lesson name"
                     value={topic.name_en || ""}
                     onChange={(e) =>
-                    //   updateTopic(index, "name_en", e.target.value)
+                      //   updateTopic(index, "name_en", e.target.value)
                       updateTopic(index, "name_en", e.target.value)
                     }
                     required
@@ -457,12 +527,12 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name Arabic"
+                      value="Lesson Name Arabic"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter lesson name"
                     value={topic.name_ar || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_ar", e.target.value)
@@ -474,12 +544,12 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
                   <div className="mb-4 block">
                     <Label
                       className="md:text-lg capitalize font-medium"
-                      value="Topic Name French"
+                      value="Lesson Name French"
                     />
                   </div>
                   <TextInput
                     type="text"
-                    placeholder="Enter topic name"
+                    placeholder="Enter lesson name"
                     value={topic.name_fr || ""}
                     onChange={(e) =>
                       updateTopic(index, "name_fr", e.target.value)
@@ -493,20 +563,14 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
                       className="md:text-lg capitalize font-medium"
                       value="Tutorial"
                     />
-                    <a className="ml-4 text-blue-600" href={dataLessonFiles?.data[index]}>Download the file</a>
+                    <a
+                      className="ml-4 text-blue-600"
+                      href={dataLessonFiles?.data[index]}
+                    >
+                      Download the file
+                    </a>
                   </div>
-                  <FileInput
-                    // value= || ""}
-                    // onChange={(e) => {
-                    //   if (e.target.files && e.target.files.length > 0) {
-                    //     addTutorial(e.target.files[0] || "empty");
-                    //     handleChangeFile(e.target.files[0], index)
-                    //   }
-                    // }}
-                    onChange={(e) => handleChangeFile(e, index)
-                      
-                    }
-                  />
+                  <FileInput onChange={(e) => handleChangeFile(e, index)} />
                 </div>
 
                 <div className="my-5">
@@ -575,9 +639,9 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
           </div>
         ))}
         <button
-              onClick={openPopup}
-              className="flex items-center my-5 hover:opacity-80"
-          >
+          onClick={openPopup}
+          className="flex items-center my-5 hover:opacity-80"
+        >
           <svg
             width="20"
             height="21"
@@ -606,7 +670,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             </defs>
           </svg>
           <span className="block text-[#526484] md:text-lg font-medium  ms-3">
-            Add New Topics
+            Add New Lesson
           </span>
         </button>
       </div>
@@ -649,7 +713,13 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
           </svg>
         </button>
       </div>
-      {isOpen && <AddTopic onClose={closePopup} idLesson={idLesson} />}
+      {isOpen && (
+        <AddTopic
+          onClose={closePopup}
+          idLesson={idLesson}
+          onAddSuccess={refetch}
+        />
+      )}
     </div>
   );
 };
