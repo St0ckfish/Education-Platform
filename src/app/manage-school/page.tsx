@@ -4,6 +4,7 @@ import Schools from "./components/Schools";
 import EmptySchools from "./components/emptySchools";
 import Cookies from "js-cookie"
 import { useGetAllSchoolsQuery } from "./api/manageSchool";
+import Container from "@/components/Container";
 
 const ManageSchool = () => {
     
@@ -17,7 +18,7 @@ const ManageSchool = () => {
 
     return (
         <>
-            <div className="lg:ml-[270px] mr-[5px]">
+            <Container>
                 
                 {
                     empty || isError ?
@@ -25,7 +26,7 @@ const ManageSchool = () => {
                     :
                     <Schools data={data} search={search} setSearch={setSearch} isLoading={isLoading} setCurrentPage={setCurrentPage}/>
                 }
-            </div>
+            </Container>
         </>
     )
 }

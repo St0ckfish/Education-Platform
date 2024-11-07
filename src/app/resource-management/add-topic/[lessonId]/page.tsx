@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { toast } from "react-toastify"; // استيراد toast من react-toastify
 import { useAddTopicMutation } from "../../api/getCoursesSlice";
+import Container from "@/components/Container";
 
 interface Topic {
     name_en: string;
@@ -92,8 +93,8 @@ const AddTopic: React.FC = () => {
 
     return (
         <>
-            <div className="lg:ml-[270px] mr-[5px]">
-                <h1 className="text-2xl font-semibold mb-4">Add New Topic</h1>
+            <Container>
+            <h1 className="text-2xl font-semibold mb-4">Add New Topic</h1>
                 <div className="collapse-content">
                     <div className="my-3">
                         <Label className="md:text-lg capitalize font-medium" value="Lesson Name  English" />
@@ -176,7 +177,7 @@ const AddTopic: React.FC = () => {
                         </button>
                     </div>
                 </div>
-            </div>
+            </Container>
         </>
     );
 };

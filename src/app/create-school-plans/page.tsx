@@ -8,6 +8,7 @@ import { useAddSchoolPlanMutation, useGetPermissionsQuery } from './api/createSc
 import { toast } from 'react-toastify';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useRouter } from 'next/navigation';
+import Container from '@/components/Container';
 
 const CreateSchoolPlans = () => {
 
@@ -140,8 +141,7 @@ const CreateSchoolPlans = () => {
 
     return (
 
-        <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-10">
-
+        <Container centered={true} className='mt-10'>
             <form>
                 <h1 className="font-bold text-[28px] mb-4 font-sans text-[#041631] dark:text-white">Add New School Plan</h1>
                 <div className="p-10 bg-white card rounded-xl items-center justify-center xl:w-[1000px] lg:w-[750px]  gap-5 md:w-[600px] sm:w-[500px]">
@@ -225,7 +225,7 @@ const CreateSchoolPlans = () => {
 
                 </div >
             </form >
-        </div >
+        </Container >
 
 
     );

@@ -1,7 +1,9 @@
+import Container from "@/components/Container";
+
 const SyllabusManagement = () => {
     return (
       <>
-        <div className="mt-12 lg:ml-[290px]">
+        <Container className="mt-12">
           <div className="flex w-full justify-between px-8 text-center max-[502px]:grid max-[502px]:justify-center">
             <div className="mb-3">
               <label htmlFor="icon" className="sr-only">
@@ -125,7 +127,7 @@ const SyllabusManagement = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </>
     );
   };

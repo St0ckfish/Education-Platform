@@ -4,6 +4,7 @@ import { useGetAllCoursesQuery } from "./api/getCoursesSlice";
 import Courses from "./components/Courses";
 import EmptyCourses from "./components/EmptyCourses";
 import Cookies from "js-cookie"
+import Container from "@/components/Container";
 
 const ResourseManagement = () => {
 
@@ -16,14 +17,14 @@ const ResourseManagement = () => {
 
     return (
         <>
-            <div className="lg:ml-[270px] mr-[5px]">
-                {
+            <Container>
+            {
                     data?.data?.empty ?
                     <EmptyCourses/>
                     :
                     <Courses search={search} setSearch={setSearch} isLoading={isLoading} setCurrentPage={setCurrentPage} data={data} />
                 }
-            </div>
+            </Container>
         </>
     )
 }

@@ -9,6 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "react-toastify";
 import Spinner from "@/components/spinner";
+import Container from "@/components/Container";
 
 const AddNewAdmin = () => {
     const token = Cookies.get('token') || "";
@@ -153,7 +154,7 @@ const AddNewAdmin = () => {
 
     return (
         <>
-            <div className="lg:ml-[270px] mr-[5px] sm:grid justify-center items-center min-h-screen overflow-auto p-3">
+        <Container centered={true} className="mt-10">
                 <form>
                     <div className=" p-10 bg-white card rounded-xl items-center justify-center xl:w-[1000px] lg:w-[750px] gap-5 md:w-[600px] sm:w-[500px] overflow-auto">
                         <div className="flex items-center justify-start gap-2">
@@ -328,7 +329,7 @@ const AddNewAdmin = () => {
                         }
                     </div>
                 </form>
-            </div>
+            </Container>
         </>
     );
 }

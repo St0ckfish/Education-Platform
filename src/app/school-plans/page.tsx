@@ -10,6 +10,7 @@ import ReactPaginate from 'react-paginate';
 import { ToggleSwitch } from 'flowbite-react';
 import EmptySchoolPlans from './EmptySchoolPlans';
 import Spinner from '@/components/spinner';
+import Container from '@/components/Container';
 
 const PlanSchool = () => {
 
@@ -40,7 +41,7 @@ const PlanSchool = () => {
 
         ) : (
             isSuccess && dataSchoolPlans?.data.content.length > 0 ? (<>
-                <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+                <Container className="md:px-2 relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
                     <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
                         <div className="my-3">
                             <label htmlFor="icon" className="sr-only">Search</label>
@@ -121,7 +122,7 @@ const PlanSchool = () => {
                             activeClassName="active"
                         />
                     )}
-                </div>
+                </Container>
             </>
 
             ) : (

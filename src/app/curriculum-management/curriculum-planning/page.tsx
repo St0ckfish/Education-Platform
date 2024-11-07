@@ -1,5 +1,6 @@
 "use client"
 
+import Container from "@/components/Container";
 import { useGetCurriculumPlanningQuery } from "../api/curriculumApi";
 import Cookies from "js-cookie"
 
@@ -14,7 +15,7 @@ const CurriculumPlanning = () => {
 
   return (
     <>
-      <div className="mt-12 lg:ml-[290px]">
+      <Container className="mt-12">
         <div className="flex w-full justify-between px-5 text-center max-[502px]:grid max-[502px]:justify-center">
           <div className="mb-3">
             <label htmlFor="icon" className="sr-only">
@@ -128,7 +129,7 @@ const CurriculumPlanning = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 };

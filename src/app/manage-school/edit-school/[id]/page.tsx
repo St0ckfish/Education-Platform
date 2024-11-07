@@ -19,6 +19,7 @@ import {
   useUpdateSchoolMutation,
 } from "../../api/manageSchool";
 import Spinner from "@/components/spinner";
+import Container from "@/components/Container";
 
 const EditSchool = () => {
   const router = useRouter();
@@ -75,7 +76,7 @@ const EditSchool = () => {
       setCurriculum(dataSchool.data.curriculum || "");
       setType(dataSchool.data.type || "");
       setLanguages(dataSchool.data.languages || []);
-      setLevels(dataSchool.data.levels || []);
+      setLevels(dataSchool.data.stages || []);
       setEducations(dataSchool.data.educationSystemsIds || []);
       setRegionId(dataSchool.data.regionId || "");
       setFallSemesterStartDate(
@@ -102,6 +103,8 @@ const EditSchool = () => {
       setNumberOfLegalAbsenceDays(
         dataSchool.data.numberOfLegalAbsenceDays?.toString() || ""
       );
+      // setEducations(["1"]); // TODO: remove it
+
     }
   }, [successSchool, dataSchool]);
 
@@ -329,35 +332,74 @@ const EditSchool = () => {
     e.preventDefault();
 
     if (!validateInputs()) {
+        // Show error toast if inputs are invalid
+        toast.error("Please fill in all required fields correctly.");
         return;
     }
-  
+
     const data = {
-      name: name,
-      about: about,
-      code: code,
-      theme: theme,
-      curriculum: curriculum,
-      type: type,
-      languages: languages,
-      levels: levels,
-      educationSystemsIds: educations,
-      semesterDate: {
-        fallSemesterStartDate: fallSemesterStartDate,
-        fallSemesterEndDate: fallSemesterEndDate,
-        springSemesterStartDate: springSemesterStartDate,
-        springSemesterEndDate: springSemesterEndDate,
-        summerSemesterStartDate: summerSemesterStartDate,
-        summerSemesterEndDate: summerSemesterEndDate,
-      },
-      established: established,
-      numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
-      workDayStartTime: workDayStartTime,
-      workDayEndTime: workDayEndTime,
-      regionId: regionId,
+        name: name,
+        about: about,
+        code: code,
+        theme: theme,
+        curriculum: curriculum,
+        type: type,
+        languages: languages,
+        stages: levels,
+        educationSystemsIds: educations,
+        semesterDate: {
+            fallSemesterStartDate: fallSemesterStartDate,
+            fallSemesterEndDate: fallSemesterEndDate,
+            springSemesterStartDate: springSemesterStartDate,
+            springSemesterEndDate: springSemesterEndDate,
+            summerSemesterStartDate: summerSemesterStartDate,
+            summerSemesterEndDate: summerSemesterEndDate,
+        },
+        established: established,
+        numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
+        workDayStartTime: workDayStartTime,
+        workDayEndTime: workDayEndTime,
+        regionId: regionId,
     };
-    updateSchool({ token, id: params.id, body: data }).unwrap();
-  };
+    
+    try {
+        console.log('school: ', data);
+        await updateSchool({ token, id: params.id, body: data }).unwrap();
+        
+        // Show success toast on successful update
+        toast.success("School information updated successfully!");
+    } catch (error) {
+        // Show error toast if there's an issue with the update
+        toast.error("Failed to update school information. Please try again.");
+        console.error("Update failed: ", error);
+    }
+};
+
+  // "name": "abufadel",
+  // "about": "test",
+  // "code": "TEST",
+  // "theme": "test",
+  // "curriculum": "STATE_APPROVED_CURRICULUM",
+  // "type": "PUBLIC",
+  // "languages": [
+  //     "ARABIC"
+  // ],
+  // "stages": [
+  //     "KINDERGARTEN"
+  // ],
+  // "educationSystemsIds": [1],
+  // "semesterDate": {
+  //     "fallSemesterStartDate": "--11-02",
+  //     "fallSemesterEndDate": "--11-22",
+  //     "springSemesterStartDate": "--11-19",
+  //     "springSemesterEndDate": "--11-22",
+  //     "summerSemesterStartDate": "--11-01",
+  //     "summerSemesterEndDate": "--11-29"
+  // },
+  // "established": "2024-11-01",
+  // "numberOfLegalAbsenceDays": 15,
+  // "workDayStartTime": "21:44:10",
+  // "workDayEndTime": "22:44:29"
 
   useEffect(() => {
     if (isError) {
@@ -409,7 +451,7 @@ const EditSchool = () => {
   return (
     <>
       {successSchool && (
-        <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-10">
+        <Container centered={true} className="mt-10">
           <form>
             <h1 className="font-bold text-[28px] mb-4 font-sans text-[#041631] dark:text-white">
               Update School
@@ -639,7 +681,7 @@ const EditSchool = () => {
                         className="mb-3 inline-block md:text-lg capitalize font-medium"
                         htmlFor="Levels"
                       >
-                        Levels <span className="text-[#367AFF] text-xl">*</span>
+                        Stages <span className="text-[#367AFF] text-xl">*</span>
                       </label>
                       <button
                         onClick={(e) => {
@@ -1003,7 +1045,7 @@ const EditSchool = () => {
               </div>
             </div>
           </form>
-        </div>
+        </Container>
       )}
     </>
   );
