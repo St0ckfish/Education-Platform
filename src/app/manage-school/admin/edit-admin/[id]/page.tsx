@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Spinner from "@/components/spinner";
 import { useGetEmployeeTypeQuery, useGetGanderQuery, useGetNationalityQuery, useGetQualificationQuery, useGetRegionsQuery, useGetReligionQuery } from "../../api/adminApis";
 import { useEmployeeStatusQuery, useGetAdminQuery, useUpdateAdminMutation } from "./api/EditAdminApi";
+import Container from "@/components/Container";
 
 const EditAdmin = () => {
 
@@ -177,7 +178,7 @@ const EditAdmin = () => {
     return (
         <>
             {adminDetailsSuccess && (
-                <div className="lg:ml-[270px] mr-[5px] sm:grid justify-center items-center min-h-screen overflow-auto p-3">
+                <Container centered={true} className="mt-10">
                     <form>
                         <div className=" p-10 bg-white card rounded-xl items-center justify-center xl:w-[1000px] lg:w-[750px] gap-5 md:w-[600px] sm:w-[500px] overflow-auto">
                             <div className="flex items-center justify-start gap-2">
@@ -358,7 +359,7 @@ const EditAdmin = () => {
                             }
                         </div>
                     </form>
-                </div>
+                </Container>
             )}
 
         </>

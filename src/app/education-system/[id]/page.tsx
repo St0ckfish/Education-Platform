@@ -9,6 +9,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useGetCountryQuery } from '@/app/create-course/api/createCourseSlice';
 import { useGetLanguagesQuery } from '@/app/add-new-school/api/createSchoolApi'
 import { useGetEducationByIdQuery, useUpdateEduSystemMutation } from '../api/manageSystems'
+import Container from '@/components/Container'
 
 function Page() {
 
@@ -21,7 +22,7 @@ function Page() {
     const { isSuccess: successLanguages, data: dataLanguages } = useGetLanguagesQuery(token)
     const { data: dataCountry, isSuccess: successCountry } = useGetCountryQuery(token)
     const [updateEduSystem, { isSuccess, error, isError }] = useUpdateEduSystemMutation()
-    const { data: eduDetails, isSuccess: successEduDetails } = useGetEducationByIdQuery({ token, id: params.id })
+    const { data: eduDetails, isSuccess: successEduDetails, refetch } = useGetEducationByIdQuery({ token, id: params.id })
 
     const [name, setName] = useState("")
     const [language, setLanguage] = useState("")
@@ -34,14 +35,6 @@ function Page() {
             setCountryId(eduDetails.data.countryId)
         }
     }, [successEduDetails , eduDetails])
-
-    const handleSend = async () => {
-        const obj = {
-            name,
-            language,
-        }
-        updateEduSystem({ token, id: params.id, body: obj }).unwrap()
-    }
 
     useEffect(() => {
         if (isError) {
@@ -74,9 +67,17 @@ function Page() {
         }
     }, [isError, error]);
 
-    useEffect(() => {
-        if (isSuccess) {
-            toast.success("Education system Updated successfully", {
+
+    const handleSend = async () => {
+        const obj = {
+            name,
+            language,
+            countryId,
+        };
+        try {
+            await updateEduSystem({ token, id: params.id, body: obj }).unwrap();
+            refetch();
+            toast.success("Education system updated successfully", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -86,13 +87,24 @@ function Page() {
                 progress: undefined,
                 theme: "light",
             });
-            router.push("/education-system")
+            router.push("/education-system"); // redirect or reload
+        } catch (error) {
+            toast.error("Failed to update education system. Please try again later.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
-    }, [isSuccess, router])
-
+    };
+    
 
     return (
-        <div className="lg:ml-[280px] mr-[5px] relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
+        <Container className="relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
             <h1 className="font-bold text-[28px] font-sans text-[#041631] dark:text-white">Update Education System</h1>
 
             <div className='grid grid-cols-2 gap-4 max-[1278px]:grid-cols-1 mb-10'>
@@ -134,7 +146,7 @@ function Page() {
             <div className="flex justify-center text-center">
                 <button onClick={() => handleSend()} type="submit" className="px-4 py-2 rounded-xl bg-[#3E5AF0] hover:bg-[#4a5cc5] hover:shadow-xl text-white  text-[16px] w-[220px] ease-in duration-300">Update Education System</button>
             </div>
-        </div>
+        </Container>
     )
 }
 

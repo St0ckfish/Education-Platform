@@ -7,6 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { Button, Modal } from "flowbite-react";
+import Container from "@/components/Container";
 
 const BackUp = () => {
 
@@ -21,14 +22,14 @@ const BackUp = () => {
     const [selectedIdRestore, setSelectedIdRestore] = useState<number | null>(null);
 
     const { data: backups, isSuccess } = useGetAllBackupsQuery({ token, page: currentPage, search })
+    console.log(backups)
     const [deleteBackup] = useDeleteBackupMutation()
     const [restoreBackup] = useRestoreBackupMutation()
     const { data: backup, isSuccess: successBackup } = useGetBackupQuery({ token, id: selectedId }, { skip: selectedId === null })
-
+    
     const handlePageClick = ({ selected }: { selected: number }) => {
         setCurrentPage(selected);
     };
-
 
     const HandleView = (id: number) => {
         setOpenModalDetails(true)
@@ -106,12 +107,39 @@ const BackUp = () => {
         }
     };
 
+    const downloadFile = async (filename: string) => {
+        try {
+          const response = await fetch(backup.data.downloadUrl, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+      
+          if (!response.ok) {
+            throw new Error("Failed to download file. Authentication is required.");
+          }
+      
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+      
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${filename}.ext`);
+          document.body.appendChild(link);
+          link.click();
+        //   link.parentNode.removeChild(link);
+        } catch (error) {
+          toast.error("Failed to download file.");
+        }
+      };
+      
 
     return (
 
         isSuccess && backups.data?.content.length > 0 ? (
             <>
-                <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
+                <Container className="md:px-2 relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen">
                     <h1 className="font-bold text-[28px] mb-3 font-sans text-[#041631] dark:text-white">Backups</h1>
 
                     <div className="flex justify-between max-[502px]:grid max-[502px]:justify-center text-center">
@@ -223,7 +251,7 @@ const BackUp = () => {
                     )}
 
 
-                </div>
+                </Container>
 
                 {successBackup && (
                     <Modal show={openModalDetails} size="md" onClose={() => setOpenModalDetails(false)} popup>
@@ -238,9 +266,7 @@ const BackUp = () => {
                                 <p className="mb-5">Size : {backup.data.size}</p>
                                 <div className="grid md:grid-cols-2 mb-5">
 
-                                    <Link target="_blank" href={`${backup.data.downloadUrl}`}>
-                                        DownLoad
-                                    </Link>
+                                    <Button color="blue" onClick={() => downloadFile(backup.data.name)}>Download</Button>
 
                                 </div>
                                 <div className="flex justify-center gap-4">

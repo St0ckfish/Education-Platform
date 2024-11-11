@@ -21,11 +21,13 @@ import { createSchoolPlanApi } from "../create-school-plans/api/createSchoolPlan
 import { profileApis } from "@/components/api/profileApi";
 import { createSchoolPermissionsSlice } from "../manage-school/features/[id]/api/schoolPermissions";
 import { authSlice } from "./AuthSlice";
+import { sideBarSlice } from "./SidebarSlice";
 
 export const store = configureStore({
     reducer: { // RootReducer
         theme: ThemeSlice,
         auth: authSlice.reducer,
+        sidebar: sideBarSlice.reducer,
         [loginSlice.reducerPath]: loginSlice.reducer,
         [courseSlice.reducerPath]: courseSlice.reducer,
         [feedbackSlice.reducerPath]: feedbackSlice.reducer,

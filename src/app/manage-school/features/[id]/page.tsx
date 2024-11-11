@@ -6,6 +6,7 @@ import Spinner from "@/components/spinner";
 import { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } from "./api/schoolPermissions";
 import { useParams } from "next/navigation";
 import { useGetSchoolByIdQuery } from "../../api/manageSchool";
+import Container from "@/components/Container";
 
 const Features = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const Features = () => {
 
   return (
     <>
-      <div className="mx-3 mt-[70px] lg:ml-[270px]">
+      <Container className="mt-[70px]">
       {features && features.length > 0 ? (
         <div className="rounded-xl pb-5">
           <div className="flex rounded-t-xl bg-blue-100 px-10 py-4 text-[18px] font-semibold">
@@ -50,7 +51,7 @@ const Features = () => {
       ) : (
         <Spinner /> 
   )}
-      </div>
+      </Container>
     </>
   );
 };

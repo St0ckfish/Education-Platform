@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useGetCountryQuery } from '../create-course/api/createCourseSlice';
 import Spinner from '@/components/spinner';
+import Container from '@/components/Container';
 
 function Page() {
 
@@ -130,7 +131,7 @@ function Page() {
 
 
     return (
-        <div className="lg:ml-[280px] mr-[5px] relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
+        <Container className="relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2 min-h-screen">
             <h1 className="font-bold text-[28px] font-sans text-[#041631] dark:text-white">Create Education System</h1>
 
             <div className='grid grid-cols-2 gap-4 max-[1278px]:grid-cols-1 mb-10'>
@@ -184,7 +185,7 @@ function Page() {
                 </div >
             )
             }
-        </div >
+        </Container >
     )
 }
 

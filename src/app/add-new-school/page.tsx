@@ -16,6 +16,7 @@ import { useGetEducationLevelQuery } from "../create-course/api/createCourseSlic
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useRouter } from "next/navigation";
+import Container from "@/components/Container";
 
 const AddNewSchool = () => {
   const router = useRouter();
@@ -277,6 +278,35 @@ const AddNewSchool = () => {
     return "";
   };
 
+
+
+  const data = {
+    name,
+    about,
+    code,
+    theme,
+    curriculum,
+    type,
+    languages,
+    stages: levels,
+    educationSystemsIds: educations,
+    semesterDate: {
+      fallSemesterStartDate,
+      fallSemesterEndDate,
+      springSemesterStartDate,
+      springSemesterEndDate,
+      summerSemesterStartDate,
+      summerSemesterEndDate,
+    },
+    established,
+    numberOfLegalAbsenceDays,
+    workDayStartTime,
+    workDayEndTime,
+    regionId,
+  };
+
+  console.log('school data: ', data);
+
   const handleSend = async (e: any) => {
     e.preventDefault();
 
@@ -324,6 +354,8 @@ const AddNewSchool = () => {
       workDayEndTime,
       regionId,
     };
+
+    console.log('school data: ', data);
 
     try {
       await addSchool({ token, data }).unwrap();
@@ -381,7 +413,7 @@ const AddNewSchool = () => {
 
   return (
     <>
-      <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-10">
+      <Container centered={true} className="mt-10">
         <form>
           <h1 className="font-bold text-[28px] mb-4 font-sans text-[#041631] dark:text-white">
             Add New School
@@ -965,7 +997,7 @@ const AddNewSchool = () => {
             </div>
           </div>
         </form>
-      </div>
+      </Container>
     </>
   );
 };

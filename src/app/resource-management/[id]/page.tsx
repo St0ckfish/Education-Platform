@@ -8,6 +8,7 @@ import FirstStep from '@/app/create-course/components/steps/FirstStep';
 import SecoundStep from '@/app/create-course/components/steps/SecoundStep';
 import FourthStep from '@/app/create-course/components/steps/FourthStep';
 import { toast } from 'react-toastify';
+import Container from '@/components/Container';
 
 function Page() {
     const [activeStep, setActiveStep] = useState(0);
@@ -146,7 +147,7 @@ function Page() {
     ];
 
     return (
-        <div className="lg:ml-[280px] mr-[5px] relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
+        <Container className="relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
             <h1 className="font-bold text-[28px] font-sans text-[#041631] dark:text-white">Update Course</h1>
             <div className='grid md:grid-cols-3 gap-8 mt-16'>
                 <div className='md:col-span-2'>
@@ -166,16 +167,14 @@ function Page() {
                                 >
                                     {item.step}
                                 </div>
-                                {activeStep >= index && (
-                                    <span className='ms-3 text-[#526484]'>{item.about}</span>
-                                )}
+                                <span className="ms-3 text-[#526484]">{item.about}</span>
                             </div>
                         ))}
                     </div>
                 </div>
 
             </div>
-        </div>
+        </Container>
     )
 }
 

@@ -30,7 +30,7 @@ export const backupsApis = createApi({
         }),
         addBackup: builder.mutation({
             query: ({ token, name }: { token: string, name: string }) => ({
-                url: `management/backup?${name}`,
+                url: `management/backup?name=${name}`,
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`

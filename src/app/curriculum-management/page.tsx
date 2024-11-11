@@ -1,6 +1,7 @@
 "use client";
 import { RootState } from "@/app/GlobalRedux/store";
 import Card from "@/components/Card";
+import Container from "@/components/Container";
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useState } from "react";
@@ -33,8 +34,8 @@ const CurriculumManagement = () => {
   ];
   return (
     <>
-      <div
-        className={`flex  items-center gap-1 ${booleanValue ? "lg:ml-[100px]" : "lg:ml-[290px]"} ml-7 mt-12 flex-wrap`}
+      <Container
+        className={`flex items-center gap-1 ml-7 mt-12 flex-wrap`}
       >
         <Link
           className="text-[18px] font-semibold text-[#526484] hover:text-blue-400 hover:underline"
@@ -57,9 +58,9 @@ const CurriculumManagement = () => {
         >
           Curriculum Management
         </Link>
-      </div>
-      <div
-        className={`${booleanValue ? "lg:ml-[100px]" : "lg:ml-[290px]"} mt-12`}
+      </Container>
+      <Container
+        className="mt-12"
       >
         <div className="grid grid-cols-2 gap-5 max-[577px]:grid-cols-1 md:grid-cols-3 justify-items-center">
           {curriculums.map((item, index) => (
@@ -72,7 +73,7 @@ const CurriculumManagement = () => {
             />
           ))}
         </div>
-      </div>
+      </Container>
     </>
   );
 };

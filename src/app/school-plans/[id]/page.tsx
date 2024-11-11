@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Cookies from "js-cookie"
 import Spinner from '@/components/spinner';
 import { useGetSchoolPlanQuery, useUpdateStatusOfSchoolPlanMutation } from '../api/SchoolPlans';
+import Container from '@/components/Container';
 
 const PlanSchoolDetails = () => {
 
@@ -19,7 +20,7 @@ const PlanSchoolDetails = () => {
             </div>
         ) : (
             isSuccess && (
-                <div className="lg:ml-[270px] md:px-2 mr-[5px] relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen px-2">
+                <Container className="md:px-2 relative mt-10 overflow-x-auto bg-transparent sm:rounded-lg max-[1200px]:w-screen h-screen px-2">
                     <div className='mb-5'>
                         <div className='my-2'>
                             <span>Name: </span>
@@ -78,7 +79,7 @@ const PlanSchoolDetails = () => {
                         </>
                         )
                     }
-                </div>
+                </Container>
             )
         )
     );

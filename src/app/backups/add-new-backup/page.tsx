@@ -5,6 +5,7 @@ import Cookies from "js-cookie"
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import Container from '@/components/Container';
 
 function Page() {
     const token = Cookies.get('token') || "";
@@ -13,7 +14,6 @@ function Page() {
     const [addBackup, { data , isSuccess , error , isError  }] = useAddBackupMutation()
 
     console.log(data);
-
 
     const handleSend = async (e: any) => {
         e.preventDefault()
@@ -73,7 +73,7 @@ function Page() {
 
 
     return (
-        <div className="lg:ml-[270px] mr-[5px] grid justify-center items-center mt-10">
+        <Container centered={true} className='mt-10'>
 
             <form>
                 <h1 className="font-bold text-[28px] mb-4 font-sans text-[#041631] dark:text-white">Add New Backup</h1>
@@ -90,7 +90,7 @@ function Page() {
                     </div>
                 </div>
             </form>
-        </div>
+        </Container>
     )
 }
 

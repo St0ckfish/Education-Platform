@@ -6,6 +6,7 @@ import ThirdStep from "./components/steps/ThirdStep";
 import { useAddCourseMutation } from "./api/createCourseSlice";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import Container from "@/components/Container";
 
 function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -126,7 +127,7 @@ function Page() {
   ];
 
   return (
-    <div className="lg:ml-[280px] mr-[5px] relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
+    <Container className="relative mt-5 overflow-x-auto bg-transparent sm:rounded-lg px-2 min-h-screen">
       <h1 className="font-bold text-[28px] font-sans text-[#041631] dark:text-white">
         Create Course
       </h1>
@@ -153,7 +154,7 @@ function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

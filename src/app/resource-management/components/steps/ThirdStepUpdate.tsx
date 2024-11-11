@@ -124,71 +124,15 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
 
   console.log("topicsToSend:", topicsToSend);
 
-  // Error Messages
-  const [lessonNameEnError, setLessonNameEnError] = useState("");
-  const [lessonNameArError, setLessonNameArError] = useState("");
-  const [lessonNameFrError, setLessonNameFrError] = useState("");
-  const [lessonGoalsEnError, setLessonGoalsEnError] = useState("");
-  const [lessonGoalsArError, setLessonGoalsArError] = useState("");
-  const [lessonGoalsFrError, setLessonGoalsFrError] = useState("");
-
-  const validateFields = () => {
-    let isValid = true;
-
-    setLessonNameEnError("");
-    setLessonNameArError("");
-    setLessonNameFrError("");
-    setLessonGoalsEnError("");
-    setLessonGoalsArError("");
-    setLessonGoalsFrError("");
-
-    if (!lessonNameEn) {
-      setLessonNameEnError("Chapter Name in English is required");
-      isValid = false;
-    }
-
-    if (!lessonNameAr) {
-      setLessonNameArError("Chapter Name in Arabic is required");
-      isValid = false;
-    }
-
-    if (!lessonNameFr) {
-      setLessonNameFrError("Chapter Name in French is required");
-      isValid = false;
-    }
-
-    if (!lessonGoalsEn) {
-      setLessonGoalsEnError("Chapter Goals in English are required");
-      isValid = false;
-    }
-
-    if (!lessonGoalsAr) {
-      setLessonGoalsArError("Chapter Goals in Arabic are required");
-      isValid = false;
-    }
-
-    if (!lessonGoalsFr) {
-      setLessonGoalsFrError("Chapter Goals in French are required");
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
   const handleSend = async () => {
-    const isValid = validateFields();
-    if (!isValid) {
-      toast.warning("Please fill all required fields");
-      return;
-    }
     const dataUpdated = {
-      name_en: lessonNameEn,
-      name_ar: lessonNameAr,
-      name_fr: lessonNameFr,
-      goals_en: lessonGoalsEn,
-      goals_ar: lessonGoalsAr,
-      goals_fr: lessonGoalsFr,
-      topics: topicsToSend,
+      name_en: lessonNameEn || "name (en)",
+      name_ar: lessonNameAr || "name (ar)",
+      name_fr: lessonNameFr || "name (fr)",
+      goals_en: lessonGoalsEn || "goal (en)",
+      goals_ar: lessonGoalsAr || "goal (ar)",
+      goals_fr: lessonGoalsFr || "goal (fr)",
+      topics: topicsToSend || [],
     };
 
     refetchGetAllLessons();
@@ -328,11 +272,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonNameEn"
             type="text"
             placeholder="Enter Chapter Name"
-            required
           />
-          {lessonNameEnError && (
-            <p className="text-red-500">{lessonNameEnError}</p>
-          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
@@ -348,11 +288,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonNameAr"
             type="text"
             placeholder="Enter Chapter Name"
-            required
           />
-          {lessonNameArError && (
-            <p className="text-red-500">{lessonNameArError}</p>
-          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
@@ -368,11 +304,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonNameFr"
             type="text"
             placeholder="Enter Chapter Name"
-            required
           />
-          {lessonNameFrError && (
-            <p className="text-red-500">{lessonNameFrError}</p>
-          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
@@ -388,11 +320,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonGoalsEn"
             type="text"
             placeholder="Enter Chapter Goals"
-            required
           />
-          {lessonGoalsEnError && (
-            <p className="text-red-500">{lessonGoalsEnError}</p>
-          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
@@ -408,11 +336,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonGoalsAr"
             type="text"
             placeholder="Enter Chapter Goals"
-            required
           />
-          {lessonGoalsArError && (
-            <p className="text-red-500">{lessonGoalsArError}</p>
-          )}
         </div>
         <div className="my-3">
           <div className="mb-4 block">
@@ -428,11 +352,7 @@ const ThirdStepUpdate: React.FC<ThirdStepProps> = ({
             id="LessonGoalsFr"
             type="text"
             placeholder="Enter Chapter Goals"
-            required
           />
-          {lessonGoalsFrError && (
-            <p className="text-red-500">{lessonGoalsFrError}</p>
-          )}
         </div>
         <h3 className="font-semibold my-5 md:text-xl text-[#526484]">Lesson</h3>
 
