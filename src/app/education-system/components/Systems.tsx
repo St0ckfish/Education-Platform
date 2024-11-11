@@ -22,7 +22,6 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
         setCurrentPage(selectedPage.selected);
     };
 
-
     const token = Cookies.get('token') || "";
 
     const [openModal, setOpenModal] = useState(false);
@@ -34,6 +33,8 @@ const Systems: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
         setSelectedEduId(id);
         setOpenModal(true);
     };
+
+    
 
     const handleDelete = () => {
         if (selectedEduId !== null) {

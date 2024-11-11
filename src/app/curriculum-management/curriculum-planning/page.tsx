@@ -71,7 +71,7 @@ const CurriculumPlanning = () => {
               <div className="relative overflow-auto">
                 <table className="w-full overflow-x-auto text-left bg-white card  text-sm text-gray-500 rtl:text-right">
                   <thead>
-                    <tr className=" font-semibold text-black ">
+                    <tr className="font-semibold text-black ">
                       <th
                         scope="row"
                         className="whitespace-nowrap border-2 border-[#dcebfb] dark:border-gray-800 px-6 py-4 font-medium text-gray-900"

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie"
 import { useGetAllEducationSystemQuery } from "./api/manageSystems";
 import Systems from "./components/Systems";
@@ -12,9 +12,12 @@ const ManageSchool = () => {
     
     const [search , setSearch] = useState("")
     const [currentPage, setCurrentPage] = useState(0);
-    const { data , isError , isLoading } = useGetAllEducationSystemQuery({ token, page:currentPage, search })
+    const { data , isError , isLoading, refetch } = useGetAllEducationSystemQuery({ token, page:currentPage, search })
 
     const empty = data?.data?.emptyPage 
+    useEffect(() => {
+        refetch()
+    })
     
 
     return (

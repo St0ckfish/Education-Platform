@@ -15,7 +15,6 @@ function Page() {
 
     console.log(data);
 
-
     const handleSend = async (e: any) => {
         e.preventDefault()
         addBackup({ token, name }).unwrap()

@@ -10,7 +10,6 @@ import Container from '@/components/Container';
 
 const Admins = () => {
 
-
     const token = Cookies.get('token') || "";
     const params = useParams()
 

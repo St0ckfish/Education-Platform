@@ -8,6 +8,8 @@ import Cookies from "js-cookie"
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Button, Modal } from 'flowbite-react';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 interface CoursesProps {
     data: any;
@@ -35,35 +37,52 @@ const Courses: React.FC<CoursesProps> = ({ search, setSearch, isLoading, data, s
         setOpenModal(true);
     };
 
-    const handleDelete = async () => {
+    type DeleteCourseParams = {
+        token: string;
+        id: number;
+    };
+    
+    type DeleteCourseResponse = {
+        data?: {
+            success: boolean;
+            message: string;
+            data?: any;
+        };
+        error?: FetchBaseQueryError | SerializedError;
+    };
+    
+    const handleDelete = async (): Promise<void> => {
         if (selectedCourseId !== null) {
+            const toastConfig = {
+                position: "top-right" as const,
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light" as const,
+            };
+    
             try {
-                await deleteCourse({ token, id: selectedCourseId });
-                toast.success("Course deleted successfully", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-                setOpenModal(false);
+                const response: DeleteCourseResponse = await deleteCourse({ token, id: selectedCourseId });
+                
+                if (response.data && response.data.success) {
+                    toast.success("Course deleted successfully", toastConfig);
+                    setOpenModal(false);
+                } else if (response.error) {
+                    toast.error("Failed to delete course", toastConfig);
+                    setOpenModal(false);
+                } else {
+                    toast.error(response.data?.message || "Failed to delete course", toastConfig);
+                    setOpenModal(false);
+                }
             } catch (error) {
-                toast.error("Failed to delete course", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.error("An error occurred while deleting the course", toastConfig);
             }
         }
     };
+    
     
 
     return (

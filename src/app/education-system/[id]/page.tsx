@@ -22,7 +22,7 @@ function Page() {
     const { isSuccess: successLanguages, data: dataLanguages } = useGetLanguagesQuery(token)
     const { data: dataCountry, isSuccess: successCountry } = useGetCountryQuery(token)
     const [updateEduSystem, { isSuccess, error, isError }] = useUpdateEduSystemMutation()
-    const { data: eduDetails, isSuccess: successEduDetails } = useGetEducationByIdQuery({ token, id: params.id })
+    const { data: eduDetails, isSuccess: successEduDetails, refetch } = useGetEducationByIdQuery({ token, id: params.id })
 
     const [name, setName] = useState("")
     const [language, setLanguage] = useState("")
@@ -35,14 +35,6 @@ function Page() {
             setCountryId(eduDetails.data.countryId)
         }
     }, [successEduDetails , eduDetails])
-
-    const handleSend = async () => {
-        const obj = {
-            name,
-            language,
-        }
-        updateEduSystem({ token, id: params.id, body: obj }).unwrap()
-    }
 
     useEffect(() => {
         if (isError) {
@@ -75,9 +67,17 @@ function Page() {
         }
     }, [isError, error]);
 
-    useEffect(() => {
-        if (isSuccess) {
-            toast.success("Education system Updated successfully", {
+
+    const handleSend = async () => {
+        const obj = {
+            name,
+            language,
+            countryId,
+        };
+        try {
+            await updateEduSystem({ token, id: params.id, body: obj }).unwrap();
+            refetch();
+            toast.success("Education system updated successfully", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -87,10 +87,21 @@ function Page() {
                 progress: undefined,
                 theme: "light",
             });
-            router.push("/education-system")
+            router.push("/education-system"); // redirect or reload
+        } catch (error) {
+            toast.error("Failed to update education system. Please try again later.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
-    }, [isSuccess, router])
-
+    };
+    
 
     return (
         <Container className="relative mt-5 overflow-x-auto  bg-transparent sm:rounded-lg px-2  min-h-screen">
