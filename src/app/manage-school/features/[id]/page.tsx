@@ -3,7 +3,7 @@ import FeaturesList from "@/components/ExpandableList";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/spinner";
-import { useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } from "./api/schoolPermissions";
+import { useGetSchoolPermissionByIdQuery, useGetSchoolPermissionsQuery, useGetSchoolPlansQuery } from "./api/schoolPermissions";
 import { useParams } from "next/navigation";
 import { useGetSchoolByIdQuery } from "../../api/manageSchool";
 import Container from "@/components/Container";
@@ -30,6 +30,11 @@ const Features = () => {
 
   const {data: schoolData} = useGetSchoolByIdQuery({token, id});
   // console.log("schoolData: ", schoolData);
+  
+  const {data: schoolPermissions} = useGetSchoolPermissionByIdQuery({token, id});
+  const initialSchoolFeatures = schoolPermissions?.data
+  console.log('initialSchoolFeatures', initialSchoolFeatures);
+  
 
   return (
     <>

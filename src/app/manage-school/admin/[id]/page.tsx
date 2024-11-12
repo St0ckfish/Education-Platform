@@ -116,7 +116,7 @@ const Admins = () => {
                                         </Link>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <Link href={`edit-admin/${params.id}`} className="font-medium text-blue-600 hover:underline">Edit</Link>
+                                        <Link href={`edit-admin/${item.id}`} className="font-medium text-blue-600 hover:underline">Edit</Link>
                                     </td>
                                 </tr>
                             ))}
