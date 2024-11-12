@@ -46,7 +46,7 @@ const EditAdmin = () => {
     const { data: adminDetails, isSuccess: adminDetailsSuccess } = useGetAdminQuery({ token, id: params.id })
     const { data: dataEmployeeStatus, isSuccess: successEmployeeStatus } = useEmployeeStatusQuery(token)
     const [updateAdmin, { data, isSuccess, isLoading , isError , error  , originalArgs}] = useUpdateAdminMutation()
-
+    console.log('adminDetails', adminDetails);
     // console.log(adminDetails);
 
     console.log(originalArgs);

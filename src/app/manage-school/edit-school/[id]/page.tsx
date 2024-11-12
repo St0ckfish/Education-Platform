@@ -32,11 +32,15 @@ const EditSchool = () => {
   const [theme, setTheme] = useState("");
   const [curriculum, setCurriculum] = useState("");
   const [type, setType] = useState("");
+  // const [languages, setLanguages] = useState("");
   const [languages, setLanguages] = useState<string[]>([]);
+  // console.log(languages[0]);
   const [levels, setLevels] = useState<string[]>([]);
   const [educations, setEducations] = useState<string[]>([]);
   const [regionId, setRegionId] = useState("");
   const [fallSemesterStartDate, setFallSemesterStartDate] = useState("");
+  // console.log(fallSemesterStartDate)
+
   const [fallSemesterEndDate, setFallSemesterEndDate] = useState("");
   const [springSemesterStartDate, setSpringSemesterStartDate] = useState("");
   const [springSemesterEndDate, setSpringSemesterEndDate] = useState("");
@@ -66,7 +70,9 @@ const EditSchool = () => {
   const [openLanguages, setOpenLanguages] = useState(false);
   const [openLevels, setOpenLevels] = useState(false);
   const [openEducations, setOpenEducations] = useState(false);
-  console.log(successLevels, dataLevels);
+  console.log("successLevels", dataLevels);
+  console.log("dataEducations", dataEducations);
+  console.log("dataSchool", dataSchool);
   useEffect(() => {
     if (successSchool && dataSchool?.data) {
       setName(dataSchool.data.name || "");
@@ -104,7 +110,6 @@ const EditSchool = () => {
         dataSchool.data.numberOfLegalAbsenceDays?.toString() || ""
       );
       // setEducations(["1"]); // TODO: remove it
-
     }
   }, [successSchool, dataSchool]);
 
@@ -296,13 +301,14 @@ const EditSchool = () => {
     setOpenLevels(false);
   };
 
-  const handleCheckboxChange = (value: string) => {
-    setLanguages((prev) =>
-      prev.includes(value)
-        ? prev.filter((lang) => lang !== value)
-        : [...prev, value]
-    );
-  };
+  // const handleCheckboxChange = (value: string) => {
+  //   setLanguages((prev) =>
+  //     prev.includes(value)
+  //       ? prev.filter((lang) => lang !== value)
+  //       : [...prev, value]
+  //   );
+  // };
+
   const handleCheckboxChangeLevels = (value: string) => {
     setLevels((prev) =>
       prev.includes(value)
@@ -332,48 +338,48 @@ const EditSchool = () => {
     e.preventDefault();
 
     if (!validateInputs()) {
-        // Show error toast if inputs are invalid
-        toast.error("Please fill in all required fields correctly.");
-        return;
+      // Show error toast if inputs are invalid
+      toast.error("Please fill in all required fields correctly.");
+      return;
     }
 
     const data = {
-        name: name,
-        about: about,
-        code: code,
-        theme: theme,
-        curriculum: curriculum,
-        type: type,
-        languages: languages,
-        stages: levels,
-        educationSystemsIds: educations,
-        semesterDate: {
-            fallSemesterStartDate: fallSemesterStartDate,
-            fallSemesterEndDate: fallSemesterEndDate,
-            springSemesterStartDate: springSemesterStartDate,
-            springSemesterEndDate: springSemesterEndDate,
-            summerSemesterStartDate: summerSemesterStartDate,
-            summerSemesterEndDate: summerSemesterEndDate,
-        },
-        established: established,
-        numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
-        workDayStartTime: workDayStartTime,
-        workDayEndTime: workDayEndTime,
-        regionId: regionId,
+      name: name,
+      about: about,
+      code: code,
+      theme: theme,
+      curriculum: curriculum,
+      type: type,
+      languages: languages,
+      stages: levels,
+      educationSystemsIds: educations,
+      semesterDate: {
+        fallSemesterStartDate: fallSemesterStartDate,
+        fallSemesterEndDate: fallSemesterEndDate,
+        springSemesterStartDate: springSemesterStartDate,
+        springSemesterEndDate: springSemesterEndDate,
+        summerSemesterStartDate: summerSemesterStartDate,
+        summerSemesterEndDate: summerSemesterEndDate,
+      },
+      established: established,
+      numberOfLegalAbsenceDays: numberOfLegalAbsenceDays,
+      workDayStartTime: workDayStartTime,
+      workDayEndTime: workDayEndTime,
+      regionId: regionId,
     };
-    
+
     try {
-        console.log('school: ', data);
-        await updateSchool({ token, id: params.id, body: data }).unwrap();
-        
-        // Show success toast on successful update
-        toast.success("School information updated successfully!");
+      console.log("school: ", data);
+      await updateSchool({ token, id: params.id, body: data }).unwrap();
+
+      // Show success toast on successful update
+      toast.success("School information updated successfully!");
     } catch (error) {
-        // Show error toast if there's an issue with the update
-        toast.error("Failed to update school information. Please try again.");
-        console.error("Update failed: ", error);
+      // Show error toast if there's an issue with the update
+      toast.error("Failed to update school information. Please try again.");
+      console.error("Update failed: ", error);
     }
-};
+  };
 
   // "name": "abufadel",
   // "about": "test",
@@ -499,8 +505,8 @@ const EditSchool = () => {
                     className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]"
                   />
                   {nameError && (
-                  <span className="text-red-600 text-sm">{nameError}</span>
-                )}
+                    <span className="text-red-600 text-sm">{nameError}</span>
+                  )}
                 </label>
                 <label
                   htmlFor="code"
@@ -515,8 +521,8 @@ const EditSchool = () => {
                     className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]"
                   />
                   {codeError && (
-                  <span className="text-red-600 text-sm">{codeError}</span>
-                )}
+                    <span className="text-red-600 text-sm">{codeError}</span>
+                  )}
                 </label>
                 <label
                   htmlFor="about"
@@ -531,8 +537,8 @@ const EditSchool = () => {
                     className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]"
                   />
                   {aboutError && (
-                  <span className="text-red-600 text-sm">{aboutError}</span>
-                )}
+                    <span className="text-red-600 text-sm">{aboutError}</span>
+                  )}
                 </label>
                 <label
                   htmlFor="theme"
@@ -547,8 +553,8 @@ const EditSchool = () => {
                     className="w-full mt-3 py-3 px-4 rounded-xl border border-zinc-300 dark:bg-slate-700 outline-none max-[471px]:w-[350px]"
                   />
                   {themeError && (
-                  <span className="text-red-600 text-sm">{themeError}</span>
-                )}
+                    <span className="text-red-600 text-sm">{themeError}</span>
+                  )}
                 </label>
                 <div>
                   <label
@@ -577,10 +583,10 @@ const EditSchool = () => {
                     )}
                   </Select>
                   {curriculumError && (
-                  <span className="text-red-600 text-sm">
-                    {curriculumError}
-                  </span>
-                )}
+                    <span className="text-red-600 text-sm">
+                      {curriculumError}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <label
@@ -598,7 +604,7 @@ const EditSchool = () => {
                     {successType && (
                       <>
                         <option className="hidden">Select type</option>
-                        {Object.values(dataType.data).map((value: any) => (
+                        {Object.values(dataType?.data).map((value: any) => (
                           <option key={value} value={value}>
                             {value}
                           </option>
@@ -607,205 +613,90 @@ const EditSchool = () => {
                     )}
                   </Select>
                   {typeError && (
-                  <span className="text-red-600 text-sm">{typeError}</span>
-                )}
-                </div>
-                <div className="relative">
-                  {successLanguages && (
-                    <>
-                      <label
-                        className="mb-3 inline-block md:text-lg capitalize font-medium"
-                        htmlFor="languages"
-                      >
-                        languages{" "}
-                        <span className="text-[#367AFF] text-xl">*</span>
-                      </label>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleDropdown();
-                        }}
-                        className="w-full p-2.5 flex justify-between items-center text-sm font-medium text-gray-500 bg-white border dark:bg-gray-700 border-gray-300 rounded-lg "
-                      >
-                        Select Languages
-                        <svg
-                          width="14"
-                          height="8"
-                          viewBox="0 0 14 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0.707082 0.71057C0.316552 1.10108 0.316552 1.73428 0.707082 2.12478L5.59927 7.01218C6.38047 7.79258 7.64627 7.79228 8.42707 7.01158L13.3174 2.12118C13.708 1.73068 13.708 1.09748 13.3174 0.70696C12.9269 0.31643 12.2937 0.31643 11.9032 0.70696L7.71757 4.89258C7.32707 5.28318 6.69387 5.28308 6.30337 4.89258L2.12129 0.71057C1.73077 0.32004 1.0976 0.32004 0.707082 0.71057Z"
-                            fill="#041631"
-                          />
-                        </svg>
-                      </button>
-                      {openLanguages && (
-                        <ul className="absolute max-h-[200px] overflow-auto z-10 w-full mt-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 dark:bg-gray-700  rounded-lg   ">
-                          {Object.keys(dataLanguages.data).map((key: any) => (
-                            <li
-                              key={key}
-                              className="w-full select-none border-b border-gray-200 rounded-t-lg "
-                            >
-                              <div className="flex items-center ps-3">
-                                <input
-                                  id={key}
-                                  type="checkbox"
-                                  value={key}
-                                  checked={languages.includes(key)}
-                                  onChange={() => handleCheckboxChange(key)}
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 "
-                                />
-                                <label
-                                  htmlFor={key}
-                                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  {dataLanguages.data[key]}
-                                </label>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </>
+                    <span className="text-red-600 text-sm">{typeError}</span>
                   )}
+                </div>
+                <div>
+                  <label
+                    className="mb-3 inline-block md:text-lg capitalize font-medium"
+                    htmlFor="type"
+                  >
+                    Languages <span className="text-[#367AFF] text-xl">*</span>
+                  </label>
+                  <Select
+                    value={languages[0] || ""}
+                    onChange={(e) => setLanguages([e.target.value])}
+                    className={`${style.selectForm}`}
+                    id="type"
+                  >
+                    <option className="hidden">Select language</option>
+                    {Object.keys(dataLanguages?.data).map((key) => (
+                      <option key={key} value={key}>
+                        {dataLanguages?.data[key]}
+                      </option>
+                    ))}
+                  </Select>
+
                   {languagesError && (
-                  <span className="text-red-600 text-sm">{languagesError}</span>
-                )}
-                </div>
-                <div className="relative">
-                  {successLevels && (
-                    <>
-                      <label
-                        className="mb-3 inline-block md:text-lg capitalize font-medium"
-                        htmlFor="Levels"
-                      >
-                        Stages <span className="text-[#367AFF] text-xl">*</span>
-                      </label>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleDropdownLevels();
-                        }}
-                        className="w-full p-2.5 flex justify-between items-center text-sm font-medium text-gray-500 bg-white dark:bg-slate-700 border border-gray-300 rounded-lg "
-                      >
-                        Select Levels
-                        <svg
-                          width="14"
-                          height="8"
-                          viewBox="0 0 14 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0.707082 0.71057C0.316552 1.10108 0.316552 1.73428 0.707082 2.12478L5.59927 7.01218C6.38047 7.79258 7.64627 7.79228 8.42707 7.01158L13.3174 2.12118C13.708 1.73068 13.708 1.09748 13.3174 0.70696C12.9269 0.31643 12.2937 0.31643 11.9032 0.70696L7.71757 4.89258C7.32707 5.28318 6.69387 5.28308 6.30337 4.89258L2.12129 0.71057C1.73077 0.32004 1.0976 0.32004 0.707082 0.71057Z"
-                            fill="#041631"
-                          />
-                        </svg>
-                      </button>
-                      {openLevels && (
-                        <ul className="absolute dark:bg-slate-700 max-h-[200px] overflow-auto z-10 w-full mt-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg   ">
-                          {Object.keys(dataLevels.data).map((key: any) => (
-                            <li
-                              key={key}
-                              className="w-full select-none border-b border-gray-200 rounded-t-lg "
-                            >
-                              <div className="flex items-center ps-3">
-                                <input
-                                  id={key}
-                                  type="checkbox"
-                                  value={key}
-                                  checked={levels.includes(key)}
-                                  onChange={() =>
-                                    handleCheckboxChangeLevels(key)
-                                  }
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 "
-                                />
-                                <label
-                                  htmlFor={key}
-                                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  {dataLevels.data[key]}
-                                </label>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </>
+                    <span className="text-red-600 text-sm">
+                      {languagesError}
+                    </span>
                   )}
+                </div>
+                <div>
+                  <label
+                    className="mb-3 inline-block md:text-lg capitalize font-medium"
+                    htmlFor="type"
+                  >
+                    Stages <span className="text-[#367AFF] text-xl">*</span>
+                  </label>
+                  <Select
+                    value={levels[0] || ""}
+                    onChange={(e) => setLevels([e.target.value])}
+                    className={`${style.selectForm}`}
+                    id="type"
+                  >
+                    <option className="hidden">Select Stages</option>
+                    {Object.keys(dataLevels?.data).map((key) => (
+                      <option key={key} value={key}>
+                        {dataLevels?.data[key]}
+                      </option>
+                    ))}
+                  </Select>
+
                   {levelsError && (
-                  <span className="text-red-600 text-sm">{levelsError}</span>
-                )}
-                </div>
-                <div className="relative">
-                  {successEducations && (
-                    <>
-                      <label
-                        className="mb-3 inline-block md:text-lg capitalize font-medium"
-                        htmlFor="educationSystemsIds"
-                      >
-                        Education Systems{" "}
-                        <span className="text-[#367AFF] text-xl">*</span>
-                      </label>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleDropdownEducations();
-                        }}
-                        className="w-full p-2.5 flex justify-between items-center text-sm font-medium text-gray-500 bg-white dark:bg-slate-700 border border-gray-300 rounded-lg "
-                      >
-                        Select Levels
-                        <svg
-                          width="14"
-                          height="8"
-                          viewBox="0 0 14 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0.707082 0.71057C0.316552 1.10108 0.316552 1.73428 0.707082 2.12478L5.59927 7.01218C6.38047 7.79258 7.64627 7.79228 8.42707 7.01158L13.3174 2.12118C13.708 1.73068 13.708 1.09748 13.3174 0.70696C12.9269 0.31643 12.2937 0.31643 11.9032 0.70696L7.71757 4.89258C7.32707 5.28318 6.69387 5.28308 6.30337 4.89258L2.12129 0.71057C1.73077 0.32004 1.0976 0.32004 0.707082 0.71057Z"
-                            fill="#041631"
-                          />
-                        </svg>
-                      </button>
-                      {openEducations && (
-                        <ul className="absolute dark:bg-slate-700 max-h-[200px] overflow-auto z-10 w-full mt-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg   ">
-                          {dataEducations.data.content.map((item: any) => (
-                            <li
-                              key={item.id}
-                              className="w-full select-none border-b border-gray-200 rounded-t-lg "
-                            >
-                              <div className="flex items-center ps-3">
-                                <input
-                                  id={item.id}
-                                  type="checkbox"
-                                  value={item.id}
-                                  checked={educations.includes(item.id)}
-                                  onChange={() =>
-                                    handleCheckboxChangeEducations(item.id)
-                                  }
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 "
-                                />
-                                <label
-                                  htmlFor={item.id}
-                                  className="w-full dark:text-white py-3 ms-2 text-sm font-medium text-gray-900"
-                                >
-                                  {item.name}
-                                </label>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </>
+                    <span className="text-red-600 text-sm">{levelsError}</span>
                   )}
+                </div>
+                <div>
+                  <label
+                    className="mb-3 inline-block md:text-lg capitalize font-medium"
+                    htmlFor="type"
+                  >
+                    Education Systems{" "}
+                    <span className="text-[#367AFF] text-xl">*</span>
+                  </label>
+                  <Select
+                    value={educations[0] || ""}
+                    onChange={(e) => setEducations([e.target.value])}
+                    className={`${style.selectForm}`}
+                    id="type"
+                  >
+                    <option className="hidden">Select Education System</option>
+                    {dataEducations?.data?.content
+                      .filter((education: any) => !education.deleted) // Filter out deleted items
+                      .map((education: any) => (
+                        <option key={education.id} value={education.id}>
+                          {education.name}
+                        </option>
+                      ))}
+                  </Select>
+
                   {educationsError && (
-                  <span className="text-red-600 text-sm">
-                    {educationsError}
-                  </span>
-                )}
+                    <span className="text-red-600 text-sm">
+                      {educationsError}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <label
@@ -813,18 +704,20 @@ const EditSchool = () => {
                     className="text-[18px] font-sans font-semibold"
                   >
                     Fall Semester Start Date
-                  </label>
+                  </label> 
                   <input
                     id="fallSemesterStartDate"
                     type="date"
+                    value={''}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setFallSemesterStartDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{fallSemesterStartDate}</p>
                   {errorFallSemesterStartDate && (
-                  <p className="text-red-600">{errorFallSemesterStartDate}</p>
-                )}
+                    <p className="text-red-600">{errorFallSemesterStartDate}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -836,14 +729,18 @@ const EditSchool = () => {
                   <input
                     id="fallSemesterEndDate"
                     type="date"
+                    value={''}
+
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setFallSemesterEndDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{fallSemesterEndDate}</p>
+
                   {errorFallSemesterEndDate && (
-                  <p className="text-red-600">{errorFallSemesterEndDate}</p>
-                )}
+                    <p className="text-red-600">{errorFallSemesterEndDate}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -855,14 +752,18 @@ const EditSchool = () => {
                   <input
                     id="springSemesterStartDate"
                     type="date"
+                    value={''}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSpringSemesterStartDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{springSemesterStartDate}</p>
                   {errorSpringSemesterStartDate && (
-                  <p className="text-red-600">{errorSpringSemesterStartDate}</p>
-                )}
+                    <p className="text-red-600">
+                      {errorSpringSemesterStartDate}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -874,14 +775,16 @@ const EditSchool = () => {
                   <input
                     id="springSemesterEndDate"
                     type="date"
+                    value={''}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSpringSemesterEndDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{springSemesterEndDate}</p>
                   {errorSpringSemesterEndDate && (
-                  <p className="text-red-600">{errorSpringSemesterEndDate}</p>
-                )}
+                    <p className="text-red-600">{errorSpringSemesterEndDate}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -893,14 +796,18 @@ const EditSchool = () => {
                   <input
                     id="summerSemesterStartDate"
                     type="date"
+                    value={''}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSummerSemesterStartDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{summerSemesterStartDate}</p>
                   {errorSummerSemesterStartDate && (
-                  <p className="text-red-600">{errorSummerSemesterStartDate}</p>
-                )}
+                    <p className="text-red-600">
+                      {errorSummerSemesterStartDate}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -912,14 +819,17 @@ const EditSchool = () => {
                   <input
                     id="summerSemesterEndDate"
                     type="date"
+                    value={''}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSummerSemesterEndDate(formatDate(e.target.value))
                     }
                   />
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{summerSemesterEndDate}</p>
+
                   {errorSummerSemesterEndDate && (
-                  <p className="text-red-600">{errorSummerSemesterEndDate}</p>
-                )}
+                    <p className="text-red-600">{errorSummerSemesterEndDate}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -936,8 +846,8 @@ const EditSchool = () => {
                     onChange={(e) => setEstablished(e.target.value)}
                   />
                   {errorEstablished && (
-                  <p className="text-red-600">{errorEstablished}</p>
-                )}
+                    <p className="text-red-600">{errorEstablished}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -955,8 +865,8 @@ const EditSchool = () => {
                     onChange={(e) => setWorkDayStartTime(e.target.value)}
                   />
                   {errorWorkDayStartTime && (
-                  <p className="text-red-600">{errorWorkDayStartTime}</p>
-                )}
+                    <p className="text-red-600">{errorWorkDayStartTime}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -974,8 +884,8 @@ const EditSchool = () => {
                     onChange={(e) => setWorkDayEndTime(e.target.value)}
                   />
                   {errorWorkDayEndTime && (
-                  <p className="text-red-600">{errorWorkDayEndTime}</p>
-                )}
+                    <p className="text-red-600">{errorWorkDayEndTime}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -1004,8 +914,8 @@ const EditSchool = () => {
                     )}
                   </Select>
                   {errorRegionId && (
-                  <p className="text-red-600">{errorRegionId}</p>
-                )}
+                    <p className="text-red-600">{errorRegionId}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -1024,10 +934,10 @@ const EditSchool = () => {
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   />
                   {errorNumberOfLegalAbsenceDays && (
-                  <p className="text-red-600">
-                    {errorNumberOfLegalAbsenceDays}
-                  </p>
-                )}
+                    <p className="text-red-600">
+                      {errorNumberOfLegalAbsenceDays}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex justify-center text-center">
