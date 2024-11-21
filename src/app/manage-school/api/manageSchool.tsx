@@ -11,7 +11,19 @@ export const schoolsApis = createApi({
     endpoints: (builder) => ({
         getAllSchools: builder.query({
             query: ({ token, page, search }: { token: string, page: number, search: string }) => ({
+                // url: `public/school/basic-info?name=${search !== "" ? `&search=${search}` : ""}&page=${page}&size=10`,
                 url: `management/school/all?page=${page}&size=10${search !== "" ? `&search=${search}` : ""}`,
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+
+            }),
+            providesTags: ["schools"]
+        }),
+        getAllSchoolsWithSearch: builder.query({
+            query: ({ token, page, search }: { token: string, page: number, search: string }) => ({
+                url: `public/school/basic-info?name=${search}&size=10&page=${page}`,
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -46,4 +58,4 @@ export const schoolsApis = createApi({
     })
 })
 
-export const { useGetAllSchoolsQuery, useGetSchoolByIdQuery , useUpdateSchoolMutation } = schoolsApis
+export const { useGetAllSchoolsQuery, useGetAllSchoolsWithSearchQuery , useGetSchoolByIdQuery , useUpdateSchoolMutation } = schoolsApis

@@ -13,17 +13,35 @@ const Features = () => {
   const token = Cookies.get("token") || "";
   const { isSuccess, data } = useGetSchoolPermissionsQuery(token);
   console.log("Permissions", data?.data);
-  const f = data?.data;
+  const features = data?.data || [];
   
-  const [features, setFeatures] = useState<any[]>([]);
+  const [schoolPermissions, setSchoolPermissions] = useState<any[]>([]);
   
+  // Fetching school permissions based on token and id
+  const { data: schoolPermissionData } = useGetSchoolPermissionByIdQuery({ token, id });
+  // const { data: schoolPermissions } = useGetSchoolPermissionByIdQuery({ token, id });
+  console.log('schoolPermissionData', schoolPermissionData);
   useEffect(() => {
-    // Simulate fetching data (you can replace this with your API call)
-    const response = data;
-
-    // Set the features data from the response
-    setFeatures(response?.data);
-  }, [data]);
+    // Assuming schoolPermissionData contains a 'data' property with permissions
+    setSchoolPermissions(schoolPermissionData?.data || []);
+  }, [schoolPermissionData]);
+  console.log('schoolPermissions', schoolPermissions);
+  
+  // Filter the categories based on permissions that the user has
+  const filteredCategories = features.map((feature: any) => {
+    const filteredPermissions = feature.Permissions.filter((permission : any) =>
+      schoolPermissions.some(schoolPermission => schoolPermission.name === permission.name)
+  );
+  
+    return {
+      category: feature.category,
+      Permissions: filteredPermissions
+    };
+  });
+  
+  console.log('filteredCategories', filteredCategories);
+  
+  
 
   const { data: dataPlans } = useGetSchoolPlansQuery({token, id});
   console.log("dataPlans: ", dataPlans);
@@ -31,9 +49,8 @@ const Features = () => {
   const {data: schoolData} = useGetSchoolByIdQuery({token, id});
   // console.log("schoolData: ", schoolData);
   
-  const {data: schoolPermissions} = useGetSchoolPermissionByIdQuery({token, id});
-  const initialSchoolFeatures = schoolPermissions?.data
-  console.log('initialSchoolFeatures', initialSchoolFeatures);
+  // const initialSchoolFeatures = schoolPermissions?.data;
+  // console.log('initialSchoolFeatures', initialSchoolFeatures);
   
 
   return (
@@ -43,14 +60,14 @@ const Features = () => {
         <div className="rounded-xl pb-5">
           <div className="flex rounded-t-xl bg-blue-100 px-10 py-4 text-[18px] font-semibold">
             <div className="flex justify-between w-full text-black">
-            <p>{schoolData?.data?.name} features</p>
+            <p>Edit {schoolData?.data?.name} features</p>
             <a href={`/manage-school/view-features/${id}`} className="text-blue-500 cursor-pointer">View Features</a>
             </div>
-
           </div>
           <div>
       {/* Add a check to ensure features are not undefined or null */}
-        <FeaturesList features={features} token={token} />
+
+        <FeaturesList features={features} checkedItems={filteredCategories} token={token} />
     </div>
         </div>
       ) : (

@@ -1,7 +1,7 @@
 'use client';
 import { useSetSchoolPermissionByIdMutation } from '@/app/manage-school/features/[id]/api/schoolPermissions';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
@@ -15,22 +15,35 @@ interface Permission {
 interface ExpandableListProps {
   title: string;
   items: Permission[];
+  checkedPermissions: Permission[];
   onUpdateCheckedItems: (selectedItems: Permission[], isAdding: boolean) => void;
 }
 
 // Component for displaying a list of items that can be expanded or collapsed
-const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, onUpdateCheckedItems }) => {
+const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, checkedPermissions ,onUpdateCheckedItems }) => {
   // State to manage the expansion of the list
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  console.log(checkedPermissions, 'checkedPermissions');
   
-  // State to track which items are checked
-  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>(
-    items.reduce((acc, _item, index) => {
-      acc[index] = false; // Initialize all items as unchecked
+  // Initialize checkedItems based on checkedPermissions
+  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>(() => {
+    return items.reduce((acc, _, index) => {
+      acc[index] = checkedPermissions.some((permission) => permission.name === items[index].name);
       return acc;
-    }, {} as Record<number, boolean>)
-  );
+    }, {} as Record<number, boolean>);
+  });
 
+  useEffect(() => {
+    // Update checkedItems whenever checkedPermissions changes
+    setCheckedItems((prevCheckedItems) => {
+      return items.reduce((acc, _, index) => {
+        acc[index] = checkedPermissions.some((permission) => permission.name === items[index].name);
+        return acc;
+      }, prevCheckedItems);
+    });
+  }, [checkedPermissions, items]); // Update when either checkedPermissions or items change
+
+ 
   // Toggle the expansion state of the list
   const toggleExpand = () => {
     setIsExpanded(prev => !prev);
@@ -38,18 +51,19 @@ const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, onUpdateC
 
   // Handle checkbox changes for child items
   const handleChildCheckboxChange = (key: number) => {
-    const newCheckedState = !checkedItems[key]; // Determine the new checked state
+    const newCheckedState = !checkedItems[key]; // Toggle the current checked state
     const updatedState = {
       ...checkedItems,
       [key]: newCheckedState, // Update the checked state for the specific item
     };
-
-    setCheckedItems(updatedState);
-    const selectedItems = getSelectedItems(updatedState); // Get currently selected items
+  
+    setCheckedItems(updatedState); // Update local state
+  
+    const selectedItems = getSelectedItems(updatedState); // Get selected items based on the updated state
     // Call the parent function to update the selected items
-    onUpdateCheckedItems([items[key]], newCheckedState);
+    onUpdateCheckedItems(selectedItems, newCheckedState); // Pass the full selected items, not just the name
   };
-
+  
   // Retrieve the list of selected items based on their checked state
   const getSelectedItems = (checkedState: Record<number, boolean>): Permission[] => {
     return items.filter((_item, index) => checkedState[index]);
@@ -87,25 +101,30 @@ const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, onUpdateC
 // Define props for the FeaturesList component
 interface FeaturesListProps {
   features: { category: string; Permissions: Permission[] }[]; // Structure for feature categories
+  checkedItems: { category: string; Permissions: Permission[] }[]; 
   token: string;
 }
 
 // Main component to display all feature categories and their permissions
-const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
+const FeaturesList: React.FC<FeaturesListProps> = ({ features, checkedItems ,token }) => {
   const router = useRouter();
   const params = useParams();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  console.log('checkedItems', checkedItems);
 
   // Update the list of selected items based on user interaction
   const updateCheckedItems = (newSelectedItems: Permission[], isAdding: boolean) => {
     setSelectedItems((prevItems) => {
-      const itemNames = newSelectedItems.map((item) => item.name); // Extract only names
+      const newItemNames = newSelectedItems.map((item) => item.name); // Extract only names
       const updatedItems = isAdding
-        ? [...prevItems, ...itemNames.filter((name) => !prevItems.includes(name))] // Add new items
-        : prevItems.filter((name) => !itemNames.includes(name)); // Remove unchecked items
-      return updatedItems; // Update state with the new selection
+        ? [...prevItems, ...newItemNames.filter((name) => !prevItems.includes(name))] // Add new items if not already selected
+        : prevItems.filter((name) => !newItemNames.includes(name)); // Remove unchecked items
+  
+      return updatedItems; // Update the selected items state
     });
   };
+  
+  console.log('updateCheckedItems', updateCheckedItems);
 
   // Calculate the total cost of selected items
   const calculateTotalCost = () => {
@@ -121,8 +140,9 @@ const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
   
   // Handle the "Save" button click to send selected permissions
   const handleSend = async () => {
-    const body = { permissions: selectedItems }; // Prepare body for the API call
-
+    const body = { permissions: selectedItems } ; // Use selectedItems which now contains the correct permissions
+    console.log('body', body);
+    
     try {
       // Call the mutation to update permissions
       await setSchoolPermissionById({ token, id: params.id, body }).unwrap();
@@ -132,7 +152,7 @@ const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
       toast.error("Failed to update permissions"); // Show error message
     }
   };
-
+  
   // Handle the "Cancel" button click
   const handleCancel = () => {
     router.push(`/manage-school`); 
@@ -147,6 +167,7 @@ const FeaturesList: React.FC<FeaturesListProps> = ({ features, token }) => {
           key={index} 
           title={feature.category} 
           items={feature.Permissions} 
+          checkedPermissions={checkedItems[index]?.Permissions}
           onUpdateCheckedItems={updateCheckedItems} 
         />
       ))}

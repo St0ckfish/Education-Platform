@@ -32,15 +32,11 @@ const EditSchool = () => {
   const [theme, setTheme] = useState("");
   const [curriculum, setCurriculum] = useState("");
   const [type, setType] = useState("");
-  // const [languages, setLanguages] = useState("");
   const [languages, setLanguages] = useState<string[]>([]);
-  // console.log(languages[0]);
   const [levels, setLevels] = useState<string[]>([]);
   const [educations, setEducations] = useState<string[]>([]);
   const [regionId, setRegionId] = useState("");
   const [fallSemesterStartDate, setFallSemesterStartDate] = useState("");
-  // console.log(fallSemesterStartDate)
-
   const [fallSemesterEndDate, setFallSemesterEndDate] = useState("");
   const [springSemesterStartDate, setSpringSemesterStartDate] = useState("");
   const [springSemesterEndDate, setSpringSemesterEndDate] = useState("");
@@ -381,32 +377,6 @@ const EditSchool = () => {
     }
   };
 
-  // "name": "abufadel",
-  // "about": "test",
-  // "code": "TEST",
-  // "theme": "test",
-  // "curriculum": "STATE_APPROVED_CURRICULUM",
-  // "type": "PUBLIC",
-  // "languages": [
-  //     "ARABIC"
-  // ],
-  // "stages": [
-  //     "KINDERGARTEN"
-  // ],
-  // "educationSystemsIds": [1],
-  // "semesterDate": {
-  //     "fallSemesterStartDate": "--11-02",
-  //     "fallSemesterEndDate": "--11-22",
-  //     "springSemesterStartDate": "--11-19",
-  //     "springSemesterEndDate": "--11-22",
-  //     "summerSemesterStartDate": "--11-01",
-  //     "summerSemesterEndDate": "--11-29"
-  // },
-  // "established": "2024-11-01",
-  // "numberOfLegalAbsenceDays": 15,
-  // "workDayStartTime": "21:44:10",
-  // "workDayEndTime": "22:44:29"
-
   useEffect(() => {
     if (isError) {
       if (error && "data" in error && (error as FetchBaseQueryError).data) {
@@ -496,7 +466,10 @@ const EditSchool = () => {
                   htmlFor="name"
                   className="grid text-[18px] font-sans font-semibold"
                 >
-                  Name School
+                  <div className="flex gap-2">
+                    <div>Name School</div>
+                    <div className="text-[#367AFF] text-xl">*</div>
+                  </div>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -512,7 +485,10 @@ const EditSchool = () => {
                   htmlFor="code"
                   className="grid text-[18px] font-sans font-semibold"
                 >
-                  Code
+                  <div className="flex gap-2">
+                    <div>Code</div>
+                    <div className="text-[#367AFF] text-xl">*</div>
+                  </div>
                   <input
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
@@ -528,7 +504,10 @@ const EditSchool = () => {
                   htmlFor="about"
                   className="grid text-[18px] font-sans font-semibold"
                 >
-                  About
+                  <div className="flex gap-2">
+                    <div>About</div>
+                    <div className="text-[#367AFF] text-xl">*</div>
+                  </div>
                   <input
                     value={about}
                     onChange={(e) => setAbout(e.target.value)}
@@ -544,7 +523,10 @@ const EditSchool = () => {
                   htmlFor="theme"
                   className="grid text-[18px] font-sans font-semibold"
                 >
-                  theme
+                  <div className="flex gap-2">
+                    <div>Theme</div>
+                    <div className="text-[#367AFF] text-xl">*</div>
+                  </div>
                   <input
                     value={theme}
                     onChange={(e) => setTheme(e.target.value)}
@@ -703,18 +685,23 @@ const EditSchool = () => {
                     htmlFor="fallSemesterStartDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Fall Semester Start Date
-                  </label> 
+                    <div className="flex gap-2">
+                      <div>Fall Semester Start Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
+                  </label>
                   <input
                     id="fallSemesterStartDate"
                     type="date"
-                    value={''}
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setFallSemesterStartDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{fallSemesterStartDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {fallSemesterStartDate}
+                  </p>
                   {errorFallSemesterStartDate && (
                     <p className="text-red-600">{errorFallSemesterStartDate}</p>
                   )}
@@ -724,19 +711,23 @@ const EditSchool = () => {
                     htmlFor="fallSemesterEndDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Fall Semester End Date
+                    <div className="flex gap-2">
+                      <div>Fall Semester End Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="fallSemesterEndDate"
                     type="date"
-                    value={''}
-
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setFallSemesterEndDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{fallSemesterEndDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {fallSemesterEndDate}
+                  </p>
 
                   {errorFallSemesterEndDate && (
                     <p className="text-red-600">{errorFallSemesterEndDate}</p>
@@ -747,18 +738,23 @@ const EditSchool = () => {
                     htmlFor="springSemesterStartDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Spring Semester Start Date
+                    <div className="flex gap-2">
+                      <div>Spring Semester Start Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="springSemesterStartDate"
                     type="date"
-                    value={''}
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSpringSemesterStartDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{springSemesterStartDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {springSemesterStartDate}
+                  </p>
                   {errorSpringSemesterStartDate && (
                     <p className="text-red-600">
                       {errorSpringSemesterStartDate}
@@ -770,18 +766,23 @@ const EditSchool = () => {
                     htmlFor="springSemesterEndDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Spring Semester End Date
+                    <div className="flex gap-2">
+                      <div>Spring Semester End Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="springSemesterEndDate"
                     type="date"
-                    value={''}
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSpringSemesterEndDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{springSemesterEndDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {springSemesterEndDate}
+                  </p>
                   {errorSpringSemesterEndDate && (
                     <p className="text-red-600">{errorSpringSemesterEndDate}</p>
                   )}
@@ -791,18 +792,23 @@ const EditSchool = () => {
                     htmlFor="summerSemesterStartDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Summer Semester Start Date
+                    <div className="flex gap-2">
+                      <div>Summer Semester Start Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="summerSemesterStartDate"
                     type="date"
-                    value={''}
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSummerSemesterStartDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{summerSemesterStartDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {summerSemesterStartDate}
+                  </p>
                   {errorSummerSemesterStartDate && (
                     <p className="text-red-600">
                       {errorSummerSemesterStartDate}
@@ -814,18 +820,23 @@ const EditSchool = () => {
                     htmlFor="summerSemesterEndDate"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Summer Semester End Date
+                    <div className="flex gap-2">
+                      <div>Summer Semester End Date</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="summerSemesterEndDate"
                     type="date"
-                    value={''}
+                    value={""}
                     className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                     onChange={(e) =>
                       setSummerSemesterEndDate(formatDate(e.target.value))
                     }
                   />
-                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">{summerSemesterEndDate}</p>
+                  <p className="w-1/2 z-10 relative bg-white -mt-[42px] ml-2 py-2 px-2 rounded-xl dark:bg-slate-700">
+                    {summerSemesterEndDate}
+                  </p>
 
                   {errorSummerSemesterEndDate && (
                     <p className="text-red-600">{errorSummerSemesterEndDate}</p>
@@ -836,7 +847,10 @@ const EditSchool = () => {
                     htmlFor="established"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Established
+                    <div className="flex gap-2">
+                      <div>Established</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="established"
@@ -854,7 +868,10 @@ const EditSchool = () => {
                     htmlFor="workDayStartTime"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Work Day Start Time
+                    <div className="flex gap-2">
+                      <div>Work Day Start Time</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="workDayStartTime"
@@ -873,7 +890,10 @@ const EditSchool = () => {
                     htmlFor="workDayEndTime"
                     className="text-[18px] font-sans font-semibold"
                   >
-                    Work Day End Time
+                    <div className="flex gap-2">
+                      <div>Work Day End Time</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     id="workDayEndTime"
@@ -922,7 +942,10 @@ const EditSchool = () => {
                     htmlFor="numberOfLegalAbsenceDays"
                     className="text-[18px]  font-sans font-semibold"
                   >
-                    Number Of Legal Absence Days
+                    <div className="flex gap-2">
+                      <div>Number Of Legal Absence Days</div>
+                      <div className="text-[#367AFF] text-xl">*</div>
+                    </div>
                   </label>
                   <input
                     value={numberOfLegalAbsenceDays}
