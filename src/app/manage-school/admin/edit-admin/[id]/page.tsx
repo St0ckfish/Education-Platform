@@ -261,7 +261,7 @@ const EditAdmin = () => {
                                         )}
                                     </Select>
                                 </div>
-                                <div className='xl:mt-3'>
+                                {/* <div className='xl:mt-3'>
                                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="EmployeeStatus">employee Status <span className='text-[#367AFF] text-xl'>*</span></label>
                                     <Select value={employeeStatus} onChange={(e) => setEmployeeStatus(e.target.value)} className={`${style.selectForm}`} id='EmployeeStatus' required>
                                         {successEmployeeStatus && (
@@ -273,7 +273,7 @@ const EditAdmin = () => {
                                             </>
                                         )}
                                     </Select>
-                                </div>
+                                </div> */}
                                 <div className='xl:mt-3'>
                                     <label className='mb-3 inline-block md:text-lg capitalize font-medium' htmlFor="qualification">qualification <span className='text-[#367AFF] text-xl'>*</span></label>
                                     <Select value={qualification} onChange={(e) => setQualification(e.target.value)} className={`${style.selectForm}`} id='qualification'>

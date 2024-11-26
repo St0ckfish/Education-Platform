@@ -79,7 +79,7 @@ const Schools: React.FC<Props> = ({ data, search, setSearch, isLoading, setCurre
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data?.data?.content.map((item: any, index: number) => (
+                                    {data?.map((item: any, index: number) => (
                                         <tr key={index} className="bg-white card border-b  hover:bg-gray-50">
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
                                                 {item.name}
