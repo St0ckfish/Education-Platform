@@ -23,7 +23,7 @@ const ViewFeatures = () => {
       <div className="flex flex-col items-start gap-2">
         {features.length > 0 ? (
           features.map((feature: any, index: any) => (
-            <p key={index} className="text-gray-900 m-1">
+            <p key={index} className="text-secondary m-1">
               {index + 1}. {feature.name}
             </p>
           ))
