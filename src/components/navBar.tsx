@@ -363,7 +363,9 @@ const NavBar = () => {
                       <Dropdown.Item onClick={() => setLang("arabic")}><Image src={arabicFlag} width={20} height={20} alt="langIcon" /><span className="ms-2 font-semibold">Arabic</span></Dropdown.Item>
                       <Dropdown.Item onClick={() => setLang("french")}><Image src={frenchLogo} width={20} height={20} alt="langIcon" /><span className="ms-2 font-semibold">French</span></Dropdown.Item>
                     </Dropdown>
-                    <button type="button" className="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 dark:hover:bg-gray-500 disabled:opacity-50 disabled:pointer-events-none">
+                    <button onClick={() => {
+                      router.push('/notifies')
+                    }} type="button" className="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 dark:hover:bg-gray-500 disabled:opacity-50 disabled:pointer-events-none">
                       <svg className="flex-shrink-0 size-4 dark:text-white " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
                     </button>
                     <div className="hs-dropdown [--placement:bottom-right] relative inline-flex ">
