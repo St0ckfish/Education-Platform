@@ -87,7 +87,7 @@ const ExpandableList: React.FC<ExpandableListProps> = ({ title, items, checkedPe
                 onChange={() => handleChildCheckboxChange(index)} // Handle checkbox change
                 className="mr-2"
               />
-              <label htmlFor={`checkbox-${index}`} className="flex justify-between w-full" style={{ userSelect: 'none' }}>
+              <label className="flex justify-between w-full" style={{ userSelect: 'none' }}>
                 {item.name} - ${item.cost} {/* Display item name and cost */}
               </label>
             </li>

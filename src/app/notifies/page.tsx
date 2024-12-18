@@ -56,7 +56,7 @@ function Notifies() {
                 ? "bg-gray-100 dark:bg-gray-800"
                 : "bg-[#daeafb] dark:bg-[#123456]"
             } mb-4 rounded-lg shadow-lg border-l-4 ${
-              notify.read ? "border-primary" : "border-blue-500 dark:border-blue-400"
+              notify.read ? "border-gray-200 dark:border-gray-600" : "border-blue-500 dark:border-blue-400"
             } transition duration-300`}
           >          
               <div className="flex justify-between items-center gap-5">
