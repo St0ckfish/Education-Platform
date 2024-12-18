@@ -377,7 +377,7 @@ const NavBar = () => {
                           <div className="hs-dropdown-menu bg-white card transition-[opacity,margin] hs-dropdown-open:opacity-100 fixed  right-[40px] top-[80px] min-w-60  shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-with-header">
                             <div className="py-3 px-5 -m-2  rounded-t-lg">
                               <p className="text-sm text-gray-500 dark:text-gray-400">Signed in as</p>
-                              <p className="text-sm font-medium text-gray-800 dark:text-white">{profileData.data.email}</p>
+                              <p className="text-sm font-medium text-gray-800 dark:text-white">{profileData?.data?.email}</p>
                             </div>
                             <div className="mt-2 py-2 first:pt-0 last:pb-0">
                               <button onClick={handleLogout} className="flex w-full items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-500 focus:ring-2 focus:ring-blue-500" >
