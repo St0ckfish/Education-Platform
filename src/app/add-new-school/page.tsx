@@ -210,20 +210,55 @@ const AddNewSchool = () => {
     }
 
     // Date validations
-    if (new Date(fallSemesterStartDate) >= new Date(fallSemesterEndDate)) {
-      setErrorFallSemesterEndDate("End date must be greater than start date");
+    const now = new Date();
+    const startYear = new Date(established).getFullYear();
+    
+    if (startYear < 1800 || startYear > now.getFullYear()) {
+      setErrorEstablished("Invalid establishment date");
       isValid = false;
     }
-    if (new Date(springSemesterStartDate) >= new Date(springSemesterEndDate)) {
-      setErrorSpringSemesterEndDate("End date must be greater than start date");
+  
+    // Convert dates for semester comparisons
+    const fallStart = new Date(fallSemesterStartDate);
+    const fallEnd = new Date(fallSemesterEndDate);
+    const springStart = new Date(springSemesterStartDate);
+    const springEnd = new Date(springSemesterEndDate);
+    const summerStart = new Date(summerSemesterStartDate);
+    const summerEnd = new Date(summerSemesterEndDate);
+  
+    // Semester date validations
+    if (fallStart >= fallEnd) {
+      setErrorFallSemesterEndDate("End date must be after start date");
       isValid = false;
     }
-    if (new Date(summerSemesterStartDate) >= new Date(summerSemesterEndDate)) {
-      setErrorSummerSemesterEndDate("End date must be greater than start date");
+  
+    if (springStart >= springEnd) {
+      setErrorSpringSemesterEndDate("End date must be after start date");
       isValid = false;
     }
-    if (new Date(workDayStartTime) >= new Date(workDayEndTime)) {
-      setErrorWorkDayEndTime("End time must be greater than start time");
+  
+    if (summerStart >= summerEnd) {
+      setErrorSummerSemesterEndDate("End date must be after start date");
+      isValid = false;
+    }
+  
+    // Validate semester sequence
+    if (fallEnd >= springStart) {
+      setErrorSpringSemesterStartDate("Spring semester must start after fall semester ends");
+      isValid = false;
+    }
+  
+    if (springEnd >= summerStart) {
+      setErrorSummerSemesterStartDate("Summer semester must start after spring semester ends");
+      isValid = false;
+    }
+  
+    // Work hours validation
+    const [startHours, startMinutes] = workDayStartTime.split(':').map(Number);
+    const [endHours, endMinutes] = workDayEndTime.split(':').map(Number);
+    
+    if (startHours > endHours || (startHours === endHours && startMinutes >= endMinutes)) {
+      setErrorWorkDayEndTime("End time must be after start time");
       isValid = false;
     }
 
