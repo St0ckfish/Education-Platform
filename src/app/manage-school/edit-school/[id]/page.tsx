@@ -612,11 +612,11 @@ const EditSchool = () => {
                     id="type"
                   >
                     <option className="hidden">Select language</option>
-                    {Object.keys(dataLanguages?.data).map((key) => (
-                      <option key={key} value={key}>
-                        {dataLanguages?.data[key]}
-                      </option>
-                    ))}
+                      {dataLanguages?.data ? Object.keys(dataLanguages.data).map((key) => (
+    <option key={key} value={key}>
+      {dataLanguages.data[key]}
+    </option>
+  )) : <option>Loading...</option>}
                   </Select>
 
                   {languagesError && (
