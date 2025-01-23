@@ -649,33 +649,40 @@ const AddNewSchool = () => {
               </div>
               <div className="relative">
                 {successLevels && (
-                  <>
+                  <div className="grid">
                     <label
                       className="mb-3 inline-block md:text-lg capitalize font-medium"
                       htmlFor="type"
                     >
                       Stages <span className="text-[#367AFF] text-xl">*</span>
                     </label>
-                    <Select
-                      value={levels[0] || ""}
-                      onChange={(e) => setLevels([e.target.value])}
-                      className={`${style.selectForm}`}
-                      id="type"
-                    >
-                      <option className="hidden">Select Stages</option>
-                      {Object.keys(dataLevels?.data).map((key) => (
-                        <option key={key} value={key}>
-                          {dataLevels?.data[key]}
-                        </option>
-                      ))}
-                    </Select>
+                    <div className="flex flex-wrap gap-3">
+ {Object.entries(dataLevels?.data || {}).map(([key, value]) => (
+   <label key={key} className="flex items-center space-x-2">
+     <input
+       type="checkbox" 
+       value={key}
+       checked={levels.includes(key)}
+       onChange={(e) => {
+         if (e.target.checked) {
+           setLevels([...levels, key]);
+         } else {
+           setLevels(levels.filter(level => level !== key));
+         }
+       }}
+       className="rounded border-gray-300"
+     />
+     <span>{String(value)}</span>
+   </label>
+ ))}
+</div>
 
                     {levelsError && (
                       <span className="text-red-600 text-sm">
                         {levelsError}
                       </span>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
               <div className="relative">
