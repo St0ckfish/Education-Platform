@@ -727,6 +727,8 @@ const AddNewSchool = () => {
                 <input
                   id="fallSemesterStartDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setFallSemesterStartDate(formatDate(e.target.value))
@@ -749,6 +751,8 @@ const AddNewSchool = () => {
                 <input
                   id="fallSemesterEndDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setFallSemesterEndDate(formatDate(e.target.value))
@@ -771,6 +775,8 @@ const AddNewSchool = () => {
                 <input
                   id="springSemesterStartDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSpringSemesterStartDate(formatDate(e.target.value))
@@ -793,6 +799,8 @@ const AddNewSchool = () => {
                 <input
                   id="springSemesterEndDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSpringSemesterEndDate(formatDate(e.target.value))
@@ -815,6 +823,8 @@ const AddNewSchool = () => {
                 <input
                   id="summerSemesterStartDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSummerSemesterStartDate(formatDate(e.target.value))
@@ -837,6 +847,8 @@ const AddNewSchool = () => {
                 <input
                   id="summerSemesterEndDate"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSummerSemesterEndDate(formatDate(e.target.value))
@@ -859,6 +871,8 @@ const AddNewSchool = () => {
                 <input
                   id="established"
                   type="date"
+                   max="9999-12-31"
+                   min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   value={established}
                   onChange={(e) => setEstablished(e.target.value)}
