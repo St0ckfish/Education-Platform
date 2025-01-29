@@ -86,184 +86,140 @@ const AddNewSchool = () => {
   const [errorNumberOfLegalAbsenceDays, setErrorNumberOfLegalAbsenceDays] =
     useState("");
 
-  const validateInputs = () => {
-    // Reset all error messages
-    setNameError("");
-    setCodeError("");
-    setAboutError("");
-    setThemeError("");
-    setCurriculumError("");
-    setTypeError("");
-    setLanguagesError("");
-    setLevelsError("");
-    setEducationsError("");
-    setErrorFallSemesterStartDate("");
-    setErrorFallSemesterEndDate("");
-    setErrorSpringSemesterStartDate("");
-    setErrorSpringSemesterEndDate("");
-    setErrorSummerSemesterStartDate("");
-    setErrorSummerSemesterEndDate("");
-    setErrorEstablished("");
-    setErrorWorkDayStartTime("");
-    setErrorWorkDayEndTime("");
-    setErrorRegionId("");
-    setErrorNumberOfLegalAbsenceDays("");
-
-    let isValid = true;
-
-    // Perform validations
-    if (name.trim() === "") {
-      setNameError("Name School is required");
-      isValid = false;
-    }
-
-    if (code.trim() === "") {
-      setCodeError("Code is required");
-      isValid = false;
-    }
-
-    if (about.trim() === "") {
-      setAboutError("About is required");
-      isValid = false;
-    }
-
-    if (theme.trim() === "") {
-      setThemeError("Theme is required");
-      isValid = false;
-    }
-
-    if (!curriculum) {
-      setCurriculumError("Curriculum is required");
-      isValid = false;
-    }
-
-    if (!type) {
-      setTypeError("Type is required");
-      isValid = false;
-    }
-
-    if (languages.length === 0) {
-      setLanguagesError("At least one language is required");
-      isValid = false;
-    }
-
-    if (levels.length === 0) {
-      setLevelsError("At least one level is required");
-      isValid = false;
-    }
-
-    if (educations.length === 0) {
-      setEducationsError("At least one education system is required");
-      isValid = false;
-    }
-
-    if (!fallSemesterStartDate) {
-      setErrorFallSemesterStartDate("This field is required");
-      isValid = false;
-    }
-    if (!fallSemesterEndDate) {
-      setErrorFallSemesterEndDate("This field is required");
-      isValid = false;
-    }
-    if (!springSemesterStartDate) {
-      setErrorSpringSemesterStartDate("This field is required");
-      isValid = false;
-    }
-    if (!springSemesterEndDate) {
-      setErrorSpringSemesterEndDate("This field is required");
-      isValid = false;
-    }
-    if (!summerSemesterStartDate) {
-      setErrorSummerSemesterStartDate("This field is required");
-      isValid = false;
-    }
-    if (!summerSemesterEndDate) {
-      setErrorSummerSemesterEndDate("This field is required");
-      isValid = false;
-    }
-    if (!established) {
-      setErrorEstablished("This field is required");
-      isValid = false;
-    }
-    if (!workDayStartTime) {
-      setErrorWorkDayStartTime("This field is required");
-      isValid = false;
-    }
-    if (!workDayEndTime) {
-      setErrorWorkDayEndTime("This field is required");
-      isValid = false;
-    }
-    if (!regionId) {
-      setErrorRegionId("This field is required");
-      isValid = false;
-    }
-
-    // Parse the number for validation
-    const parsedNumberOfLegalAbsenceDays = parseFloat(numberOfLegalAbsenceDays);
-
-    if (!numberOfLegalAbsenceDays) {
-      setErrorNumberOfLegalAbsenceDays("This field is required");
-      isValid = false;
-    } else if (isNaN(parsedNumberOfLegalAbsenceDays)) {
-      setErrorNumberOfLegalAbsenceDays("Must be a number");
-      isValid = false;
-    }
-
-    // Date validations
-    const now = new Date();
-    const startYear = new Date(established).getFullYear();
+    const validateInputs = () => {
+      let isValid = true;
     
-    if (startYear < 1800 || startYear > now.getFullYear()) {
-      setErrorEstablished("Invalid establishment date");
-      isValid = false;
-    }
-  
-    // Convert dates for semester comparisons
-    const fallStart = new Date(fallSemesterStartDate);
-    const fallEnd = new Date(fallSemesterEndDate);
-    const springStart = new Date(springSemesterStartDate);
-    const springEnd = new Date(springSemesterEndDate);
-    const summerStart = new Date(summerSemesterStartDate);
-    const summerEnd = new Date(summerSemesterEndDate);
-  
-    // Semester date validations
-    if (fallStart >= fallEnd) {
-      setErrorFallSemesterEndDate("End date must be after start date");
-      isValid = false;
-    }
-  
-    if (springStart >= springEnd) {
-      setErrorSpringSemesterEndDate("End date must be after start date");
-      isValid = false;
-    }
-  
-    if (summerStart >= summerEnd) {
-      setErrorSummerSemesterEndDate("End date must be after start date");
-      isValid = false;
-    }
-  
-    // Validate semester sequence
-    if (fallEnd >= springStart) {
-      setErrorSpringSemesterStartDate("Spring semester must start after fall semester ends");
-      isValid = false;
-    }
-  
-    if (springEnd >= summerStart) {
-      setErrorSummerSemesterStartDate("Summer semester must start after spring semester ends");
-      isValid = false;
-    }
-  
-    // Work hours validation
-    const [startHours, startMinutes] = workDayStartTime.split(':').map(Number);
-    const [endHours, endMinutes] = workDayEndTime.split(':').map(Number);
+      // Reset all error messages
+      const errorSetters = [
+        setNameError,
+        setCodeError,
+        setAboutError,
+        setThemeError,
+        setCurriculumError,
+        setTypeError,
+        setLanguagesError,
+        setLevelsError,
+        setEducationsError,
+        setErrorFallSemesterStartDate,
+        setErrorFallSemesterEndDate,
+        setErrorSpringSemesterStartDate,
+        setErrorSpringSemesterEndDate,
+        setErrorSummerSemesterStartDate,
+        setErrorSummerSemesterEndDate,
+        setErrorEstablished,
+        setErrorWorkDayStartTime,
+        setErrorWorkDayEndTime,
+        setErrorRegionId,
+        setErrorNumberOfLegalAbsenceDays,
+      ];
+      errorSetters.forEach(setError => setError(""));
     
-    if (startHours > endHours || (startHours === endHours && startMinutes >= endMinutes)) {
-      setErrorWorkDayEndTime("End time must be after start time");
-      isValid = false;
-    }
-
-    return isValid;
-  };
+      // General validation helper
+      const validateRequiredField = (value: any, setErrorFunc: any, errorMsg: string) => {
+        if (!value || (typeof value === "string" && value.trim() === "")) {
+          setErrorFunc(errorMsg);
+          isValid = false;
+        }
+      };
+    
+      // Validate required fields
+      validateRequiredField(name, setNameError, "School name is required");
+      validateRequiredField(code, setCodeError, "Code is required");
+      validateRequiredField(about, setAboutError, "About is required");
+      validateRequiredField(theme, setThemeError, "Theme is required");
+      validateRequiredField(curriculum, setCurriculumError, "Curriculum is required");
+      validateRequiredField(type, setTypeError, "Type is required");
+      validateRequiredField(regionId, setErrorRegionId, "Region is required");
+      validateRequiredField(established, setErrorEstablished, "This field is required");
+      validateRequiredField(workDayStartTime, setErrorWorkDayStartTime, "This field is required");
+      validateRequiredField(workDayEndTime, setErrorWorkDayEndTime, "This field is required");
+    
+      if (languages.length === 0) {
+        setLanguagesError("At least one language is required");
+        isValid = false;
+      }
+      if (levels.length === 0) {
+        setLevelsError("At least one level is required");
+        isValid = false;
+      }
+      if (educations.length === 0) {
+        setEducationsError("At least one education system is required");
+        isValid = false;
+      }
+    
+      // Validate number of legal absence days
+      const parsedNumberOfLegalAbsenceDays = parseFloat(numberOfLegalAbsenceDays);
+      if (!numberOfLegalAbsenceDays) {
+        setErrorNumberOfLegalAbsenceDays("This field is required");
+        isValid = false;
+      } else if (isNaN(parsedNumberOfLegalAbsenceDays)) {
+        setErrorNumberOfLegalAbsenceDays("Must be a number");
+        isValid = false;
+      }
+    
+      // Validate establishment year
+      const now = new Date();
+      const startYear = new Date(established).getFullYear();
+      if (startYear < 1800 || startYear > now.getFullYear()) {
+        setErrorEstablished("Invalid establishment date");
+        isValid = false;
+      }
+    
+      // Validate semester dates (fixing MM/DD/YYYY issues)
+      const parseDate = (dateStr: string) => {
+        const [month, day, year] = dateStr.split("/").map(Number);
+        return new Date(year, month - 1, day); // Month is 0-based in JS
+      };
+    
+      const semesterDates = [
+        { start: fallSemesterStartDate, end: fallSemesterEndDate, setError: setErrorFallSemesterEndDate },
+        { start: springSemesterStartDate, end: springSemesterEndDate, setError: setErrorSpringSemesterEndDate },
+        { start: summerSemesterStartDate, end: summerSemesterEndDate, setError: setErrorSummerSemesterEndDate },
+      ];
+    
+      semesterDates.forEach(({ start, end, setError }) => {
+        if (!start || !end) {
+          setError("This field is required");
+          isValid = false;
+        } else {
+          const startDate = parseDate(start);
+          const endDate = parseDate(end);
+    
+          if (startDate >= endDate) {
+            setError("End date must be after start date");
+            isValid = false;
+          }
+        }
+      });
+    
+      // Validate semester sequence
+      const fallEnd = parseDate(fallSemesterEndDate);
+      const springStart = parseDate(springSemesterStartDate);
+      const springEnd = parseDate(springSemesterEndDate);
+      const summerStart = parseDate(summerSemesterStartDate);
+    
+      if (fallEnd >= springStart) {
+        setErrorSpringSemesterStartDate("Spring semester must start after fall semester ends");
+        isValid = false;
+      }
+      if (springEnd >= summerStart) {
+        setErrorSummerSemesterStartDate("Summer semester must start after spring semester ends");
+        isValid = false;
+      }
+    
+      // Validate work hours
+      if (workDayStartTime && workDayEndTime) {
+        const [startHours, startMinutes] = workDayStartTime.split(":").map(Number);
+        const [endHours, endMinutes] = workDayEndTime.split(":").map(Number);
+    
+        if (startHours > endHours || (startHours === endHours && startMinutes >= endMinutes)) {
+          setErrorWorkDayEndTime("End time must be after start time");
+          isValid = false;
+        }
+      }
+    
+      return isValid;
+    };    
 
   const toggleDropdown = () => {
     setOpenLanguages(!openLanguages);
@@ -657,25 +613,32 @@ const AddNewSchool = () => {
                       Stages <span className="text-[#367AFF] text-xl">*</span>
                     </label>
                     <div className="flex flex-wrap gap-3">
- {Object.entries(dataLevels?.data || {}).map(([key, value]) => (
-   <label key={key} className="flex items-center space-x-2">
-     <input
-       type="checkbox" 
-       value={key}
-       checked={levels.includes(key)}
-       onChange={(e) => {
-         if (e.target.checked) {
-           setLevels([...levels, key]);
-         } else {
-           setLevels(levels.filter(level => level !== key));
-         }
-       }}
-       className="rounded border-gray-300"
-     />
-     <span>{String(value)}</span>
-   </label>
- ))}
-</div>
+                      {Object.entries(dataLevels?.data || {}).map(
+                        ([key, value]) => (
+                          <label
+                            key={key}
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              type="checkbox"
+                              value={key}
+                              checked={levels.includes(key)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setLevels([...levels, key]);
+                                } else {
+                                  setLevels(
+                                    levels.filter((level) => level !== key)
+                                  );
+                                }
+                              }}
+                              className="rounded border-gray-300"
+                            />
+                            <span>{String(value)}</span>
+                          </label>
+                        )
+                      )}
+                    </div>
 
                     {levelsError && (
                       <span className="text-red-600 text-sm">
@@ -734,8 +697,8 @@ const AddNewSchool = () => {
                 <input
                   id="fallSemesterStartDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setFallSemesterStartDate(formatDate(e.target.value))
@@ -758,8 +721,8 @@ const AddNewSchool = () => {
                 <input
                   id="fallSemesterEndDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setFallSemesterEndDate(formatDate(e.target.value))
@@ -782,8 +745,8 @@ const AddNewSchool = () => {
                 <input
                   id="springSemesterStartDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSpringSemesterStartDate(formatDate(e.target.value))
@@ -806,8 +769,8 @@ const AddNewSchool = () => {
                 <input
                   id="springSemesterEndDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSpringSemesterEndDate(formatDate(e.target.value))
@@ -830,8 +793,8 @@ const AddNewSchool = () => {
                 <input
                   id="summerSemesterStartDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSummerSemesterStartDate(formatDate(e.target.value))
@@ -854,8 +817,8 @@ const AddNewSchool = () => {
                 <input
                   id="summerSemesterEndDate"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) =>
                     setSummerSemesterEndDate(formatDate(e.target.value))
@@ -878,8 +841,8 @@ const AddNewSchool = () => {
                 <input
                   id="established"
                   type="date"
-                   max="9999-12-31"
-                   min="1000-01-01"
+                  max="9999-12-31"
+                  min="1000-01-01"
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   value={established}
                   onChange={(e) => setEstablished(e.target.value)}

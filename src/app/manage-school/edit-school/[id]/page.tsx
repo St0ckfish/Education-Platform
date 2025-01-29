@@ -66,9 +66,6 @@ const EditSchool = () => {
   const [openLanguages, setOpenLanguages] = useState(false);
   const [openLevels, setOpenLevels] = useState(false);
   const [openEducations, setOpenEducations] = useState(false);
-  console.log("successLevels", dataLevels);
-  console.log("dataEducations", dataEducations);
-  console.log("dataSchool", dataSchool);
   useEffect(() => {
     if (successSchool && dataSchool?.data) {
       setName(dataSchool.data.name || "");
@@ -365,7 +362,7 @@ const EditSchool = () => {
     };
 
     try {
-      console.log("school: ", data);
+      console.log("👾 ~ handleSend ~ data:", data);
       await updateSchool({ token, id: params.id, body: data }).unwrap();
 
       // Show success toast on successful update
@@ -373,7 +370,6 @@ const EditSchool = () => {
     } catch (error) {
       // Show error toast if there's an issue with the update
       toast.error("Failed to update school information. Please try again.");
-      console.error("Update failed: ", error);
     }
   };
 
@@ -612,11 +608,15 @@ const EditSchool = () => {
                     id="type"
                   >
                     <option className="hidden">Select language</option>
-                      {dataLanguages?.data ? Object.keys(dataLanguages.data).map((key) => (
-    <option key={key} value={key}>
-      {dataLanguages.data[key]}
-    </option>
-  )) : <option>Loading...</option>}
+                    {dataLanguages?.data ? (
+                      Object.keys(dataLanguages.data).map((key) => (
+                        <option key={key} value={key}>
+                          {dataLanguages.data[key]}
+                        </option>
+                      ))
+                    ) : (
+                      <option>Loading...</option>
+                    )}
                   </Select>
 
                   {languagesError && (
