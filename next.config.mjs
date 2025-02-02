@@ -4,8 +4,8 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                // hostname: "eduai.vitaparapharma.com",
-                hostname: "/api.eduai.tech",
+                hostname: "eduai.vitaparapharma.com",
+                // hostname: "/api.eduai.tech",
                 port: "",
                 pathname: "/**",
             },
