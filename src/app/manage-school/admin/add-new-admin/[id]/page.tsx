@@ -182,6 +182,7 @@ const AddNewAdmin = () => {
               <h1 className="text-[22px] font-sans font-semibold">
                 Admin Information
               </h1>
+              {/* comment */}
             </div>
             <div className="grid grid-cols-2 gap-4 max-[1278px]:grid-cols-1 my-7">
               <div>
