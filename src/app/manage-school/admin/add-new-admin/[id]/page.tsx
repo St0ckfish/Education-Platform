@@ -59,8 +59,42 @@ const AddNewAdmin = () => {
   const [addAdmin, { data, isError, error, isSuccess, isLoading }] =
     useAddAdminMutation();
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[~@#$^*()_+\-=[\]{}|\\,.?:'"\/;`%])(?=.*[0-9])(?=.*[a-z]).{8,32}$/;
+
   const handleSend = async (e: any) => {
     e.preventDefault();
+    const newErrors: { [key: string]: string } = {};
+
+    if (!username.trim()) newErrors.username = "Username is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be between 8 and 32 characters long";
+    }
+    if (!nid.trim()) newErrors.nid = "National ID is required";
+    if (!gender) newErrors.gender = "Gender selection is required";
+    if (!religion) newErrors.religion = "Religion selection is required";
+    if (!nationality) newErrors.nationality = "Nationality selection is required";
+    if (!employeeType) newErrors.employeeType = "Employee type selection is required";
+    if (!qualification) newErrors.qualification = "Qualification selection is required";
+    if (!regionId) newErrors.regionId = "Region selection is required";
+    if (!birthDate) newErrors.birthDate = "Birth date is required";
+    if (!number.trim()) newErrors.number = "Phone number is required";
+    if (!name_en.trim()) newErrors.name_en = "Name in English is required";
+    if (!name_ar.trim()) newErrors.name_ar = "Name in Arabic is required";
+    if (!name_fr.trim()) newErrors.name_fr = "Name in French is required";
+    if (!about.trim()) newErrors.about = "About section is required";
+  
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+  
+
+    setErrors({});
+
     const obj = {
       username,
       email,
@@ -202,6 +236,9 @@ const AddNewAdmin = () => {
                   placeholder="User Name"
                   required
                 />
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -220,6 +257,9 @@ const AddNewAdmin = () => {
                   placeholder="email"
                   required
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -238,6 +278,9 @@ const AddNewAdmin = () => {
                   placeholder="password"
                   required
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -256,6 +299,9 @@ const AddNewAdmin = () => {
                   placeholder="nid"
                   required
                 />
+                {errors.nid && (
+                  <p className="text-red-500 text-sm mt-1">{errors.nid}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -281,6 +327,9 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.gender && (
+                  <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -306,6 +355,9 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.religion && (
+                  <p className="text-red-500 text-sm mt-1">{errors.religion}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -331,6 +383,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.nationality && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.nationality}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -357,6 +414,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.employeeType && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.employeeType}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -383,6 +445,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.qualification && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.qualification}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -410,6 +477,9 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.regionId && (
+                  <p className="text-red-500 text-sm mt-1">{errors.regionId}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -425,6 +495,11 @@ const AddNewAdmin = () => {
                   className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
+                {errors.birthDate && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.birthDate}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-1">
                 <div className="mb-3 block">
@@ -443,6 +518,9 @@ const AddNewAdmin = () => {
                   placeholder="number"
                   required
                 />
+                {errors.number && (
+                  <p className="text-red-500 text-sm mt-1">{errors.number}</p>
+                )}
               </div>
               <div>
                 <div className="mb-4 block">
@@ -461,6 +539,9 @@ const AddNewAdmin = () => {
                   placeholder="name english"
                   required
                 />
+                {errors.name_en && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_en}</p>
+                )}
               </div>
               <div>
                 <div className="mb-4 block">
@@ -479,6 +560,9 @@ const AddNewAdmin = () => {
                   placeholder="name arabic"
                   required
                 />
+                {errors.name_ar && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_ar}</p>
+                )}
               </div>
               <div>
                 <div className="mb-4 block">
@@ -497,6 +581,9 @@ const AddNewAdmin = () => {
                   placeholder="name french"
                   required
                 />
+                {errors.name_fr && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_fr}</p>
+                )}
               </div>
 
               <div className="col-span-2">
@@ -516,6 +603,9 @@ const AddNewAdmin = () => {
                   placeholder="about"
                   required
                 />
+                {errors.about && (
+                  <p className="text-red-500 text-sm mt-1">{errors.about}</p>
+                )}
               </div>
             </div>
             {isLoading ? (
