@@ -18,6 +18,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "react-toastify";
 import Spinner from "@/components/spinner";
 import Container from "@/components/Container";
+import { useGetCountryCodeQuery } from "@/app/create-course/api/createCourseSlice";
 
 const AddNewAdmin = () => {
   const token = Cookies.get("token") || "";
@@ -38,11 +39,15 @@ const AddNewAdmin = () => {
   const [regionId, setRegionId] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [number, setNumber] = useState("");
+  const [countryCode, setCountryCode] = useState("");
   const [name_en, setName_en] = useState("");
   const [name_ar, setName_ar] = useState("");
   const [name_fr, setName_fr] = useState("");
   const [about, setAbout] = useState("");
 
+  const { data: countryCodeData, isSuccess: successCountryCode } =
+    useGetCountryCodeQuery(token);
+  console.log("👾 ~ AddNewAdmin ~ countryCodeData:", countryCodeData);
   const { data: ganderData, isSuccess: successGander } =
     useGetGanderQuery(token);
   const { data: religionData, isSuccess: successReligion } =
@@ -59,8 +64,47 @@ const AddNewAdmin = () => {
   const [addAdmin, { data, isError, error, isSuccess, isLoading }] =
     useAddAdminMutation();
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*[~@#$^*()_+\-=[\]{}|\\,.?:'"\/;`%])(?=.*[0-9])(?=.*[a-z]).{8,32}$/;
+
   const handleSend = async (e: any) => {
     e.preventDefault();
+    const newErrors: { [key: string]: string } = {};
+
+    if (!username.trim()) newErrors.username = "Username is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password =
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be between 8 and 32 characters long";
+    }
+    if (!nid.trim()) newErrors.nid = "National ID is required";
+    if (!gender) newErrors.gender = "Gender selection is required";
+    if (!religion) newErrors.religion = "Religion selection is required";
+    if (!nationality)
+      newErrors.nationality = "Nationality selection is required";
+    if (!employeeType)
+      newErrors.employeeType = "Employee type selection is required";
+    if (!qualification)
+      newErrors.qualification = "Qualification selection is required";
+    if (!regionId) newErrors.regionId = "Region selection is required";
+    if (!birthDate) newErrors.birthDate = "Birth date is required";
+    if (!number.trim()) newErrors.number = "Phone number is required";
+    if (!countryCode.trim()) newErrors.countryCode = "countryCode is required";
+    if (!name_en.trim()) newErrors.name_en = "Name in English is required";
+    if (!name_ar.trim()) newErrors.name_ar = "Name in Arabic is required";
+    if (!name_fr.trim()) newErrors.name_fr = "Name in French is required";
+    if (!about.trim()) newErrors.about = "About section is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+
     const obj = {
       username,
       email,
@@ -74,6 +118,7 @@ const AddNewAdmin = () => {
       regionId,
       birthDate,
       number,
+      countryCode,
       name_en,
       name_ar,
       name_fr,
@@ -93,6 +138,7 @@ const AddNewAdmin = () => {
       regionId &&
       birthDate &&
       number &&
+      countryCode &&
       name_en &&
       name_ar &&
       name_fr &&
@@ -202,6 +248,9 @@ const AddNewAdmin = () => {
                   placeholder="User Name"
                   required
                 />
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -220,6 +269,9 @@ const AddNewAdmin = () => {
                   placeholder="email"
                   required
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -238,6 +290,9 @@ const AddNewAdmin = () => {
                   placeholder="password"
                   required
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
               </div>
               <div>
                 <div className="my-4 block">
@@ -256,6 +311,9 @@ const AddNewAdmin = () => {
                   placeholder="nid"
                   required
                 />
+                {errors.nid && (
+                  <p className="text-red-500 text-sm mt-1">{errors.nid}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -281,6 +339,9 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.gender && (
+                  <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -306,6 +367,9 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.religion && (
+                  <p className="text-red-500 text-sm mt-1">{errors.religion}</p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -331,6 +395,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.nationality && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.nationality}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -357,6 +426,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.employeeType && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.employeeType}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -383,6 +457,11 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.qualification && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.qualification}
+                  </p>
+                )}
               </div>
               <div className="xl:mt-3">
                 <label
@@ -410,22 +489,67 @@ const AddNewAdmin = () => {
                     </>
                   )}
                 </Select>
+                {errors.regionId && (
+                  <p className="text-red-500 text-sm mt-1">{errors.regionId}</p>
+                )}
               </div>
+
+              {/* <div className="xl:mt-1">
+                <div className="mb-3 block">
+                  <Label
+                    className="md:text-lg capitalize font-medium"
+                    htmlFor="countryCode"
+                    value="Country Code"
+                  />
+                  <span className="text-[#367AFF] text-2xl ms-1">*</span>
+                </div>
+                <TextInput
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  id="countryCode"
+                  type="text"
+                  placeholder="Country Code"
+                  required
+                />
+                {errors.countryCode && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.countryCode}
+                  </p>
+                )}
+              </div> */}
               <div className="xl:mt-3">
                 <label
-                  htmlFor="birthDate"
-                  className="text-[18px] font-sans font-semibold"
+                  className="mb-3 inline-block md:text-lg capitalize font-medium"
+                  htmlFor="countryCode"
                 >
-                  Birthday
+                  Country Code <span className="text-[#367AFF] text-xl">*</span>
                 </label>
-                <input
-                  value={birthDate}
-                  id="birthDate"
-                  type="date"
-                  className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
-                  onChange={(e) => setBirthDate(e.target.value)}
-                />
+                <Select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  className={`${style.selectForm}`}
+                  id="countryCode"
+                >
+                  {successCountryCode && countryCodeData && (
+                    <>
+                      <option value="" className="hidden">
+                        Select Country Code
+                      </option>
+                      {Object.keys(countryCodeData.data).map((key) => (
+                        <option key={key} value={key}>
+                          {countryCodeData.data[key]} ({key})
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </Select>
+                {errors.countryCode && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.countryCode}
+                  </p>
+                )}
               </div>
+
               <div className="xl:mt-1">
                 <div className="mb-3 block">
                   <Label
@@ -443,7 +567,31 @@ const AddNewAdmin = () => {
                   placeholder="number"
                   required
                 />
+                {errors.number && (
+                  <p className="text-red-500 text-sm mt-1">{errors.number}</p>
+                )}
               </div>
+              <div className="xl:mt-3">
+                <label
+                  htmlFor="birthDate"
+                  className="text-[18px] font-sans font-semibold"
+                >
+                  Birthday
+                </label>
+                <input
+                  value={birthDate}
+                  id="birthDate"
+                  type="date"
+                  className="w-full mt-2 py-2.5 px-4 rounded-xl border dark:bg-slate-700 border-zinc-300 outline-none max-[471px]:w-[350px]"
+                  onChange={(e) => setBirthDate(e.target.value)}
+                />
+                {errors.birthDate && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.birthDate}
+                  </p>
+                )}
+              </div>
+
               <div>
                 <div className="mb-4 block">
                   <Label
@@ -461,6 +609,9 @@ const AddNewAdmin = () => {
                   placeholder="name english"
                   required
                 />
+                {errors.name_en && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_en}</p>
+                )}
               </div>
               <div>
                 <div className="mb-4 block">
@@ -479,6 +630,9 @@ const AddNewAdmin = () => {
                   placeholder="name arabic"
                   required
                 />
+                {errors.name_ar && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_ar}</p>
+                )}
               </div>
               <div>
                 <div className="mb-4 block">
@@ -497,6 +651,9 @@ const AddNewAdmin = () => {
                   placeholder="name french"
                   required
                 />
+                {errors.name_fr && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name_fr}</p>
+                )}
               </div>
 
               <div className="col-span-2">
@@ -516,6 +673,9 @@ const AddNewAdmin = () => {
                   placeholder="about"
                   required
                 />
+                {errors.about && (
+                  <p className="text-red-500 text-sm mt-1">{errors.about}</p>
+                )}
               </div>
             </div>
             {isLoading ? (
