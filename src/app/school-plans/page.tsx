@@ -2,9 +2,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import Cookies from "js-cookie";
-import EmptyAdmins from "../manage-school/admin/[id]/components/EmptyAdmins";
 import {
   useGetAllSchoolPlansQuery,
   useUpdateStatusOfSchoolPlanMutation,
@@ -24,8 +22,9 @@ const PlanSchool = () => {
     isSuccess,
     isLoading,
   } = useGetAllSchoolPlansQuery({ token, page: currentPage });
+  console.log("👾 ~ PlanSchool ~ dataSchoolPlans:", dataSchoolPlans)
   const [updateStatusOfSchoolPlan, { data }] =
-    useUpdateStatusOfSchoolPlanMutation();
+  useUpdateStatusOfSchoolPlanMutation();
 
   const handlePageClick = (selectedPage: any) => {
     setCurrentPage(selectedPage.selected);
