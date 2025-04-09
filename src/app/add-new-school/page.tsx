@@ -341,8 +341,6 @@ const AddNewSchool = () => {
       currencyForInvoices,
     };
 
-    console.log("school data: ", data);
-
     try {
       await addSchool({ token, data }).unwrap();
       toast.success("School added successfully!");
